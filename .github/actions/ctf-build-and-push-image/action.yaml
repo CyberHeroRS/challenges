@@ -51,8 +51,8 @@ runs:
         kubernetesTokenPath: /var/run/secrets/vault/token
         role: arc-github-actions-cyberhero-runner
         secrets: |
-          harbor/creds/github-actions-ctf-rs robot_account_name | HARBOR_USER ;
-          harbor/creds/github-actions-ctf-rs robot_account_secret | HARBOR_PASS
+          harbor/creds/github-actions-cyberhero robot_account_name | HARBOR_USER ;
+          harbor/creds/github-actions-cyberhero robot_account_secret | HARBOR_PASS
 
     - name: Login to registry.ctf.rs
       uses: docker/login-action@v3
