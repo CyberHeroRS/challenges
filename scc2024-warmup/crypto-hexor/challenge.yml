@@ -1,0 +1,18 @@
+name: "Hexor"
+author: "Lofer"
+category: crypto
+description: I did it! I figured out how to make a OTP! Hah! Take that, Boneh! Now I just need to figure out what format to use\u2026
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{R43L_h4x0rs_kNoW_xor!}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/Hexor.zip

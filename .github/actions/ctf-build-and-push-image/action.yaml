@@ -1,0 +1,71 @@
+name: ctf build and push image
+description: Builds docker image and pushes it to ctf registry
+
+inputs:
+  context:
+    description: "Build context"
+    required: true
+
+  dockerfile:
+    description: "Dockerfile path (optional). Leave empty to use default Dockerfile in context."
+    required: false
+    default: ""
+
+  platforms:
+    description: "Target platforms"
+    required: false
+    default: "linux/amd64"
+
+  tags:
+    description: "Image tags (multiline)"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver-opts: |
+          image=registry.ctf.rs/docker-hub/moby/buildkit:master
+        buildkitd-config-inline: |
+          [registry."docker.io"]
+            mirrors = ["registry.ctf.rs/docker-hub"]
+
+    - name: Build image
+      uses: docker/build-push-action@v6
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        load: true
+        push: false
+        tags: ${{ inputs.tags }}
+
+    - name: Get Harbor robot credentials
+      id: vault
+      uses: hashicorp/vault-action@v3
+      with:
+        url: http://vault.vault:8200
+        method: kubernetes
+        kubernetesTokenPath: /var/run/secrets/vault/token
+        role: arc-github-actions-cyberhero-runner
+        secrets: |
+          harbor/creds/github-actions-ctf-rs robot_account_name | HARBOR_USER ;
+          harbor/creds/github-actions-ctf-rs robot_account_secret | HARBOR_PASS
+
+    - name: Login to registry.ctf.rs
+      uses: docker/login-action@v3
+      with:
+        registry: registry.ctf.rs
+        username: ${{ steps.vault.outputs.HARBOR_USER }}
+        password: ${{ steps.vault.outputs.HARBOR_PASS }}
+
+    - name: Push image
+      uses: docker/build-push-action@v6
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.dockerfile }}
+        platforms: ${{ inputs.platforms }}
+        push: true
+        tags: ${{ inputs.tags }}

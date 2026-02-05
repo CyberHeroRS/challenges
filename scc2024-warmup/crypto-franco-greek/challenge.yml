@@ -1,0 +1,18 @@
+name: "Franco-Greek"
+author: "Lofer"
+category: crypto
+description: "I was supposed to get a message from my friend, but he encrypted it using some Franco-Greek machine- now it\u2019s all jumbled up! Can you help me? Note: The flag is case insensitive."
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{my_favourite_heraclit_fragment}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/Franco-Greek.zip

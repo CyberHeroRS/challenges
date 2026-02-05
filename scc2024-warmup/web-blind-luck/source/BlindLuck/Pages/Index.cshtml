@@ -1,0 +1,70 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .header {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .description {
+            margin-bottom: 20px;
+        }
+        input[type="password"] {
+            font-size: 16px;
+            padding: 10px;
+            width: 300px; /* Adjust as per your requirement */
+            margin-bottom: 10px;
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        p {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">Super Hard Password Challenge</div>
+    <div class="description">Do you have the blind luck it takes to guess the super hard password? Try your luck!</div>
+
+    <form method="post">
+        <input type="password" id="passwordInput" name="Password" />
+        <button type="submit" asp-page-handler="CheckPassword">Submit</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <p>@Model.Message</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Time))
+    {
+            <p>@Model.Time</p>
+    }
+</div>
+
+</body>
+</html>

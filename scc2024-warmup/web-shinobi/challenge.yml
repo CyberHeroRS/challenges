@@ -1,0 +1,16 @@
+name: "Shinobi"
+author: "s4ndu"
+category: web
+description: Your colleague installed a video surveillance program and allowed you to try to hack it because he knows you're a hacker. \"I shouldn't be hacked, I didn't change anything\u2026\" he said before sending you the link where he logs in.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "https://shinobi.warmup.scc2024.ctf.rs/"
+flags:
+    - SCC{adm1n_4dmin_f0r3v3r}
+tags:
+    - scc2024-warmup

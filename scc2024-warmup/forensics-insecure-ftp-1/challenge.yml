@@ -1,0 +1,18 @@
+name: "Insecure FTP 1"
+author: "Gordic"
+category: forensics
+description: An accident happened in CyberHero HQ and FTP encryption failed. Accident went unnoticed until today. It looks like some sensitive files are exfiltrated, take a look.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{f7p_7r4ff1c_mu57_b3_3ncryp73d}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/Insecure_FTP_1_2.zip

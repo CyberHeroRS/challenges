@@ -1,0 +1,16 @@
+name: "Blind Luck"
+author: "TheProxy"
+category: web
+description: Someone said to me only those with blind luck could guess this flag.\r\n\r\n
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "https://blind-luck.warmup.scc2024.ctf.rs/"
+flags:
+    - SCC{l00k1n6_1n70_7h3_fu7ur3e}
+tags:
+    - scc2024-warmup

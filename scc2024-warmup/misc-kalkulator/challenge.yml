@@ -1,0 +1,16 @@
+name: "kalkulator"
+author: "Lazar Mancic"
+category: misc
+description: kalkulator is a simple calculator which can evaluate any mathematical expression, there shouldn\u2019t be anything to worry about, right?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc kalkulator.warmup.scc2024.ctf.rs 9003
+flags:
+    - SCC{3v4lu471n6_u53r_1npu7_c4n_b3_d4n63r0u5!}
+tags:
+    - scc2024-warmup

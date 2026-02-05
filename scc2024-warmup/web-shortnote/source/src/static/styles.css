@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.note-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 100px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.note-box h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.note-box p {
+    font-size: 18px;
+    color: #666;
+}
+
+.admin-section {
+    margin-top: 30px; /* Add some space between the note box and admin section */
+    padding: 20px;
+    background-color: #f8f9fa; /* Light gray background color */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-section h3 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.admin-section p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #666;
+}
+
+.admin-section a {
+    color: #007bff; /* Blue color for the link */
+    text-decoration: none; /* Remove underline from the link */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.admin-section a:hover {
+    color: #0056b3; /* Darker blue color on hover */
+    text-decoration: underline; /* Add underline on hover */
+}

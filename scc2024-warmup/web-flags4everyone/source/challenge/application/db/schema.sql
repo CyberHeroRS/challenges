@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS flags;
+CREATE TABLE flags (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    flag TEXT NOT NULL,
+    is_hidden BOOLEAN
+);

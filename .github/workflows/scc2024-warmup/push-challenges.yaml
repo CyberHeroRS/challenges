@@ -1,0 +1,52 @@
+name: scc2024-warmup - push challenge
+
+on:
+  workflow_call:
+
+jobs:
+  push:
+    runs-on: github-actions-cyberhero
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: scc2024-warmup/crypto-crossed
+          - dir: scc2024-warmup/crypto-franco-greek
+          - dir: scc2024-warmup/crypto-hexor
+          - dir: scc2024-warmup/crypto-linearcongruencegamer
+          - dir: scc2024-warmup/crypto-whack-a-mole-1
+          - dir: scc2024-warmup/crypto-whack-a-mole-2
+          - dir: scc2024-warmup/forensics-insecure-ftp-1
+          - dir: scc2024-warmup/forensics-insecure-ftp-2
+          - dir: scc2024-warmup/forensics-meta-hero
+          - dir: scc2024-warmup/forensics-monkey-magic
+          - dir: scc2024-warmup/forensics-spookymacro
+          - dir: scc2024-warmup/forensics-weaponized-key
+          - dir: scc2024-warmup/misc-enchantment
+          - dir: scc2024-warmup/misc-gmq-accc
+          - dir: scc2024-warmup/misc-johnny
+          - dir: scc2024-warmup/misc-kalkulator
+          - dir: scc2024-warmup/osint-grafijaguesser-1
+          - dir: scc2024-warmup/osint-grafijaguesser-2
+          - dir: scc2024-warmup/pwn-banana-shop
+          - dir: scc2024-warmup/pwn-login-form
+          - dir: scc2024-warmup/pwn-zork1-demo
+          - dir: scc2024-warmup/rev-javascript
+          - dir: scc2024-warmup/rev-password
+          - dir: scc2024-warmup/rev-pin
+          - dir: scc2024-warmup/rev-serial
+          - dir: scc2024-warmup/stego-art
+          - dir: scc2024-warmup/stego-hidden-cat
+          - dir: scc2024-warmup/web-anatomy
+          - dir: scc2024-warmup/web-blind-luck
+          - dir: scc2024-warmup/web-flags4everyone
+          - dir: scc2024-warmup/web-shinobi
+          - dir: scc2024-warmup/web-shortnote
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push challenge
+        uses: ./.github/actions/ctf-push-challenge
+        with:
+          challenge_dir: ${{ matrix.dir }}

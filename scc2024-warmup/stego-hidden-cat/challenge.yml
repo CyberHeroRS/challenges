@@ -1,0 +1,18 @@
+name: "Hidden Cat"
+author: "TheProxy"
+category: misc
+description: My cat's evil twin is hiding somewhere. Can you help me find it?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{h1dd3n_1n_pl41n_516h7}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/hidden_cat.png

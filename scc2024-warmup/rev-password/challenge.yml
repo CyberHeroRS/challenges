@@ -1,0 +1,18 @@
+name: "Password"
+author: "tampon"
+category: rev
+description: Password checking can be done in many safe ways... there is no way I can crack it if it's long and unpredictable. Could you help me string together a solution?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{9dd29f04-c1da-4471-9827-04447c533fbd}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/password.zip

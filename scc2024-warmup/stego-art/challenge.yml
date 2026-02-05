@@ -1,0 +1,18 @@
+name: "Art"
+author: "TheProxy"
+category: misc
+description: This mysterious art gallery piece might contain some hidden messages, but i cant figure it out... \r\n\r\nFlag is in format SCC{word1_word2_word3_word4}
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{d3c0d1n6_m3554635_15_b34u71ful}
+tags:
+    - scc2024-warmup
+files:
+    - ./public/art.png

@@ -1,0 +1,16 @@
+name: "Whack A Mole 2"
+author: "mirko"
+category: crypto
+description: I have 5 moles in my backyard. They use a specific pattern to choose which hole to appear in. Sadly, there are too many holes to guess. Can you help me identify their pattern? If successful, I will reward you with a flag.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{202420242024202420242024}
+tags:
+    - scc2024-warmup

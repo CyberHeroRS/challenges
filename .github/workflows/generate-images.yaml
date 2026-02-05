@@ -1,0 +1,15 @@
+name: Generate Playground Images
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch: {}
+
+jobs:
+  scc2024-warmup-generate:
+    uses: ./.github/workflows/scc2024-warmup/build-images.yaml
+
+  scc2024-warmup-push:
+    needs: scc2024-warmup-generate
+    uses: ./.github/workflows/scc2024-warmup/push-challenges.yaml

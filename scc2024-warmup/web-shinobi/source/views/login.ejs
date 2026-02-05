@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Powered by Shinobi, http://shinobi.video -->
+    <title>Shinobi</title>
+
+
+    <meta charset="utf-8">
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="Shinobi, Open Source CCTV Technology">
+    <meta name="author" content="Moe Alam of Shinobi Systems">
+
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="assets/vendor/bootstrap5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap5-theme.css">
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/gradients.css">
+    <link rel="stylesheet" href="assets/css/bs5.darktheme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link rel="icon" href="libs/img/icon/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="libs/img/icon/favicon.ico" type="image/x-icon" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Shinobi">
+    <link rel="apple-touch-icon" href="libs/img/icon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="libs/img/icon/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="libs/img/icon/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="libs/img/icon/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="libs/img/icon/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="libs/img/icon/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="libs/img/icon/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="libs/img/icon/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="196x196" href="libs/img/icon/favicon-196x196.png" />
+
+    <script src="assets/vendor/js/jquery.min.js"></script>
+    <script src="assets/vendor/js/jquery-ui.min.js"></script>
+    <script src="assets/vendor/js/jquery.serialize.js"></script>
+    <meta name="google-signin-client_id" content="">
+</head>
+
+
+<body>
+    <div id="page-contents" class="display-table full-height">
+        <div class="shinobi-bg-shade bg-gradient-green">
+            <div class="d-flex flex-row full-height">
+                <div class="col-0 col-lg-8"
+                    style="background-image:url(assets/img/splash.avif);background-size: cover;opacity: 0.2;">
+
+                </div>
+                <div class="col-12 col-lg-4 vertical-center" style="background:rgba(0,0,0,0.8)">
+                    <div style="flex:1" class="p-4">
+                        <!-- Logo/Header -->
+                        <div>
+
+                            <div class="text-center p-2">
+                                <a href="https://shinobi.video" target="_blank">
+                                    <img src="libs/img/icon/apple-touch-icon-76x76.png" style="border-radius:50%">
+                                </a>
+                            </div>
+
+                        </div>
+                        <!-- Logo/Header END -->
+                        <!-- Card -->
+                        <div class="text-white">
+                            <div class="text-center">
+                                <h4 class="mt-3 mb-2 text-white" style="font-weight:normal">Welcome!</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row dark">
+                                    <form id="login-form" method="post" style="display: block;margin:0">
+                                        <input type="hidden" name="machineID" id="machineID" value="">
+
+                                        <% if (error) { %>
+                                            <div class="form-group text-center monospace" id="login-message">
+                                                <%= error %>
+                                            </div>
+                                            <% } %>
+
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input type="text" name="mail" id="email" tabindex="1" autofocus
+                                                        class="form-control wide-text" placeholder="Email" value="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Password</label>
+                                                    <input type="password" name="pass" id="pass" tabindex="2"
+                                                        class="form-control wide-text" placeholder="Password">
+                                                </div>
+
+                                                <div class="form-group f_i_input f_i_">
+                                                    <label>Landing Page</label>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <select class="form-control wide-text" name="function">
+
+                                                                <option value="super">Superuser</option>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Authenticate</label>
+                                                    <select class="form-control wide-text" name="alternateLogin"
+                                                        selector="f_i">
+                                                        <option value="" selected>Default</option>
+                                                    </select>
+                                                    <input style="display:none" name="alternateLoginToken"
+                                                        class="form-control wide-text" placeholder="Group Key">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="mb-0">
+                                                        <input class="mt-1 mr-1" type="checkbox" id="remember_me"
+                                                            value="1" name="remember">
+                                                        <span class="text-white">Remember Me</span>
+                                                    </label>
+                                                </div>
+                                                <div class="form-group mt-4">
+                                                    <button type="submit" name="login-submit" id="login-submit"
+                                                        tabindex="4" class="btn btn-success btn-block wide-text"
+                                                        style="color:#FFF">Login</button>
+                                                </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card END -->
+                        <div class="my-5"></div>
+                        <div class="form-group mb-0 text-center">
+
+                            <a class="mr-2 social-link btn btn-primary bg-none text-white" target="_blank"
+                                href="https://shinobi.video">
+                                <div class="d-flex flex-row full-height">
+                                    <div class="vertical-center full-height" style="flex: 1">
+                                        <i class="fa fa-home"></i>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a class="mr-2 social-link btn btn-primary bg-none text-white" target="_blank"
+                                href="https://www.facebook.com/ShinobiCCTV">
+                                <div class="d-flex flex-row full-height">
+                                    <div class="vertical-center full-height" style="flex: 1">
+                                        <i class="fa fa-facebook"></i>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a class="mr-2 social-link btn btn-primary bg-none text-white" target="_blank"
+                                href="https://twitter.com/ShinobiCCTV">
+                                <div class="d-flex flex-row full-height">
+                                    <div class="vertical-center full-height" style="flex: 1">
+                                        <i class="fa fa-twitter"></i>
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a class="mr-2 social-link btn btn-primary bg-none text-white" target="_blank"
+                                href="https://www.youtube.com/channel/UCbgbBLTK-koTyjOmOxA9msQ">
+                                <div class="d-flex flex-row full-height">
+                                    <div class="vertical-center full-height" style="flex: 1">
+                                        <i class="fa fa-youtube"></i>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                        <!-- Powered By Shinobi -->
+                        <div class="mt-4"></div>
+                        <div class="text-center text-white monospace mt-2">
+                            <small>
+
+                                <p>Powered by Shinobi.Systems</p>
+
+                            </small>
+                        </div>
+                        <!-- Powered By Shinobi END -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var googleSignIn = false;
+
+</script>
+<script src="assets/js/bs5.login.js"></script>
+
+</html>

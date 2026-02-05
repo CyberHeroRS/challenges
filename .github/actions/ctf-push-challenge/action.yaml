@@ -1,0 +1,54 @@
+name: ctf push challenge
+description: "Publish one challenge directory (containing challenge.yml) to CTFd via ctfcli, reading token from Vault."
+
+inputs:
+  challenge_dir:
+    description: "Directory containing challenge.yml"
+    required: true
+
+  ctfd_url:
+    description: "Base URL of the CTFd instance"
+    required: false
+    default: "http://ctfd.ctf-playground"
+
+  ctfcli_version:
+    description: "Pinned ctfcli version"
+    required: false
+    default: "0.1.6"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install ctfcli
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install "ctfcli==${{ inputs.ctfcli_version }}"
+
+    - name: Read CTFd token from Vault
+      id: vault
+      uses: hashicorp/vault-action@v3
+      with:
+        url: http://vault.vault:8200
+        method: kubernetes
+        kubernetesTokenPath: /var/run/secrets/vault/token
+        role: arc-github-actions-cyberhero-runner
+        secrets: |
+          cluster/ctf-playground/token token | CTFD_TOKEN
+
+    - name: Publish challenge (sync, fallback to install)
+      shell: bash
+      env:
+        CTFD_URL: ${{ inputs.ctfd_url }}
+        CTFD_TOKEN: ${{ steps.vault.outputs.CTFD_TOKEN }}
+      run: |
+        set -euo pipefail
+        printf '%s\n%s\ny\n' "$CTFD_URL" "$CTFD_TOKEN" | ctf ini
+        if ! ctf challenge sync "${{ inputs.challenge_dir }}"; then
+          ctf challenge install "${{ inputs.challenge_dir }}"
+        fi

