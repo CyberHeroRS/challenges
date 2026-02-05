@@ -1,0 +1,22 @@
+name: "Waffles"
+author: "jvvan"
+attribution: "jvvan"
+category: web
+description: "I created a gallery of my favorite waffles. Hmm, one image doesn't seem to be loading."
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "http://waffles.quals.scc2025.ctf.rs:9113/"
+flags:
+    - SCC{h0w_d1d_y0u_8yp455_my_w4ffl3_w4f?_175_m4d3_1n_ru57}
+tags:
+    - scc2025-quals
+    - easy
+files:
+    - ./web-waffles.zip
+# requirements:
+#     - "Sanity Check"

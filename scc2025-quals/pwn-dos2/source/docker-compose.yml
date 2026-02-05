@@ -1,0 +1,10 @@
+services:
+  dos2:
+    build: .
+    restart: unless-stopped
+    init: true
+    privileged: true
+    ports:
+      - "9199:9199"
+    environment:
+      - "FLAG=SCC{fake_flag}"

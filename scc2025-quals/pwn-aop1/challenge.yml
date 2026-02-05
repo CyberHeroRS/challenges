@@ -1,0 +1,22 @@
+name: "Adventures of Pwnzor 1"
+author: "Lazar Mancic"
+attribution: "Lazar Mancic"
+category: pwn
+description: Embark on a journey through the perilous Stack Forest, battling memory-corrupting creatures and exploiting vulnerabilities to claim the ultimate treasure.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc aop1.quals.scc2025.ctf.rs 9102
+flags:
+    - SCC{h3r0_0v3rfl0w3d_7h47_60ld}
+tags:
+    - scc2025-quals
+    - easy
+files:
+    - ./pwn-aop1.zip
+# requirements:
+#     - "Sanity Check"

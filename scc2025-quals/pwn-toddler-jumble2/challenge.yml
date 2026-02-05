@@ -1,0 +1,22 @@
+name: "Toddler Jumble 2"
+author: "k4"
+attribution: "k4"
+category: pwn
+description: pwning from the womb
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc toddler-jumble2.quals.scc2025.ctf.rs 9106
+flags:
+    - SCC{when_you_were_little_you_played_with_chunks_instead_of_legos}
+tags:
+    - scc2025-quals
+    - hard
+files:
+    - ./pwn-toddler-jumble2.zip
+# requirements:
+#     - "Sanity Check"

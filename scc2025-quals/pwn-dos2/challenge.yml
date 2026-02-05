@@ -1,0 +1,22 @@
+name: "DOS2: The Overwritten Mind"
+author: "Vucko"
+attribution: "Vucko"
+category: pwn
+description: "Hidden within a fragile legacy program, a variable sits in wait. It was once a beacon of logic and structure, but time has corroded its defenses. A slight alteration could be the key to unlocking its hidden potential. If you can overwrite the right value, the program will bend to your will — but be careful, for this system will only tolerate so much before it collapses under the pressure."
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc dos2.quals.scc2025.ctf.rs 9108
+flags:
+    - SCC{0v3rwrit3n_c0d3_m4nipul4t0r}
+tags:
+    - scc2025-quals
+    - medium
+files:
+    - ./pwn-dos2.zip
+# requirements:
+#     - "Sanity Check"

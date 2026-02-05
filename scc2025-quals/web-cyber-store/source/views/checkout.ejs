@@ -1,0 +1,38 @@
+<h1>Checkout</h1>
+<div class="row">
+    <div class="col-md-8">
+        <form action="/order" method="POST">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Address</label>
+                <textarea class="form-control" name="address" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Complete Order</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Order Summary</h5>
+                <% cart.forEach(item => { %>
+                    <div class="d-flex justify-content-between">
+                        <span><%= item.name %></span>
+                        <span>$<%= item.price %></span>
+                    </div>
+                <% }) %>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <strong>Total:</strong>
+                    <strong>$<%= total %></strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

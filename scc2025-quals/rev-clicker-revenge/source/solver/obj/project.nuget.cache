@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "xFyMYm9/Cso=",
+  "success": true,
+  "projectFilePath": "/home/user/Sources/cyberhero/scc2025-quals/rev-clicker-revenge/source/solver/solver.csproj",
+  "expectedPackageFiles": [
+    "/home/user/.nuget/packages/microsoft.netcore.app.ref/8.0.14/microsoft.netcore.app.ref.8.0.14.nupkg.sha512",
+    "/home/user/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.14/microsoft.aspnetcore.app.ref.8.0.14.nupkg.sha512",
+    "/home/user/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.14/microsoft.netcore.app.host.linux-x64.8.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

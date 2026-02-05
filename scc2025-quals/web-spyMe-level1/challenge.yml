@@ -1,0 +1,22 @@
+name: "SpyMe Level 1"
+author: "DreyAnd"
+attribution: "DreyAnd"
+category: web
+description: A secret espionage operation is unfolding in the Balkans, aiming to influence regional governments. We've gained access to their internal platform. Can you infiltrate their system and retrieve information from the spies' accounts?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "https://spy-me.quals.scc2025.ctf.rs/"
+flags:
+    - SCC{th0s3_g0dd4Mn_S3rbS!}
+tags:
+    - scc2025-quals
+    - easy
+files:
+    - ./web-spyMe.zip
+# requirements:
+#     - "Sanity Check"

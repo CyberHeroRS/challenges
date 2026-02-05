@@ -1,0 +1,22 @@
+name: "GrafijaGuesser 8"
+author: "Gordic"
+attribution: "Gordic"
+category: osint
+description: "Last year, Team Serbia attended a secret bootcamp to learn new skills. At the event, CyberHero snapped some mysterious photos. Now, he wants to return but can't remember where the photo was taken. The only thing he remembers is that location was in 2km radius from their hotel. Can you help him find the hidden location? Enter the flag in the format SCC{XX.XXX,YY.YYY}."
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: 
+flags:
+    - SCC{48.218,16.396}
+tags:
+    - scc2025-quals
+    - hard
+files:
+    - ./public/image.jpg
+# requirements:
+#     - "Sanity Check"

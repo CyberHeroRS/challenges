@@ -1,0 +1,7 @@
+services:
+  challenge:
+    build: .
+    ports: 
+      - 9113:9113
+    environment:
+      - FLAG=SCC{example_flag}

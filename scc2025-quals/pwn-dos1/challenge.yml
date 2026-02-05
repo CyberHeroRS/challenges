@@ -1,0 +1,22 @@
+name: "DOS1: Overflowing Shadows"
+author: "Vucko"
+attribution: "Vucko"
+category: pwn
+description: "A forgotten program, still lingering in the depths of a DOS system, silently accepts input with no questions asked. What could go wrong with a simple string? Little did its creators know that a single careless input could unravel everything. The system has one job: handle the input. But can it handle what you’ve got in store?"
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc dos1.quals.scc2025.ctf.rs 9107
+flags:
+    - SCC{buff3r_0v3rfl0w_n1ghtmare}
+tags:
+    - scc2025-quals
+    - easy
+files:
+    - ./pwn-dos1.zip
+# requirements:
+#     - "Sanity Check"

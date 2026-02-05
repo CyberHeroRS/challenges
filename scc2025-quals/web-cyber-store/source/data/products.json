@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "404 Page Found Exploit",
+      "price": 404.04,
+      "description": "Finally find those missing pages! Results may vary."
+    },
+    {
+      "id": 2,
+      "name": "Coffee Machine RCE",
+      "price": 133.37,
+      "description": "Remote code execution for coffee machines. Make coffee from anywhere!"
+    },
+    {
+      "id": 3,
+      "name": "Smart Fridge Backdoor",
+      "price": 299.99,
+      "description": "Access your refrigerator's secret ice cream compartment"
+    },
+    {
+      "id": 4,
+      "name": "Printer Queue Skip",
+      "price": 42.42,
+      "description": "Jump to the front of the office printer queue. Use responsibly!"
+    },
+    {
+      "id": 5,
+      "name": "USB Rubber Ducky",
+      "price": 256.00,
+      "description": "Teaches your computer to quack. May cause unexpected duck-typing"
+    }
+  ]
+}

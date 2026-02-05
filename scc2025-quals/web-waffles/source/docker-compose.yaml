@@ -1,0 +1,11 @@
+services:
+  waf:
+    build: waf/
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+  waffles:
+    build: waffles/
+    restart: unless-stopped
+    environment:
+      - "FLAG=SCC{fake_flag}"

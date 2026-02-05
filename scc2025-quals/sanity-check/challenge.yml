@@ -1,0 +1,13 @@
+name: "Sanity Check"
+author: "CyberHero"
+attribution: "CyberHero"
+category: sanity-check
+description: "Make sure to read the rules on our discord server. Good luck and have fun! :)"
+value: 1
+type: standard
+connection_info: "https://discord.gg/thcyEdrBwG"
+flags:
+    - SCC{pump4m_pump4m_5v4k1_d4n_fl46_m1_n1j3_574nc0v4n}
+tags:
+    - scc2025-quals
+    - easy

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .receipt { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .items { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .items th, .items td { padding: 10px; border-bottom: 1px solid #ddd; }
+        .total { text-align: right; margin-top: 20px; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="header">
+            <h1>The Cyber Store</h1>
+            <p>Order Receipt</p>
+            <p>Date: <%= new Date().toLocaleDateString() %></p>
+        </div>
+
+        <div class="customer-info">
+            <p><strong>Customer Name:</strong> <%= orderDetails.name %></p>
+            <p><strong>Email:</strong> <%= orderDetails.email %></p>
+            <p><strong>Shipping Address:</strong> <%= orderDetails.address %></p>
+        </div>
+
+        <table class="items">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% cart.forEach(item => { %>
+                <tr>
+                    <td><%- item.name %></td>
+                    <td>$<%- item.price.toFixed(2) %></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+
+        <div class="total">
+            <h3>Total: $<%= total %></h3>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for shopping at The Cyber Store!</p>
+            <p>Order ID: <%= orderId %></p>
+        </div>
+    </div>
+</body>
+</html>

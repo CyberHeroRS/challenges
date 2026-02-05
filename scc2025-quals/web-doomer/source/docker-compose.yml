@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=development
+      - SESSION_SECRET=your_secret_key_here
+      - DB_HOST=mysql
+      - DB_USER=doomer
+      - DB_PASSWORD=doomer_password
+      - DB_NAME=doomer_db
+      - FLAG=SCC{fakeflag}
+      - ADMIN_PASSWORD=your_admin_password_here
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    ports:
+      - "3000:3000"
+    environment:
+      - ADMIN_PASSWORD=your_admin_password_here
+      - APP_URL=http://web:1337
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    environment:
+      - MYSQL_DATABASE=doomer_db
+      - MYSQL_USER=doomer
+      - MYSQL_PASSWORD=doomer_password
+      - MYSQL_ROOT_PASSWORD=root_password
+      - ADMIN_PASSWORD=your_admin_password_here
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "doomer", "--password=doomer_password"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  mysql_data: 

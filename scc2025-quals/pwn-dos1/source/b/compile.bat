@@ -1,0 +1,1 @@
+bcc -IA:\include -LA:\lib -v -O- main1.cpp

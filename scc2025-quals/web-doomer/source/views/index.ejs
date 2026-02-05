@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem;
+            background-color: #111;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            margin-left: 1rem;
+            flex: 1;
+            text-align: center;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-right: 1rem;
+            min-width: 180px;
+            align-items: center;
+        }
+
+        .auth-buttons .username {
+            display: flex;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: #1DA1F2;
+            border: 1px solid #1DA1F2;
+        }
+
+        .btn-login:hover {
+            background-color: rgba(29, 161, 242, 0.1);
+        }
+
+        .btn-signup {
+            background-color: #1DA1F2;
+            color: white;
+        }
+
+        .btn-signup:hover {
+            background-color: #1a91da;
+        }
+
+        .content {
+            padding: 1rem;
+            max-width: 600px;
+            margin: 80px auto 0 auto;
+        }
+
+        .post {
+            background-color: #111;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #333;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .username {
+            color: #1DA1F2;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .username:hover {
+            text-decoration: underline;
+        }
+
+        .likes {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .likes:hover {
+            color: #ff4444;
+            cursor: pointer;
+        }
+
+        .post-content {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            word-break: break-word;
+        }
+
+        .post-content a {
+            color: #1DA1F2;
+            text-decoration: none;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .post-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+
+        .post-footer {
+            display: flex;
+            align-items: center;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        #post-container {
+            min-height: 100vh;
+        }
+
+        .report-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .report-button:hover {
+            background-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        .report-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+        }
+
+        .report-modal-content {
+            position: relative;
+            background-color: #111;
+            margin: 15% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            border: 1px solid #333;
+            text-align: center;
+            color: #fff;
+        }
+
+        .report-modal h2 {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .report-modal input {
+            width: 100%;
+            background-color: #000;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 0.75rem;
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-modal input:focus {
+            outline: none;
+            border-color: #1DA1F2;
+        }
+
+        .report-modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .report-modal-button {
+            background-color: #1DA1F2;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .report-modal-button.cancel {
+            background-color: #444;
+        }
+
+        .report-modal-button:hover {
+            background-color: #1a91da;
+        }
+
+        .report-modal-button.cancel:hover {
+            background-color: #555;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: #666;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div style="width: 180px"></div>
+        <div class="logo">
+            <h1><%= title %></h1>
+        </div>
+        <div class="auth-buttons">
+            <% if (locals.user) { %>
+                <a href="/users/@<%= user.username %>" class="username">@<%= user.username %></a>
+                <a href="/logout" class="btn btn-login">Logout</a>
+            <% } else { %>
+                <a href="/login" class="btn btn-login">Log in</a>
+                <a href="/register" class="btn btn-signup">Sign up</a>
+            <% } %>
+        </div>
+    </div>
+    
+    <button class="report-button" onclick="openReportModal()">Report Issues</button>
+
+    <div class="content">
+        <div id="post-container">
+            <% posts.forEach(post => { %>
+                <div class="post">
+                    <div class="post-header">
+                        <a href="/users/@<%= post.username %>" class="username">@<%= post.username %></a>
+                        <div class="likes">
+                            ❤️ <%= post.likes.toLocaleString() %>
+                        </div>
+                    </div>
+                    <div class="post-content" data-content="<%= post.content %>">
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <div class="loading">Loading more doom...</div>
+    </div>
+
+    <!-- Report Modal -->
+    <div id="reportModal" class="report-modal">
+        <div class="report-modal-content">
+            <span class="close-modal" onclick="closeReportModal()">&times;</span>
+            <h2>Report an Issue</h2>
+            <input type="text" id="reportUrl" placeholder="Enter the URL to report" value="http://web:1337/">
+            <div class="report-modal-buttons">
+                <button class="report-modal-button cancel" onclick="closeReportModal()">Cancel</button>
+                <button class="report-modal-button" onclick="submitReport()">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.post-content').forEach(content => {
+            content.innerHTML = DOMPurify.sanitize(content.dataset.content, {
+                ALLOWED_TAGS: [
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'ul', 'ol', 'li', 'br', 'i', 'b'
+                ],
+                ALLOWED_ATTR: ['']
+            });
+        });
+
+        const posts = [
+            {
+                id: 1,
+                username: "anxiety_queen",
+                content: "Just spent 5 hours scrolling... help <a href='#'>🆘</a>",
+                likes: 2453
+            },
+            {
+                id: 2,
+                username: "midnight_scroller",
+                content: "Can't sleep, might as well keep scrolling...",
+                likes: 1897
+            },
+            {
+                id: 3,
+                username: "doom_enthusiast",
+                content: "Another day, another endless scroll 🌀 <br><a href='#void'>#void</a>",
+                likes: 3211
+            },
+            {
+                id: 4,
+                username: "digital_void",
+                content: "The algorithm knows me better than I know myself 👁️ <br><i>we're all just data now</i>",
+                likes: 4521
+            },
+            {
+                id: 5,
+                username: "scroll_walker",
+                content: "Lost in the infinite feed, send help 📱<br><br><b>error 404:</b> peace of mind not found",
+                likes: 2876
+            }
+        ];
+        
+        const postContainer = document.getElementById('post-container');
+        let isLoading = false;
+        let lastId = 5;
+
+        function createPostElement(post) {
+            const div = document.createElement('div');
+            div.className = 'post';
+            div.innerHTML = `
+                <div class="post-header">
+                    <a href="/users/@${post.username}" class="username">@${post.username}</a>
+                    <div class="likes">
+                        ❤️ ${post.likes.toLocaleString()}
+                    </div>
+                </div>
+            `;
+            const content = document.createElement('div');
+            content.className = 'post-content';
+            content.innerHTML = DOMPurify.sanitize(post.content, {
+                ALLOWED_TAGS: [
+                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em', 'ul', 'ol', 'li'
+                ],
+                ALLOWED_ATTRS: ['']
+            });
+            div.appendChild(content);
+            return div;
+        }
+
+        function loadMorePosts() {
+            if (isLoading) return;
+            isLoading = true;
+
+            setTimeout(() => {
+                try {
+                    for (let i = 0; i < 3; i++) {
+                        const randomPost = posts[Math.floor(Math.random() * posts.length)];
+                        const newPost = {
+                            ...randomPost,
+                            id: ++lastId,
+                            likes: Math.floor(Math.random() * 5000) + 100
+                        };
+                        postContainer.appendChild(createPostElement(newPost));
+                    }
+                } finally {
+                    isLoading = false;
+                }
+            }, 300);
+        }
+
+        window.addEventListener('scroll', () => {
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+            
+            if (!isLoading && scrollTop + clientHeight >= scrollHeight - 300) {
+                loadMorePosts();
+            }
+        });
+
+        loadMorePosts();
+
+        function openReportModal() {
+            document.getElementById('reportModal').style.display = 'block';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        async function submitReport() {
+            const url = document.getElementById('reportUrl').value;
+            
+            try {
+                const response = await fetch('/api/report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Thank you for your report! Our admin will review it shortly.');
+                    closeReportModal();
+                } else {
+                    alert(data.error || 'Failed to submit report');
+                }
+            } catch (error) {
+                console.error('Error submitting report:', error);
+                alert('Failed to submit report');
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('reportModal');
+            if (event.target === modal) {
+                closeReportModal();
+            }
+        }
+    </script>
+</body>
+</html> 

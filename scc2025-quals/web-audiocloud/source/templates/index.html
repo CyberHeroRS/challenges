@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AudioCloud</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">AudioCloud</h1>
+
+        <div class="box">
+          <form method="POST" enctype="multipart/form-data">
+            <div class="field">
+              <label class="label">Song Name</label>
+              <div class="control">
+                <input class="input" type="text" name="name" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">MP3 File</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="file"
+                  name="file"
+                  accept=".mp3"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary" type="submit">Upload</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="box">
+          <h2 class="subtitle">Your Songs</h2>
+          {% if songs %} {% for song in songs %}
+          <div class="columns is-vcentered">
+            <div class="column">
+              <p>{{ song.name }}</p>
+            </div>
+            <div class="column is-narrow">
+              <audio controls>
+                <source
+                  src="/play_file?name={{ song.id }}.mp3"
+                  type="audio/mpeg"
+                />
+              </audio>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <p>No songs uploaded yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

