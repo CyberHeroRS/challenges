@@ -1,0 +1,19 @@
+name: "SpyMe Level 1"
+author: "kodz"
+category: web
+description: A secret espionage operation is unfolding in the Balkans, aiming to influence regional governments. We've gained access to their internal platform. Can you infiltrate their system and retrieve information from the spies' accounts?
+value: 500
+type: dynamic
+state: hidden
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "TBD"
+flags:
+    - SCC{th0s3_g0dd4Mn_S3rbS!}
+tags:
+    - scc2025-warmup
+files:
+    - ./web_spyMe.zip

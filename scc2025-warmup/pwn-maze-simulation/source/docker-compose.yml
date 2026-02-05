@@ -1,0 +1,10 @@
+services:
+  maze_simulation:
+    build: .
+    restart: unless-stopped
+    init: true
+    privileged: true
+    ports:
+      - "1337:1337"
+    environment:
+      - "FLAG=SCC{fake_flag_for_testing}"

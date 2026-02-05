@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "1312:1312"
+    environment:
+      FLAG: "SCC{DUMMY_FLAG_ENV}"
+    volumes:
+      - .:/app
+      - /app/node_modules  
+    command: ["node", "src/app.js"]

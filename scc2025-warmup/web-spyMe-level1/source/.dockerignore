@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+*/node_modules
+
+# Build artifacts
+views/build
+views/dist
+
+# Development files
+.git
+.gitignore
+.env
+*.log
+npm-debug.log*
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Other unnecessary files
+README.md
+.DS_Store
+*.md 

@@ -1,0 +1,113 @@
+name: SCC 2025 warmup - Generate Images
+
+on:
+  workflow_call:
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: github-actions-cyberhero
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: cry-cards-act-ii
+            context: scc2025-warmup/cry-cards-act-ii/source
+            dockerfile: scc2025-warmup/cry-cards-act-ii/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/cry-cards-act-ii
+
+          - name: misc-secpwdgen
+            context: scc2025-warmup/misc-secpwdgen/source
+            dockerfile: scc2025-warmup/misc-secpwdgen/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/misc-secpwdgen
+
+          - name: pwn-beus-level1
+            context: scc2025-warmup/pwn-beus-level1/source
+            dockerfile: scc2025-warmup/pwn-beus-level1/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/pwn-beus-level1
+
+          - name: pwn-beus-level2
+            context: scc2025-warmup/pwn-beus-level2/source
+            dockerfile: scc2025-warmup/pwn-beus-level2/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/pwn-beus-level2
+
+          - name: pwn-cards
+            context: scc2025-warmup/pwn-cards/source
+            dockerfile: scc2025-warmup/pwn-cards/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/pwn-cards
+
+          - name: pwn-fancy-restaurant
+            context: scc2025-warmup/pwn-fancy-restaurant/source
+            dockerfile: scc2025-warmup/pwn-fancy-restaurant/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/pwn-fancy-restaurant
+
+          - name: pwn-maze-simulation
+            context: scc2025-warmup/pwn-maze-simulation/source
+            dockerfile: scc2025-warmup/pwn-maze-simulation/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/pwn-maze-simulation
+
+          - name: web-im-a-spy-ama
+            context: scc2025-warmup/web-im-a-spy-ama/source
+            dockerfile: scc2025-warmup/web-im-a-spy-ama/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/web-im-a-spy-ama
+
+          - name: web-len5
+            context: scc2025-warmup/web-len5/source
+            dockerfile: scc2025-warmup/web-len5/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/web-len5
+
+          - name: web-pill-challenge
+            context: scc2025-warmup/web-pill-challenge/source
+            dockerfile: scc2025-warmup/web-pill-challenge/source/Dockerfile
+            image: registry.ctf.rs/scc2025-warmup/web-pill-challenge
+
+          # ---- multi-image challenges ----
+
+          - name: web-croSS-app
+            context: scc2025-warmup/web-croSS/source
+            dockerfile: scc2025-warmup/web-croSS/source/Dockerfile.app
+            image: registry.ctf.rs/scc2025-warmup/web-croSS-app
+
+          - name: web-croSS-bot
+            context: scc2025-warmup/web-croSS/source
+            dockerfile: scc2025-warmup/web-croSS/source/Dockerfile.bot
+            image: registry.ctf.rs/scc2025-warmup/web-croSS-bot
+
+          - name: web-flag-the-query-app
+            context: scc2025-warmup/web-flag-the-query/source
+            dockerfile: scc2025-warmup/web-flag-the-query/source/Dockerfile.app
+            image: registry.ctf.rs/scc2025-warmup/web-flag-the-query-app
+
+          - name: web-flag-the-query-db
+            context: scc2025-warmup/web-flag-the-query/source
+            dockerfile: scc2025-warmup/web-flag-the-query/source/Dockerfile.db
+            image: registry.ctf.rs/scc2025-warmup/web-flag-the-query-db
+
+          - name: web-spyMe-level1-web
+            context: scc2025-warmup/web-spyMe-level1/source
+            dockerfile: scc2025-warmup/web-spyMe-level1/source/Dockerfile.web
+            image: registry.ctf.rs/scc2025-warmup/web-spyMe-level1-web
+
+          - name: web-spyMe-level1-bot
+            context: scc2025-warmup/web-spyMe-level1/source
+            dockerfile: scc2025-warmup/web-spyMe-level1/source/Dockerfile.bot
+            image: registry.ctf.rs/scc2025-warmup/web-spyMe-level1-bot
+
+          - name: web-spyMe-level1-db
+            context: scc2025-warmup/web-spyMe-level1/source
+            dockerfile: scc2025-warmup/web-spyMe-level1/source/Dockerfile.db
+            image: registry.ctf.rs/scc2025-warmup/web-spyMe-level1-db
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & push image
+        uses: ./.github/actions/ctf-build-and-push-image
+        with:
+          context: ${{ matrix.context }}
+          dockerfile: ${{ matrix.dockerfile }}
+          tags: |
+            ${{ matrix.image }}:${{ github.ref_name }}
+            ${{ matrix.image }}:latest

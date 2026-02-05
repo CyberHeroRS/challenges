@@ -1,0 +1,7 @@
+FROM mongo:8.0.5
+
+ENV MONGO_INITDB_ROOT_USERNAME=adminn
+ENV MONGO_INITDB_ROOT_PASSWORD=verysecure
+ENV MONGO_INITDB_DATABASE=scc_books_challenge
+
+COPY mongo-init.js /docker-entrypoint-initdb.d/mongo-init.js

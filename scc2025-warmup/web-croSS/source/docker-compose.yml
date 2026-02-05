@@ -1,0 +1,17 @@
+services:
+  web-cross-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    #network_mode: "host"
+    ports:
+      - "1213:1213"
+  web-cross-bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    #network_mode: "host"
+    ports:
+      - "4000:4000"
+    environment:
+      FLAG: "SCC{DUMMY_FLAG_ENV}"

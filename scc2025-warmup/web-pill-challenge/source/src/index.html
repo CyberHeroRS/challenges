@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pill Challenge</title>
+    <style>
+      body {
+        background-color: #111;
+        color: #eee;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        margin-top: 20px;
+      }
+      p {
+        margin: 20px auto;
+        max-width: 600px;
+        line-height: 1.5;
+      }
+      button {
+        margin: 10px;
+        padding: 10px 20px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .red {
+        background-color: red;
+        color: white;
+      }
+      .blue {
+        background-color: blue;
+        color: white;
+      }
+      .start {
+        background-color: green;
+        color: white;
+      }
+      .message {
+        margin: 20px;
+        font-size: 1.2em;
+        min-height: 1.5em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pill Challenge</h1>
+      <p>
+        You got captured by a criminal mastermind. He offers you a red pill and
+        a blue pill. To earn your freedom, you must correctly guess the right
+        pill <strong>100 times in a row</strong>.
+      </p>
+      <button id="startBtn" class="start">Start Game</button>
+      <div id="guessButtons" style="display: none">
+        <button id="redBtn" class="red">Red Pill</button>
+        <button id="blueBtn" class="blue">Blue Pill</button>
+      </div>
+      <div class="message" id="messageArea"></div>
+    </div>
+    <script>
+      (function () {
+        var sessionId = null;
+
+        function updateSessionId(response) {
+          var newId = response.headers.get("x-session-id");
+          if (newId) {
+            sessionId = newId;
+          }
+        }
+
+        function setMessage(msg) {
+          document.getElementById("messageArea").innerText = msg;
+        }
+
+        function startGame() {
+          fetch("/start", {
+            method: "POST",
+            headers: sessionId ? { "x-session-id": sessionId } : {},
+          })
+            .then(function (response) {
+              updateSessionId(response);
+              return response.text();
+            })
+            .then(function (text) {
+              setMessage("Game started. Make your first guess!");
+              document.getElementById("guessButtons").style.display = "block";
+            })
+            .catch(function (error) {
+              setMessage("Error starting game.");
+              console.error(error);
+            });
+        }
+
+        function guess(pill) {
+          fetch("/guess", {
+            method: "POST",
+            headers: Object.assign(
+              { "Content-Type": "text/plain" },
+              sessionId ? { "x-session-id": sessionId } : {}
+            ),
+            body: pill,
+          })
+            .then(function (response) {
+              updateSessionId(response);
+              return response.text();
+            })
+            .then(function (text) {
+              setMessage(text);
+              checkStatus();
+            })
+            .catch(function (error) {
+              setMessage("Error making guess.");
+              console.error(error);
+            });
+        }
+
+        function checkStatus() {
+          fetch("/status", {
+            method: "GET",
+            headers: sessionId ? { "x-session-id": sessionId } : {},
+          })
+            .then(function (response) {
+              updateSessionId(response);
+              return response.text();
+            })
+            .then(function (text) {
+              setMessage(text);
+            })
+            .catch(function (error) {
+              setMessage("Error checking status.");
+              console.error(error);
+            });
+        }
+
+        document
+          .getElementById("startBtn")
+          .addEventListener("click", startGame);
+        document
+          .getElementById("redBtn")
+          .addEventListener("click", function () {
+            guess("red");
+          });
+        document
+          .getElementById("blueBtn")
+          .addEventListener("click", function () {
+            guess("blue");
+          });
+      })();
+    </script>
+  </body>
+</html>

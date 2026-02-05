@@ -1,0 +1,41 @@
+var dbs = process.env.MONGO_INITDB_DATABASE || "scc_books_challenge";
+db = db.getSiblingDB(dbs);
+
+if (db.books.countDocuments({}) === 0) {
+    print("Inserting dummy data into MongoDB...");
+
+    var dummyData =
+        [
+            { "title": "The Adventures of Tom Sawyer", "author": "Mark Twain", "year": 1876 },
+            { "title": "Dracula", "author": "Bram Stoker", "year": 1897 },
+            { "title": "Frankenstein", "author": "Mary Shelley", "year": 1818 },
+            { "title": "The Picture of Dorian Gray", "author": "Oscar Wilde", "year": 1890 },
+            { "title": "The Metamorphosis", "author": "Franz Kafka", "year": 1915 },
+            { "title": "The Stranger", "author": "Albert Camus", "year": 1942 },
+            { "title": "The Trial", "author": "Franz Kafka", "year": 1925 },
+            { "title": "Heart of Darkness", "author": "Joseph Conrad", "year": 1899 },
+            { "title": "The Sound and the Fury", "author": "William Faulkner", "year": 1929 },
+            { "title": "One Hundred Years of Solitude", "author": "Gabriel García Márquez", "year": 1967 },
+            { "title": "The Catch-22", "author": "Joseph Heller", "year": 1961 },
+            { "title": "Slaughterhouse-Five", "author": "Kurt Vonnegut", "year": 1969 },
+            { "title": "The Bell Jar", "author": "Sylvia Plath", "year": 1963 },
+            { "title": "Lolita", "author": "Vladimir Nabokov", "year": 1955 },
+            { "title": "Beloved", "author": "Toni Morrison", "year": 1987 },
+            { "title": "Invisible Man", "author": "Ralph Ellison", "year": 1952 },
+            { "title": "The Road", "author": "Cormac McCarthy", "year": 2006 },
+            { "title": "Life of Pi", "author": "Yann Martel", "year": 2001 },
+        ];
+
+    db.books.insertMany(dummyData);
+
+    var envFlag = process.env.FLAG || "SCC{dummy_flag}}";
+    db.books.insertMany([
+        { "flag": envFlag }
+    ]);
+
+    print(" Dummy data successfully inserted with dynamic flag! ");
+} else {
+    print(" Data already exists. Skipping insertion.");
+}
+
+print("MongoDB user & data setup completed.");

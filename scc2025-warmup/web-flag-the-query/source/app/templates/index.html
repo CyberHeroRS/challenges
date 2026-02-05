@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flag the Query - Library Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .ui.container {
+            margin-top: 50px;
+        }
+        pre {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+    <script>
+        function runQuery() {
+            const queryInput = document.getElementById('queryInput').value;
+            fetch('/query?search=' + encodeURIComponent(queryInput))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('executedQuery').innerText = "Error: " + data.error;
+                        document.getElementById('results').innerText = "";
+                    } else {
+                        document.getElementById('executedQuery').innerText = JSON.stringify(data.received_query, null, 2);
+                        document.getElementById('results').innerText = JSON.stringify(data.results, null, 2);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('executedQuery').innerText = "Error: " + error;
+                    document.getElementById('results').innerText = "";
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="ui container">
+        <h1 class="ui header">Flag the Query - Library Search</h1>
+        <p>Enter your search term:</p>
+        <div class="ui form">
+            <div class="field">
+                <label for="queryInput">Search:</label>
+                <input type="text" id="queryInput" class="ui input" placeholder='e.g., Adventures'>
+            </div>
+            <button class="ui primary button" onclick="runQuery()">Search</button>
+        </div>
+        <h2 class="ui header">Search Query:</h2>
+        <pre id="executedQuery"></pre>
+        <h2 class="ui header">Results:</h2>
+        <pre id="results"></pre>
+    </div>
+</body>
+</html>

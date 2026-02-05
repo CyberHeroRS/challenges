@@ -1,0 +1,18 @@
+name: "BEUS Level 2"
+author: "Lazar Mancic"
+category: pwn
+description: Congratulations, you passed Level 1, but are you ready for Level 2?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc beus-level2.warmup.scc2025.ctf.rs 9008
+flags:
+    - SCC{r34d1n6_w17h_r34d_15n'7_5m4r7_4f73r_4ll}
+tags:
+    - scc2025-warmup
+files:
+    - ./pwn_beus_level2.zip

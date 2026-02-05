@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    ports:
+      - "1331:1331"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://admin:verysecure@mongo:27017/scc_books_challenge?authSource=admin
+  mongo:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - "27017:27017"
+    environment:
+      - FLAG=SCC{fake_flag}
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=verysecure
+      - MONGO_INITDB_DATABASE=scc_books_challenge
+
+volumes:
+  mongo_data:

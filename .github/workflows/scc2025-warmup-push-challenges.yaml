@@ -1,0 +1,47 @@
+name: SCC 2025 warmup - Push Challenges
+
+on:
+  workflow_call:
+  workflow_dispatch: {}
+
+jobs:
+  push:
+    runs-on: github-actions-cyberhero
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: scc2025-warmup/cry-cards-act-ii
+          - dir: scc2025-warmup/cry-exponents
+          - dir: scc2025-warmup/cry-gods-and-monsters
+          - dir: scc2025-warmup/cry-lets-create-generators
+          - dir: scc2025-warmup/cry-lets-create-generators-again
+          - dir: scc2025-warmup/forensics-secret-archives
+          - dir: scc2025-warmup/misc-secpwdgen
+          - dir: scc2025-warmup/pwn-beus-level1
+          - dir: scc2025-warmup/pwn-beus-level2
+          - dir: scc2025-warmup/pwn-cards
+          - dir: scc2025-warmup/pwn-fancy-restaurant
+          - dir: scc2025-warmup/pwn-maze-simulation
+          - dir: scc2025-warmup/rev-encryptor
+          - dir: scc2025-warmup/rev-mamba
+          - dir: scc2025-warmup/rev-vault
+          - dir: scc2025-warmup/web-croSS
+          - dir: scc2025-warmup/web-flag-the-query
+          - dir: scc2025-warmup/web-im-a-spy-ama
+          - dir: scc2025-warmup/web-len5
+          - dir: scc2025-warmup/web-pill-challenge
+          - dir: scc2025-warmup/web-spyMe-level1
+          - dir: scc2025-warmup/web-spyMe-level2
+          - dir: scc2025-warmup/web-spyMe-level3
+          - dir: scc2025-warmup/welcome-hello-world
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Push challenge
+        uses: ./.github/actions/ctf-push-challenge
+        with:
+          challenge_dir: ${{ matrix.dir }}

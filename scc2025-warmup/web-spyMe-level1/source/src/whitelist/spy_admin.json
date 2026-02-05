@@ -1,0 +1,10 @@
+{
+    "username": "admin",
+    "first_name": "Gazda",
+    "last_name": "Gazdinovic",
+    "codename": "Director",
+    "specialization": "Administration",
+    "status": "Active",
+    "notes": "Head of Balkan Intelligence Bureau",
+    "is_allowed_spy": true
+} 
