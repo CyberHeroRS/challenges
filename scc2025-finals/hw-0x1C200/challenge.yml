@@ -1,0 +1,14 @@
+name: "0x1C200"
+author: "Stefan Jovanovic (Quarks Team)"
+attribution: "Stefan Jovanovic (Quarks Team)"
+category: hardware
+description: We can't talk over USB, we'll have to think of something else...
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+flags:
+    - SCC{un1v3rs4l_a5ynchr0n0us_tr4nsf3r_i5_th3_b35t}

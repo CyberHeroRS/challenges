@@ -1,0 +1,18 @@
+name: "marathon"
+author: "DragonSec SI"
+category: "rev"
+description: "Lemme give you the source too, cause this sure ain't gonna be a sprint."
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+flags:
+    - "SCC{sTiLL_fAsT3r_tH4n_pYtH0N}"
+tags: []
+files:
+    - "./files/chall"
+    - "./files/source.c"
+    - "./files/output.txt"

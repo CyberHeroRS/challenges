@@ -1,0 +1,8 @@
+/target
+*.aseprite
+.gdb_history
+src/maze.rs
+.venv
+challenge.yml
+*.tar.gz
+/dist

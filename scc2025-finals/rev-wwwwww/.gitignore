@@ -1,0 +1,7 @@
+/target
+*.aseprite
+.gdb_history
+src/arena.rs
+*.tar.gz
+.venv
+/dist

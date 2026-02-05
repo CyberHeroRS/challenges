@@ -1,0 +1,14 @@
+name: "Rusty ESPionage"
+author: "Stefan Jovanovic (Quarks Team)"
+attribution: "Stefan Jovanovic (Quarks Team)"
+category: hardware
+description: WE GOT IT! All we need for getting the fourth flag! Oh, wait... It's encrypted...
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+flags:
+    - SCC{g0ph3r_1n_th3_m4z3!}

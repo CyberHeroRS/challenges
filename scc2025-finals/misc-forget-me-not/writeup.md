@@ -1,0 +1,90 @@
+# Writeup Forget Me Not
+
+We are provided with the memory crash dump of a Windows machine.
+
+We start by extracting all printable strings and store them in a file to examine.
+
+```
+strings memory.dmp > memory_strings.txt
+```
+
+In the text file we can find the following lines:
+
+```ps
+$path = Join-Path ([Environment]::GetFolderPath("Desktop")) "flag.png"
+$pathEnc = Join-Path ([Environment]::GetFolderPath("Desktop")) "flag.enc"
+
+$aes = [System.Security.Cryptography.AesManaged]::new()
+$aes.KeySize = 256
+$aes.BlockSize = 128
+$aes.GenerateKey()
+$aes.GenerateIV()
+
+$fileBytes = [IO.File]::ReadAllBytes($path)
+$encryptedData = $aes.CreateEncryptor().TransformFinalBlock($fileBytes, 0, $fileBytes.Length)
+
+$encryptedBase64Data = [Convert]::ToBase64String($encryptedData)
+$encodedKey = -join ($aes.Key | ForEach-Object { $_.ToString("X2") })
+$encodedIV = [Convert]::ToBase64String($aes.IV)
+ 
+[IO.File]::WriteAllText($pathEnc, $encryptedBase64Data)
+
+[Environment]::SetEnvironmentVariable("EK", $encodedKey, "User")
+
+$regPath = "HKCU:\Software\Microsoft\MediaPlayer\Update\Cache"
+New-Item -Path $regPath -Force | Out-Null
+Set-ItemProperty -Path $regPath -Name "EBD" -Value $encryptedBase64Data
+
+$s = '[DllImport("advapi32.dll")]public static extern int RegFlushKey(IntPtr hKey);'
+$type = Add-Type -MemberDefinition $s -Name "Win32RegFlushKey" -Namespace Win32Functions -PassThru
+$regKey1 = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\MediaPlayer\Update\Cache", $true)
+$type::RegFlushKey($regKey1.Handle.DangerousGetHandle())
+$regKey1.close()
+
+$regPath = "HKCU:\Software\Microsoft\Office\Common\UserInfo"
+New-Item -Path $regPath -Force | Out-Null
+Set-ItemProperty -Path $regPath -Name "EIV" -Value $encodedIV
+
+$regKey2 = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Office\Common\UserInfo", $true)
+$type::RegFlushKey($regKey2.Handle.DangerousGetHandle())
+$regKey2.close()
+
+Remove-Item $path -Force
+Remove-Item $pathEnc -Force
+```
+
+It seems to be a powershell script that was run on the machine. The script used AES-256 to encrypt the image containing the flag. Key was stored in the enviroment variable. IV and the encrypted flag were stored in the Windows Registry. Afterward, all files were deleted.
+
+We need to recover the encrypted flag, key and IV and we can do so by running the following commands:
+
+```
+python3 vol.py -f memory.dmp windows.envars.Envars > memory_envars.txt
+python3 vol.py -f memory.dmp windows.registry.printkey --key "Software\Microsoft\Office\Common\UserInfo" > memory_userinfo.txt
+python3 vol.py -f memory.dmp windows.registry.printkey --key "Software\Microsoft\MediaPlayer\Update\Cache" > memory_cache.txt
+```
+
+with that we get everything we need for decryption. Below is the script for recovering the `flag.png`.
+
+```py
+import base64
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import unpad
+
+enc_flag = "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"
+key_hex = "CFDBA897AF95D67069B68A8EF93C5ED8FDC1365BD182E4F42C78796149C9BED2"
+iv = "vh5qvjKldtqKvpB/+Gwn4A=="
+
+enc_flag = base64.b64decode(enc_flag)
+iv = base64.b64decode(iv)
+key = bytes.fromhex(key_hex)
+
+cipher = AES.new(key, AES.MODE_CBC, iv)
+
+plaintext = unpad(cipher.decrypt(enc_flag), AES.block_size)
+
+output_path = "flag.png"
+with open(output_path, 'wb') as f:
+    f.write(plaintext)
+```
+
+Flag: `SCC{iv_got_99_problems_but_the_key_ain't_one}`

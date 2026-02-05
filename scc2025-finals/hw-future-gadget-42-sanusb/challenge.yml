@@ -1,0 +1,14 @@
+name: "Future Gadget 42 - SanUSB"
+author: "Stefan Jovanovic (Quarks Team)"
+attribution: "Stefan Jovanovic (Quarks Team)"
+category: hardware
+description: i HaVE tO stOp eaTinG ovEr thE keYBoaRd, My ShIfT is StuCk aGaIN1
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+flags:
+    - SCC{H1D_m0d1f13rs_t0_th3_r3scu3!}

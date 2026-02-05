@@ -1,0 +1,98 @@
+name: SCC 2025 finals - Generate Images
+
+on:
+  workflow_call:
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: github-actions-cyberhero
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: crypto-fair-casino
+            context: scc2025-finals/crypto-fair-casino
+            dockerfile: scc2025-finals/crypto-fair-casino/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/crypto-fair-casino
+
+          - name: crypto-xor-me-many-times
+            context: scc2025-finals/crypto-xor-me-many-times
+            dockerfile: scc2025-finals/crypto-xor-me-many-times/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/crypto-xor-me-many-times
+
+          - name: misc-bee-punctual
+            context: scc2025-finals/misc-bee-punctual
+            dockerfile: scc2025-finals/misc-bee-punctual/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/misc-bee-punctual
+
+          - name: pwn-notary
+            context: scc2025-finals/pwn-notary/source
+            dockerfile: scc2025-finals/pwn-notary/source/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/pwn-notary
+
+          - name: pwn-shootingrange
+            context: scc2025-finals/pwn-shootingrange/source
+            dockerfile: scc2025-finals/pwn-shootingrange/source/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/pwn-shootingrange
+
+          - name: pwn-strcatenator
+            context: scc2025-finals/pwn-strcatenator/src
+            dockerfile: scc2025-finals/pwn-strcatenator/src/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/pwn-strcatenator
+
+          - name: rev-is-this-java
+            context: scc2025-finals/rev-is-this-java
+            dockerfile: scc2025-finals/rev-is-this-java/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/rev-is-this-java
+
+          - name: rev-wwwwww
+            context: scc2025-finals/rev-wwwwww
+            dockerfile: scc2025-finals/rev-wwwwww/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/rev-wwwwww
+
+          - name: web-git-bin
+            context: scc2025-finals/web-git-bin/hosting
+            dockerfile: scc2025-finals/web-git-bin/hosting/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/web-git-bin
+
+          # ---- web-glitch-snitch is multi-image ----
+          - name: web-glitch-snitch
+            context: scc2025-finals/web-glitch-snitch/hosting
+            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/web-glitch-snitch
+
+          - name: web-glitch-snitch-backend
+            context: scc2025-finals/web-glitch-snitch/hosting
+            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile.backend
+            image: registry.ctf.rs/scc2025-finals/web-glitch-snitch-backend
+
+          - name: web-glitch-snitch-frontend
+            context: scc2025-finals/web-glitch-snitch/hosting
+            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile.frontend
+            image: registry.ctf.rs/scc2025-finals/web-glitch-snitch-frontend
+
+          # ---- web-intranet9000 is multi-image ----
+          - name: web-intranet9000
+            context: scc2025-finals/web-intranet9000/source
+            dockerfile: scc2025-finals/web-intranet9000/source/Dockerfile
+            image: registry.ctf.rs/scc2025-finals/web-intranet9000
+
+          - name: web-intranet9000-mongo
+            context: scc2025-finals/web-intranet9000/source
+            dockerfile: scc2025-finals/web-intranet9000/source/Dockerfile.mongo
+            image: registry.ctf.rs/scc2025-finals/web-intranet9000-mongo
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & push image
+        uses: ./.github/actions/ctf-build-and-push-image
+        with:
+          context: ${{ matrix.context }}
+          dockerfile: ${{ matrix.dockerfile }}
+          tags: |
+            ${{ matrix.image }}:${{ github.ref_name }}
+            ${{ matrix.image }}:latest

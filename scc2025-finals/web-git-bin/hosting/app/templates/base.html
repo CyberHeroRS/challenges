@@ -1,0 +1,29 @@
+<!-- Base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %} {% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}GitBin{% endblock %}</title>
+
+    <!-- Icons -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/toastr.min.js"></script>
+    <link rel="stylesheet" href="/static/css/toastr.min.css">
+    <script src="/static/js/main.js"></script>
+</body>
+
+</html>

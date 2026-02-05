@@ -1,0 +1,17 @@
+FROM mongo:latest
+
+RUN apt-get update
+
+# Install Python + pip
+RUN apt-get install -y python3 python3-pip netcat-traditional
+RUN apt-get install -y python3-pymongo faker
+
+RUN apt-get clean
+
+# Copy init script and entrypoint
+COPY init_db.py /docker-entrypoint-initdb.d/init_db.py
+COPY docker-entrypoint-mongo.sh /docker-entrypoint-initdb.d/entrypoint.sh
+
+RUN chmod +x /docker-entrypoint-initdb.d/entrypoint.sh
+
+#ENTRYPOINT ["/entrypoint.sh"]

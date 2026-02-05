@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Repo{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h1>{{ repo_name }}</h1>
+
+{% if password %}
+<div class="important-notice">
+    <strong>Important:</strong> Use these credentials to push to the repository (<em>THEY WILL ONLY BE SHOWN
+        ONCE!</em>):
+    <ul>
+        <li>Username: <code>{{ repo_name }}</code></li>
+        <li>Password: <code>{{ password }}</code></li>
+    </ul>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        Clone Repository
+    </div>
+    <div class="card-body">
+        <p>Clone this repository using:</p>
+        <code style="user-select: all;">git clone <span class="git_url" data-repo_name="{{ repo_name }}"></span></code>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        Repository Details
+    </div>
+    <div class="card-body">
+        <ul>
+            <li><strong>Name:</strong> {{ repo_data.name }}</li>
+            <li><strong>Last Commit Message:</strong> {{ repo_data.last_commit_msg }}</li>
+            <li><strong>Template:</strong> {{ repo_data.data.template }}</li>
+            <li><strong>Privacy:</strong>{{ 'Private' if repo_data.data.private|default('off') == 'on' else 'Public' }}</li>
+        </ul>
+    </div>
+    <!-- <pre>{{ repo_data | safe }}</pre> -->
+</div>
+
+
+<div class="card">
+    <div class="card-header" onclick="toggleCardBody(this)" style="cursor: pointer; display: flex; align-items: center;">
+        <span class="toggle-icon" style="margin-right: 8px;">&#9656;</span> <!-- Right-pointing triangle -->
+        Delete Repository
+    </div>
+    <div class="card-body collapse" style="max-height: 0; overflow: hidden;">
+        <form method="POST" action="/delete-repo/{{ repo_name }}"
+            onsubmit="return confirm('Are you sure you want to delete this repository? This action cannot be undone.');">
+            <label for="password">Enter Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="delete-button">Delete Repo</button>
+        </form>
+    </div>
+    <div class="card-footer" style="display: none;">
+        <button class="cancel-button" onclick="toggleCardBody(this.parentNode.previousElementSibling.previousElementSibling)">Cancel</button>
+    </div>
+</div>
+
+<script>
+    function toggleCardBody(header) {
+        const cardBody = header.nextElementSibling;
+        const cardFooter = cardBody.nextElementSibling;
+        const toggleIcon = header.querySelector('.toggle-icon');
+
+        if (cardBody.style.maxHeight === '0px' || !cardBody.style.maxHeight) {
+            cardBody.style.maxHeight = cardBody.scrollHeight + 'px';
+            cardFooter.style.display = 'block';
+            toggleIcon.innerHTML = '&#9662;'; // Down-pointing triangle
+        } else {
+            cardBody.style.maxHeight = '0px';
+            cardFooter.style.display = 'none';
+            toggleIcon.innerHTML = '&#9656;'; // Right-pointing triangle
+        }
+    }
+</script>
+
+<style>
+    .collapse {
+        transition: max-height 0.3s ease-out;
+    }
+</style>
+
+
+<script>
+    const gitUrls = document.querySelectorAll('.git_url');
+
+    gitUrls.forEach((gitUrl) => {
+        gitUrl.innerText = `${window.location.origin}/git/${gitUrl.dataset.repo_name}`;
+    });
+</script>
+
+{% endblock %}

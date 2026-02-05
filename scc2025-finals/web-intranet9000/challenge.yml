@@ -1,0 +1,23 @@
+name: "Intranet 9000"
+author: "DragonSec SI"
+category: "web"
+
+description: |
+  Welcome to **Intranet 9000**! We tasked our best engineers to rewrite our previous SQL-injection-vulnerable directory app using NoSQL technology, meaning we'll never have an SQL injection problem again!
+  Not only is our company directory app now GDPR-compliant, allowing employees to mark their contact information non-public, we have also added a brand new feature for storing important company secrets: Secure Notes!
+
+value: 500
+type: "dynamic"
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: http://intranet9000.finals.scc2025.ctf.rs
+
+flags:
+  - "SCC{no_sql_means_no_sql_injection}"
+
+tags: []
+files:
+  - "web-intranet9000.zip"

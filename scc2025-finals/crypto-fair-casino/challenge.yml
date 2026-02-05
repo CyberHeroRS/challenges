@@ -1,0 +1,17 @@
+name: "Fair Casino"
+author: "DragonSec SI"
+category: "crypto"
+description: "Our casino is fair, but is it too fair?"
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc fair-casino.finals.scc2025.ctf.rs 9200
+flags:
+    - "SCC{trutle_and_rabbit_for_the_win}"
+tags: []
+files:
+    - "public/fair_casino.py"

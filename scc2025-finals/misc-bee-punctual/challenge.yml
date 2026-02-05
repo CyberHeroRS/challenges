@@ -1,0 +1,21 @@
+name: "Bee Punctual"
+author: "DragonSec SI"
+category: "misc"
+
+description: |
+  Bee punctual, or face a paranthestinger! This puzzling swarm is packed with sticky pauses, buzzing brackets, and pointy periods. Don't let a misplaced mark penalize you.
+connection_info: nc bee-punctual.finals.scc2025.ctf.rs 9202
+
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+files:
+  - "Dockerfile"
+  - "chall/bee_punctual.py"
+flags:
+  - "SCC{I_wanted_to_put_the_bee_movie_script_in_the_flag_but_they_wouldnt_let_me}"
+tags: []

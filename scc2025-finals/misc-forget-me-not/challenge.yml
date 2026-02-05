@@ -1,0 +1,19 @@
+name: "Forget Me Not"
+author: "DragonSec SI"
+category: "misc"
+
+description: |
+  I remember saving the flag on my computer, but I can't find it anymore. Can you help me?
+  Download the file from: https://cloud.dragonsec.si/s/qGCpr85j2FeQD59
+
+value: 500
+type: "dynamic"
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+
+flags:
+  - "SCC{iv_got_99_problems_but_the_key_ain't_one}"
+tags: []

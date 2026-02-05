@@ -1,0 +1,14 @@
+ARG NODE_VERSION=18
+FROM node:${NODE_VERSION} AS backend
+
+WORKDIR /app
+
+COPY backend/package.json backend/package-lock.json ./ 
+RUN npm install
+
+COPY backend/ ./backend/
+WORKDIR /app/backend
+
+# Optional: for CTF-style flag injection
+ENV FLAG="default_flag"
+CMD ["sh", "-c", "echo $FLAG > /flag.txt && npm start"]

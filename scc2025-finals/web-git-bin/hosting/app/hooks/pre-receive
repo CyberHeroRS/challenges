@@ -1,0 +1,11 @@
+#!/bin/sh
+
+while read oldrev newrev refname; do
+    # Check if .repo.yml is being affected in any way with specific statuses
+    if git diff --name-status "$oldrev" "$newrev" | grep -E "^[ACDMRUXB][0-9]*\s+.*\.repo\.yml"; then
+        echo "Push rejected: Any changes to '.repo.yml' are not allowed."
+        exit 1
+    fi
+done
+
+exit 0

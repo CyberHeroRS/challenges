@@ -1,0 +1,47 @@
+name: SCC 2025 finals - Push Challenges
+
+on:
+  workflow_call:
+  workflow_dispatch: {}
+
+jobs:
+  push:
+    runs-on: github-actions-cyberhero
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dir: scc2025-finals/crypto-fair-casino
+          - dir: scc2025-finals/crypto-rsa2m
+          - dir: scc2025-finals/crypto-xor-me-many-times
+
+          - dir: scc2025-finals/hw-0x1C200
+          - dir: scc2025-finals/hw-burn-it-down
+          - dir: scc2025-finals/hw-future-gadget-42-sanusb
+          - dir: scc2025-finals/hw-rusty-espionage
+
+          - dir: scc2025-finals/misc-bee-punctual
+          - dir: scc2025-finals/misc-forget-me-not
+          - dir: scc2025-finals/misc-monochrome
+
+          - dir: scc2025-finals/pwn-notary
+          - dir: scc2025-finals/pwn-shootingrange
+          - dir: scc2025-finals/pwn-strcatenator
+
+          - dir: scc2025-finals/rev-is-this-java
+          - dir: scc2025-finals/rev-marathon
+          - dir: scc2025-finals/rev-wwwwww
+
+          - dir: scc2025-finals/web-git-bin
+          - dir: scc2025-finals/web-glitch-snitch
+          - dir: scc2025-finals/web-intranet9000
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Push challenge
+        uses: ./.github/actions/ctf-push-challenge
+        with:
+          challenge_dir: ${{ matrix.dir }}

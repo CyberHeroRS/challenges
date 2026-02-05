@@ -1,0 +1,23 @@
+name: "GlitchSnitch"
+author: "DragonSec SI"
+category: "web"
+
+description: "Welcome to GlitchSnitch, the hottest new bug bounty platform that promises payouts in 'exposure' and discounts on energy drinks."
+connection_info: http://<team-password>-glitchsnitch.finals.scc2025.ctf.rs
+
+value: 500
+type: "dynamic"
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+
+files:
+  - "chall.zip"
+flags:
+  - "SCC{development_in_production_oh_no}"
+tags: []
+
+state: "visible"
+version: "0.1"

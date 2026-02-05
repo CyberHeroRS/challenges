@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: white;
+}
+
+body {
+    background: linear-gradient(120deg, #1f1f1f, #2b2b2b);
+    color: #f0f0f0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.glitch-logo {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00ffe7;
+    text-shadow: 0 0 5px #00ffe7, 0 0 15px #00ffe7;
+}
+
+.glitch-box {
+    background-color: #2a2a2a;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 0 15px rgba(0, 255, 231, 0.2);
+}
+
+.btn-outline-cyber {
+    color: #00ffe7;
+    border-color: #00ffe7;
+}
+
+.btn-outline-cyber:hover {
+    background-color: #00ffe7;
+    color: #000;
+}
+
+.lead {
+    color: #ccc;
+}

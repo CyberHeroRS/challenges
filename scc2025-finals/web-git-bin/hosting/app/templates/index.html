@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Create a Repository</h1>
+<form action="/repos" method="POST">
+    <label for="template">Select a Template:</label>
+    <select name="template" id="template" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; font-size: 16px; width: 100%; max-width: 300px;">
+        {% for template in templates %}
+        <option value="{{ template }}" style="padding: 5px;">{{ template }}</option>
+        {% endfor %}
+    </select>
+    <div style="display: flex; align-items: center; margin-bottom: 0.25rem;">
+        <input type="checkbox" id="private" name="private" style="margin-right: 5px;margin-bottom: 0;">
+        <label for="private" style="margin-bottom: 0;">Make repository private</label>
+    </div>
+    <button type="submit">Create Repository</button>
+</form>
+
+{% endblock %}

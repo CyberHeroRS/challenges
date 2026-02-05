@@ -1,0 +1,8 @@
+# Requirements
+Flask
+requests
+pyyaml
+Flask-BasicAuth
+gevent
+Flask-HTTPAuth
+bcrypt

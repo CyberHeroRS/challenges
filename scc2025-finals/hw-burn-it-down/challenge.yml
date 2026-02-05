@@ -1,0 +1,15 @@
+
+name: "burn_it_down.wav"
+author: "Stefan Jovanovic (Quarks Team)"
+attribution: "Stefan Jovanovic (Quarks Team)"
+category: hardware
+description: Seriously though, why are people burning their chips?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+flags:
+    - SCC{l3t5_burn_th3_eFu53}
