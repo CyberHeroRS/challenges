@@ -50,8 +50,8 @@ jobs:
           - dir: scc2025-quals/web-audiocloud
           - dir: scc2025-quals/web-cyber-store
           - dir: scc2025-quals/web-doomer
-          - dir: scc2025-quals/web-spyMe-level1
-          - dir: scc2025-quals/web-spyMe-level2
+          - dir: scc2025-quals/web-spy-me-level1
+          - dir: scc2025-quals/web-spy-me-level2
           - dir: scc2025-quals/web-waffles
 
     steps:

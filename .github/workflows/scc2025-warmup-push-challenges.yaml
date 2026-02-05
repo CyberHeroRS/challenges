@@ -27,14 +27,14 @@ jobs:
           - dir: scc2025-warmup/rev-encryptor
           - dir: scc2025-warmup/rev-mamba
           - dir: scc2025-warmup/rev-vault
-          - dir: scc2025-warmup/web-croSS
+          - dir: scc2025-warmup/web-cross
           - dir: scc2025-warmup/web-flag-the-query
           - dir: scc2025-warmup/web-im-a-spy-ama
           - dir: scc2025-warmup/web-len5
           - dir: scc2025-warmup/web-pill-challenge
-          - dir: scc2025-warmup/web-spyMe-level1
-          - dir: scc2025-warmup/web-spyMe-level2
-          - dir: scc2025-warmup/web-spyMe-level3
+          - dir: scc2025-warmup/web-spy-me-level1
+          - dir: scc2025-warmup/web-spy-me-level2
+          - dir: scc2025-warmup/web-spy-me-level3
           - dir: scc2025-warmup/welcome-hello-world
 
     steps:

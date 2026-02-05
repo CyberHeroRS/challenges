@@ -99,20 +99,20 @@ jobs:
             dockerfile: scc2025-quals/web-doomer/source/Dockerfile.db
             image: registry.ctf.rs/scc2025-quals/web-doomer-db
 
-          - name: web-spyMe-level1-web
-            context: scc2025-quals/web-spyMe-level1/source
-            dockerfile: scc2025-quals/web-spyMe-level1/source/Dockerfile.web
-            image: registry.ctf.rs/scc2025-quals/web-spyMe-level1-web
+          - name: web-spy-me-level1-web
+            context: scc2025-quals/web-spy-me-level1/source
+            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.web
+            image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-web
 
-          - name: web-spyMe-level1-bot
-            context: scc2025-quals/web-spyMe-level1/source
-            dockerfile: scc2025-quals/web-spyMe-level1/source/Dockerfile.bot
-            image: registry.ctf.rs/scc2025-quals/web-spyMe-level1-bot
+          - name: web-spy-me-level1-bot
+            context: scc2025-quals/web-spy-me-level1/source
+            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.bot
+            image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-bot
 
-          - name: web-spyMe-level1-db
-            context: scc2025-quals/web-spyMe-level1/source
-            dockerfile: scc2025-quals/web-spyMe-level1/source/Dockerfile.db
-            image: registry.ctf.rs/scc2025-quals/web-spyMe-level1-db
+          - name: web-spy-me-level1-db
+            context: scc2025-quals/web-spy-me-level1/source
+            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.db
+            image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-db
 
           - name: web-waffles-waf
             context: scc2025-quals/web-waffles/source/waf
