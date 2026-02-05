@@ -1,4 +1,4 @@
-name: scc2024-warmup - generate images
+name: SCC 2024 warmup - Generate Images
 
 on:
   workflow_call: {}
@@ -71,7 +71,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build & push image
-        uses: ./.github/actions/ctf-build-and-push
+        uses: ./.github/actions/ctf-build-and-push-image
         with:
           context: ${{ matrix.context }}
           dockerfile: ${{ matrix.dockerfile }}

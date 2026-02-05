@@ -1,4 +1,4 @@
-name: scc2024-warmup - push challenge
+name: SCC 2024 warmup - Push Challenges
 
 on:
   workflow_call: {}
