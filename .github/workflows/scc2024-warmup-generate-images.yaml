@@ -67,10 +67,11 @@ jobs:
             image: registry.ctf.rs/scc2024-warmup/web-shortnote
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build & push
-      - uses: ./.github/actions/ctf-build-and-push
+      - name: Build & push image
+        uses: ./.github/actions/ctf-build-and-push
         with:
           context: ${{ matrix.context }}
           dockerfile: ${{ matrix.dockerfile }}
