@@ -1,0 +1,175 @@
+body {
+    font-family: 'Encode Sans Semi Condensed', sans-serif;
+    background: linear-gradient(135deg, #7b4397, #dc2430); /* Adjust the gradient colors as needed */
+    color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+h1 {
+    margin-top: 0;
+    color: #FFFFFF; /* Adjust text color if needed */
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent white for form background */
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px); /* This creates a frosted glass effect */
+}
+input, textarea {
+    background-color: transparent; /* Let the form's background show through */
+    border: 1px solid #FFFFFF;
+    color: #FFFFFF;
+    padding: 10px;
+    border-radius: 5px;
+}
+input::placeholder, textarea::placeholder {
+    color: #E0E0E0; /* Lighter placeholder text color */
+    opacity: 1; /* Full opacity for the placeholder */
+}
+input:focus, textarea:focus {
+    outline: none; /* Removes the default focus outline */
+    border: 1px solid #9c27b0; /* Purple border for a focused element */
+    background-color: rgba(255, 255, 255, 0.1); /* Optional: Slight background for focused input */
+}
+button {
+    background-color: #8E2DE2; /* Adjust button color if needed */
+    color: #FFFFFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #4a00e0; /* Adjust hover color if needed */
+}
+
+.admin-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    font-size: 0.9em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+    color: #E6E6E6; /* Slightly lighter color for better visibility */
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for depth */
+}
+.admin-box:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+.admin-box a {
+    color: #AED581; /* Changed to a lighter green for better visibility */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.admin-box a:hover {
+    color: #C5E1A5; /* Lighter green on hover */
+}
+
+/* Modal Content */
+.modal {
+    display: none; /* Ensure the modal is not visible by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.9);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    padding: 40px; /* Increase padding for a larger content area */
+    border: 1px solid #FFFFFF;
+    width: 70%; /* Increase the width of the modal */
+    max-width: 700px; /* Optionally increase max-width for larger screens */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    color: #FFF;
+    background: linear-gradient(135deg, rgba(123, 67, 151, 0.8), rgba(220, 36, 48, 0.8));
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+/* The Close Button */
+.close {
+    color: #ccc;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 15px;
+    margin-top: 10px;
+    cursor: pointer; /* Ensure it's clear the button is clickable */
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.note-display h2 {
+    color: #FFFFFF; /* White color for consistency */
+    text-align: center;
+    margin-bottom: 20px; /* Space below the title */
+}
+
+.note-display p {
+    font-size: 1em;
+    margin-bottom: 10px; /* Consistent spacing */
+    color: #E0E0E0; /* Light text for visibility */
+}
+
+.note-display p strong {
+    color: #FFFFFF; /* White color for labels */
+    margin-right: 10px; /* Spacing after label */
+}
+
+.note-display span {
+    background-color: transparent; /* Let the gradient show through */
+    color: #FFFFFF; /* White text */
+    padding: 3px 8px; /* Spacing inside each info block */
+    border-radius: 4px; /* Rounded corners */
+    word-wrap: break-word; /* Ensure long text wraps */
+    display: inline-block; /* Ensure background only wraps text */
+    max-width: 100%; /* Prevents overflow */
+}
+
+/* Additional styles for inputs and buttons if needed */
+input, textarea, button {
+    margin-top: 10px; /* Space above each element */
+}
+
+.view-note-button {
+    margin-top: 20px; /* Change this value to push the button further down */
+    background-color: #8E2DE2; /* Button color */
+    color: #FFFFFF; /* Button text color */
+    padding: 10px 20px; /* Button padding */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+}
+
+.view-note-button:hover {
+    background-color: #4a00e0; /* Button hover color */
+}

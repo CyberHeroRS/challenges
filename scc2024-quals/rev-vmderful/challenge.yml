@@ -1,0 +1,18 @@
+name: "VMderful"
+author: "TheProxy"
+category: rev
+description: Im having trouble understanding this code, it seems like there is some hidden code somewhere.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{w4571n6_y0ur_71m3_w17h_v1r7u4l_m4ch1n3}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/vmderful.zip

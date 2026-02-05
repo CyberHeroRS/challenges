@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ city }} - Serbian History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body style="background-image: url('{{ image }}');">
+    <header>
+        <h1>{{ city }}</h1>
+    </header>
+    <main style="padding-top: 70px; text-align: center; width: 60%;margin: auto;color: white;">
+        <p style="color: #ffead6;font-size: 20px;font-weight: bold;">{{ content | safe }}</p>
+    </main>
+</body>
+</html>

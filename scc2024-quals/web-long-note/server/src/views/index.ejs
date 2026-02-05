@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LooooongNooooote</title>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.11/dist/purify.min.js"></script>
+    <script src"/js/debug.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+Semi+Condensed:wght@200&display=swap" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<h1>LooooongNooooote</h1>
+
+<form id="noteForm">
+    <input type="text" id="username" name="username" placeholder="Your Username" required>
+    <input type="text" id="noteName" name="noteName" placeholder="Note Name" required>
+    <textarea id="noteContent" name="noteContent" rows="4" placeholder="Note Content" required></textarea>
+    <input type="text" id="userID" name="userID" placeholder="User ID" required>
+    <button type="button" onclick="submitForm()">Submit Note</button>
+</form>
+
+<button id="myBtn" class="view-note-button">View Note</button>
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div class="note-display">
+        <h2>Note Preview</h2>
+        <p><strong>Username:</strong> <span id="previewUsername"></span></p>
+        <p><strong>Note ID:</strong> <span id="previewUserID"></span></p>
+        <p><strong>Note Name:</strong> <span id="previewNoteName"></span></p>
+        <p><strong>Note Content:</strong> <span id="previewNoteContent"></span></p>
+      </div>
+    </div>
+  
+  </div>
+
+<div class="admin-box">
+    Want an admin to check your note? Submit it <a href="/checkNote">here</a>
+</div>
+
+<script type="module">
+    import queryString from 'https://cdn.jsdelivr.net/npm/query-string@9.0.0/+esm'
+    import uuidBrowser from 'https://cdn.jsdelivr.net/npm/uuid-browser@3.1.0/+esm'
+    import { timeout } from './js/debug.js'
+
+    document.addEventListener('DOMContentLoaded', fillFormWithQueryParams);
+
+    let notes = {}
+
+    function sleep(milliseconds) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    function submitForm() {
+        const form = document.getElementById('noteForm');
+        const data = new FormData(form);
+        const queryParams = new URLSearchParams(data).toString();
+        window.location.href = `/?${queryParams}`;
+    }
+
+
+    function generateUUID(userID){
+        const user_uuid = uuidBrowser(userID)
+        notes["uuid"] = user_uuid.toString()
+    }
+
+    function GenerateCustomUUID(){ // the UUIDs are too large, we don't have many users so it doesn't matter anyways. 
+        if (!notes["uuid"] || notes["uuid"].length != 36) {
+            return;
+        } 
+
+        let custom_id = Number((Math.random() * (1000 - 999) + 999).toString().replace('.', ''))
+        let random_uuid = `${notes["uuid"][24]}${custom_id}` // add UUID suffix for more randomness! 
+
+        return random_uuid
+    }
+
+    function fillNotePreview(){
+        document.getElementById('previewUsername').textContent = document.getElementById('username').value;
+        document.getElementById('previewNoteName').textContent = document.getElementById('noteName').value;
+        document.getElementById('previewNoteContent').textContent = document.getElementById('noteContent').value;
+        document.getElementById('previewUserID').textContent = document.getElementById('userID').value;
+    }
+    
+    function fillFormWithQueryParams() {
+        const queryParams = queryString.parse(location.search, {arrayFormat: 'bracket'});
+        const username = queryParams['username'];
+        const userID = queryParams['userID'];
+        const noteName = queryParams['noteName'];
+        const noteContent = queryParams['noteContent'];
+        const previewNote = queryParams['previewNote'];
+
+
+        if (username && noteName && noteContent ) {
+            notes[username] = {
+                [noteName]:noteContent
+            };
+            
+            document.getElementById('username').value = username;
+            document.getElementById('noteName').value = noteName;
+            document.getElementById('noteContent').value = noteContent;
+        }
+
+        if (userID) {
+            if (notes["uuid"]) {
+                document.getElementById('userID').textContent = GenerateCustomUUID();
+                generateUUID(userID); 
+            } else {
+                generateUUID(userID)
+
+            }
+        }
+
+        if (previewNote){
+            fillNotePreview()
+
+            if (!notes["uuid"]) {
+                generateUUID()
+            }
+
+            document.getElementById('previewUserID').innerHTML = DOMPurify.sanitize(GenerateCustomUUID(), {WHOLE_DOCUMENT: false, KEEP_CONTENT: true, SANITIZE_DOM: false}); 
+            modal.style.display = "block";
+        }
+
+        timeout()
+
+    }
+
+    var modal = document.getElementById('myModal');
+    var btn = document.getElementById('myBtn');
+    var span = document.getElementsByClassName('close')[0];
+    
+    var noteTextDiv = document.getElementById('noteText');
+    
+    btn.onclick = function() {
+        fillNotePreview()
+        modal.style.display = "block";
+    }
+    
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+    
+    window.onclick = function(event) {
+        if (event.notes == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

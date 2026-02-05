@@ -1,0 +1,58 @@
+body {
+    font-family: 'Encode Sans Semi Condensed', sans-serif;
+    background: linear-gradient(135deg, #7b4397, #dc2430);
+    color: #E0E0E0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+h2 {
+    font-weight: normal; /* Less bold than the default */
+    color: #FFFFFF;
+    margin-bottom: 20px; /* Adjust as needed for spacing */
+}
+
+input[type="text"] {
+    width: calc(100% - 22px); /* Adjust width to account for padding and border */
+    padding: 10px;
+    margin-bottom: 20px; /* Space between the input and the button */
+    border: 1px solid #FFFFFF;
+    background-color: transparent;
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+
+input[type="text"]::placeholder {
+    color: #E0E0E0;
+}
+
+button {
+    width: calc(100% - 22px); /* Adjust width to match input field */
+    padding: 10px;
+    border: none;
+    background-color: #8E2DE2;
+    color: #FFFFFF;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px; /* Add margin to the top of the button */
+}
+
+button:hover {
+    background-color: #4a00e0;
+}

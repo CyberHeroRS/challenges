@@ -1,0 +1,16 @@
+name: "WASM Mania"
+author: "TheProxy"
+category: rev
+description: I made my new website using cool new technologies. I hope its safely secured on cloud.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: "https://wasm-mania.quals.scc2024.ctf.rs/"
+flags:
+    - SCC{w45M_i5NT_Th4t_H4RD_0r_I5_It?}
+tags:
+    - scc2024-quals

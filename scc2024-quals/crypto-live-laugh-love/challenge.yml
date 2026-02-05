@@ -1,0 +1,18 @@
+name: "Live Laugh Love"
+author: "Lofer"
+category: crypto
+description: '"Live Laugh Love" is the official slogan of the Poly2585 hash family. Fast hashing, now with NSA-approved key deriving.'
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc live-laugh-love.quals.scc2024.ctf.rs 9023
+flags:
+    - SCC{sh0rt_FL4g!}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/crypto_live_laugh_love.zip

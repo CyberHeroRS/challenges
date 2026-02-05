@@ -1,0 +1,18 @@
+name: "ClickerGame"
+author: "Lazar Mancic / TheProxy"
+category: rev
+description: Someone told me that if i click enough times all seecrets of this world will be revealed
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{1_h0p3_y0u_d1d_n07_cl1ck3d_7h15_0u7}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/clicker-game.zip

@@ -1,0 +1,18 @@
+name: "GrafijaGuesser 5"
+author: "Gordic"
+category: osint
+description: "CyberHero needs your help! He found some old images and he wants to know where he took them.\r\n\r\nYou need to provide him coordinates of places where the image was shot.\r\nFlag Format : SCC{XX.XXX,YY.YYY}"
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{43.977,21.257}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/osint_grafijaguessr3.zip

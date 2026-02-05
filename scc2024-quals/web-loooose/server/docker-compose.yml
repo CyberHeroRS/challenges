@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  web:
+    container_name: loooose
+    image: nginx:latest
+    ports:
+      - '10000:80'
+    volumes:
+      - ./src:/var/www/html
+      - ./config/default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php-fpm
+  php-fpm:
+    image: php:7-fpm
+    volumes:
+      - ./src:/var/www/html

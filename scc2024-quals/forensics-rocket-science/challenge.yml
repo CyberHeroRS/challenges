@@ -1,0 +1,18 @@
+name: "Rocket Science"
+author: "Krsman"
+category: forensics
+description: CyberHero has just optimized their network with a cutting-edge internet acceleration program. However, amidst the boost in cyber speed, a critical file has mysteriously disappeared. Can you delve into the digital depths and retrieve the lost asset before it's too late?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{c2_5ur3_5p33ds_up_w1nd0w5}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/link.txt

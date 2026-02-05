@@ -1,0 +1,149 @@
+body, html {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background-color: #19191a;
+}
+
+a:link, a:visited {
+    color: #3498db;
+    text-decoration: none;
+}
+
+#wrap {
+    margin: auto;
+    width: 80%;
+    max-width: 1200px;
+}
+
+#bookshelf {
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: wrap; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #2c3e50;
+    border-radius: 8px;
+}
+
+div.bookframe {
+    margin: 0 60px 20px 10px;
+    flex: 0 0 calc(20% - 20px); 
+}
+
+input[type="radio"].book {
+    display: none;
+}
+
+input[type="radio"].book + div {
+    position: fixed;
+    width: 300px;
+    height: 120px;
+    text-align: center;
+    font-weight: bold;
+    background: #2c3e50;
+    color: #ecf0f1;
+    font-size: 20px;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    display: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+input[type="radio"].book + div > span {
+    font-size: 65%;
+    display: inline;
+}
+
+input[type="radio"]:checked.book + div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+span button {
+    padding: 8px 16px;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: #2abb1a; 
+    border: none; 
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 5px;
+}
+
+span button:hover {
+    background-color: #06893d; 
+}
+
+.label {
+    position: relative;
+}
+
+.label label {
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+    width: 100px; 
+    height: 100px; 
+    background-color: #ffffff; 
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 5px; 
+    text-align: center; 
+    line-height: 85px; 
+    font-size: 24px; 
+    font-weight: 800;
+    color: #555;
+}
+
+.label div {
+    position: absolute;
+    box-sizing: border-box;
+    line-height: 40px;
+    z-index: 1;
+    width: 120px;
+    height: 40px;
+    font-size: 100%;
+    font-weight: bold;
+    text-align: center;
+    color: #ffffff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 5px;
+    margin-left: 60px;
+    margin-bottom: 15px;
+}
+
+.label img {
+    max-width: 100%;
+    max-height: 100px; 
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    div.bookframe {
+        flex: 0 0 calc(50% - 20px); 
+    }
+
+    input[type="radio"].book + div {
+        top: 80%;
+    }
+
+    .label {
+        display: block;
+    }
+}

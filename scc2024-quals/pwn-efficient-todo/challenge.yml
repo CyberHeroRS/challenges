@@ -1,0 +1,18 @@
+name: "Efficient ToDo"
+author: "mirko"
+category: pwn
+description: I found a faster way to implement a personal todo list, can you tell me if it is safe please!
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: nc efficient-todo.quals.scc2024.ctf.rs 9017
+flags:
+    - SCC{0hhhhKn3WiT_1t_1s_n07_7h47_s4f3!}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/pwn_efficient_todo.zip

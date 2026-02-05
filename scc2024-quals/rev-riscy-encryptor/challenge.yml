@@ -1,0 +1,18 @@
+name: "Riscy Encryptor"
+author: "tampon"
+category: rev
+description: I have this weird binary, can you help me analyze what it does?<br>Also, it spit out some weird file after I run it... but you should be able to decipher it.
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - SCC{101_wh0_3v3n_n33d5_4_f215ky_d3c0mp1132_x0x0}
+tags:
+    - scc2024-quals
+files:
+    - ./shared/riscy-encryptor.zip

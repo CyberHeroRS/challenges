@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serbian History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="hero-header">
+        <div class="header-content">
+            <h1 style="font-size: 40px;">Serbian History Portal</h1>
+            <p style="font-size: 20px;">Explore the rich history and beautiful cities of Serbia</p>
+        </div>
+    </header>
+    <div class="city-card-container">
+        <div class="city-card" style="background-image: url('{{ url_for('static', filename='novisad.png') }}');" onclick="window.location.href = '/city?file=NoviSad.txt'">
+            <div class="city-card-name">NOVI SAD</div>
+        </div>
+        <div class="city-card" style="background-image: url('{{ url_for('static', filename='belgrade.png') }}');" onclick="window.location.href = '/city?file=Belgrade.txt'">
+            <div class="city-card-name">BELGRADE</div>
+        </div>
+        <div class="city-card" style="background-image: url('{{ url_for('static', filename='jagodina.png') }}');" onclick="window.location.href = '/city?file=Jagodina.txt'">
+            <div class="city-card-name">JAGODINA</div>
+        </div>
+        <div class="city-card" style="background-image: url('{{ url_for('static', filename='nis.png') }}');" onclick="window.location.href = '/city?file=Nis.txt'">
+            <div class="city-card-name">NIS</div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

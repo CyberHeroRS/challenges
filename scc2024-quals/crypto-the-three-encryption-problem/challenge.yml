@@ -1,0 +1,18 @@
+name: "The Three-Encryption Problem"
+author: "Lofer"
+category: crypto
+description: Maybe Cixin had the right idea. Three is such a perfect number... can you prove me right?
+value: 500
+type: dynamic
+extra:
+    initial: 500
+    decay: 20
+    minimum: 50
+    function: logarithmic
+connection_info: null
+flags:
+    - "SCC{thr33_is_th3_b3st_numb3r!?_D1D_U_br4t3_@l1_0f_th1$?!?_I_hpe_nO!t_:)}"
+tags:
+    - scc2024-quals
+files:
+    - ./shared/crypto_the-three-encryption-problem.zip

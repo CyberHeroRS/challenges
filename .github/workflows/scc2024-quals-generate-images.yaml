@@ -1,0 +1,121 @@
+name: SCC 2024 quals - Generate Images
+
+on:
+  workflow_call:
+  workflow_dispatch: {}
+
+jobs:
+  generate:
+    runs-on: github-actions-cyberhero
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: crypto-live-laugh-love
+            context: scc2024-quals/crypto-live-laugh-love/server
+            dockerfile: scc2024-quals/crypto-live-laugh-love/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/crypto-live-laugh-love
+
+          - name: forensics-ghost-activity
+            context: scc2024-quals/forensics-ghost-activity/server
+            dockerfile: scc2024-quals/forensics-ghost-activity/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/forensics-ghost-activity
+
+          - name: forensics-what-does-the-fox-say
+            context: scc2024-quals/forensics-what-does-the-fox-say/server
+            dockerfile: scc2024-quals/forensics-what-does-the-fox-say/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/forensics-what-does-the-fox-say
+
+          - name: misc-slaga1337za
+            context: scc2024-quals/misc-slaga1337za/server
+            dockerfile: scc2024-quals/misc-slaga1337za/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/misc-slaga1337za
+
+          - name: pwn-ds-homework
+            context: scc2024-quals/pwn-ds-homework/server
+            dockerfile: scc2024-quals/pwn-ds-homework/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-ds-homework
+
+          - name: pwn-efficient-todo
+            context: scc2024-quals/pwn-efficient-todo/server
+            dockerfile: scc2024-quals/pwn-efficient-todo/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-efficient-todo
+
+          - name: pwn-hansel-and-gretel
+            context: scc2024-quals/pwn-hansel-and-gretel/server
+            dockerfile: scc2024-quals/pwn-hansel-and-gretel/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-hansel-and-gretel
+
+          - name: pwn-kernel-buddy
+            context: scc2024-quals/pwn-kernel-buddy/server
+            dockerfile: scc2024-quals/pwn-kernel-buddy/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-kernel-buddy
+
+          - name: pwn-outer-product
+            context: scc2024-quals/pwn-outer-product/server
+            dockerfile: scc2024-quals/pwn-outer-product/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-outer-product
+
+          - name: pwn-serbian-rop
+            context: scc2024-quals/pwn-serbian-rop/server
+            dockerfile: scc2024-quals/pwn-serbian-rop/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/pwn-serbian-rop
+
+          - name: rev-wasm-mania
+            context: scc2024-quals/rev-wasm-mania/server
+            dockerfile: scc2024-quals/rev-wasm-mania/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/rev-wasm-mania
+
+          - name: web-baby-pop-app
+            context: scc2024-quals/web-baby-pop/server
+            dockerfile: scc2024-quals/web-baby-pop/server/app.Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-baby-pop-app
+
+          - name: web-baby-pop-db
+            context: scc2024-quals/web-baby-pop/server
+            dockerfile: scc2024-quals/web-baby-pop/server/db.Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-baby-pop-db
+
+          - name: web-ecology
+            context: scc2024-quals/web-ecology/server
+            dockerfile: scc2024-quals/web-ecology/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-ecology
+
+          - name: web-long-note
+            context: scc2024-quals/web-long-note/server
+            dockerfile: scc2024-quals/web-long-note/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-long-note
+
+          - name: web-loooose
+            context: scc2024-quals/web-loooose/server
+            dockerfile: scc2024-quals/web-loooose/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-loooose
+
+          - name: web-neglegentia
+            context: scc2024-quals/web-neglegentia/server
+            dockerfile: scc2024-quals/web-neglegentia/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-neglegentia
+
+          - name: web-see-in-the-dark
+            context: scc2024-quals/web-see-in-the-dark/server
+            dockerfile: scc2024-quals/web-see-in-the-dark/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-see-in-the-dark
+
+          - name: web-welcome2serbia
+            context: scc2024-quals/web-welcome2serbia/server
+            dockerfile: scc2024-quals/web-welcome2serbia/server/Dockerfile
+            image: registry.ctf.rs/scc2024-quals/web-welcome2serbia
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & push image
+        uses: ./.github/actions/ctf-build-and-push-image
+        with:
+          context: ${{ matrix.context }}
+          dockerfile: ${{ matrix.dockerfile }}
+          tags: |
+            ${{ matrix.image }}:${{ github.ref_name }}
+            ${{ matrix.image }}:latest
