@@ -1,4 +1,4 @@
-name: Publish Playground Challenges
+name: Publish CTF Playground Challenges
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 jobs:
   scc2024-warmup-generate:
-    uses: ./.github/workflows/scc2024-warmup/build-images.yaml
+    uses: ./.github/workflows/scc2024-warmup-build-images.yaml
 
-  scc2024-warmup-publish:
+  scc2024-warmup-push:
     needs: scc2024-warmup-generate
-    uses: ./.github/workflows/scc2024-warmup/publish-ctfd.yaml
+    uses: ./.github/workflows/scc2024-warmup-push-challenges.yaml
