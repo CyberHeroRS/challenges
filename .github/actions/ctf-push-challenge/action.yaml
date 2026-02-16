@@ -19,17 +19,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.12"
-
-    - name: Install ctfcli
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install "ctfcli==${{ inputs.ctfcli_version }}"
-
     - name: Get playground token
       id: vault
       uses: hashicorp/vault-action@v3
@@ -40,6 +29,17 @@ runs:
         role: arc-github-actions-cyberhero-runner
         secrets: |
           cluster/cyberhero/playground/token TOKEN | CTFD_TOKEN
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install ctfcli
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install "ctfcli==${{ inputs.ctfcli_version }}"
 
     - name: Publish challenge (sync, fallback to install)
       shell: bash
