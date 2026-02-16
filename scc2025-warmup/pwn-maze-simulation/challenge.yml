@@ -5,14 +5,14 @@ description: Can you think outside of the box?
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc maze-simulation.warmup.scc2025.ctf.rs 9011
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc maze-simulation.playground.cyberhero.rs 9011
 flags:
-    - SCC{h0w_d0_1_f0rm4t_th1s?_s50r3b04rd}
+  - SCC{h0w_d0_1_f0rm4t_th1s?_s50r3b04rd}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./pwn_maze_simulation.zip
+  - ./pwn_maze_simulation.zip

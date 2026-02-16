@@ -3,7 +3,7 @@ author: DragonSec SI
 category: pwn
 
 description: This program just concatenates strings. Do you really want to know more?
-connection_info: nc strcatenator.finals.scc2025.ctf.rs 9205
+connection_info: nc strcatenator.playground.cyberhero.rs 9205
 
 value: 500
 type: dynamic

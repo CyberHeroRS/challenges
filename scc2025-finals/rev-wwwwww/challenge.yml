@@ -11,12 +11,12 @@ extra:
   minimum: 50
   function: logarithmic
 
-connection_info: nc wwwwww.finals.scc2025.ctf.rs 9207
+connection_info: nc wwwwww.playground.cyberhero.rs 9207
 
 files:
-- "public/wwwwww"
+  - "public/wwwwww"
 flags:
-- "SCC{Congr4ts_y0u_h4ve_M4d3_1t_But_l0st_the_Gam3_in_The_Proce55}"
+  - "SCC{Congr4ts_y0u_h4ve_M4d3_1t_But_l0st_the_Gam3_in_The_Proce55}"
 tags: []
 
 state: "visible"

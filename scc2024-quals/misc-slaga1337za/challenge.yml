@@ -5,12 +5,12 @@ description: '"Slaga1337za" is quite similar to a well-known TV show that has be
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc slaga1337za.quals.scc2024.ctf.rs 9015
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc slaga1337za.playground.cyberhero.rs 9015
 flags:
-    - SCC{tr3f_k4r0_tr3f_pWn}
+  - SCC{tr3f_k4r0_tr3f_pWn}
 tags:
-    - scc2024-quals
+  - scc2024-quals

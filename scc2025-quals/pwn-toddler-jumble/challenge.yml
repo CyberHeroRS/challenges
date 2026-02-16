@@ -6,17 +6,17 @@ description: Easiest challenge I've ever seen
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc toddler-jumble.quals.scc2025.ctf.rs 9105
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc toddler-jumble.playground.cyberhero.rs 9105
 flags:
-    - SCC{even_a_baby_could_solve_this}
+  - SCC{even_a_baby_could_solve_this}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 files:
-    - ./pwn-toddler-jumble.zip
+  - ./pwn-toddler-jumble.zip
 # requirements:
 #     - "Sanity Check"

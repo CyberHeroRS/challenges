@@ -6,17 +6,17 @@ description: The Binary Exploitation Unit of Serbia has prepared another level o
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc beus-levelx.quals.scc2025.ctf.rs 9103
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc beus-levelx.playground.cyberhero.rs 9103
 flags:
-    - SCC{r37urn1n6_70_l1bc_15_345y_50lv3}
+  - SCC{r37urn1n6_70_l1bc_15_345y_50lv3}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./pwn-beus-levelx.zip
+  - ./pwn-beus-levelx.zip
 # requirements:
 #     - "Sanity Check"

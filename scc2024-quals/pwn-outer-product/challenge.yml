@@ -5,14 +5,14 @@ description: Outer product of two coordinate vectors is The Matrix, but in this 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc outer-product.quals.scc2024.ctf.rs 9020
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc outer-product.playground.cyberhero.rs 9020
 flags:
-    - SCC{35c4p1n6_m47r1x_w17h_b0f_15n'7_700_h4rd!}
+  - SCC{35c4p1n6_m47r1x_w17h_b0f_15n'7_700_h4rd!}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/pwn_outer_product.zip
+  - ./shared/pwn_outer_product.zip

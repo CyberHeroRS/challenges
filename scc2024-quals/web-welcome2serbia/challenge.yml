@@ -5,14 +5,14 @@ description: Discover Serbia through our website, designed for visitors. We opte
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://welcome2serbia.quals.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://welcome2serbia.playground.cyberhero.rs/"
 flags:
-    - SCC{W3Lc0m3_70_7h3_LAnD_0F_h1570RY_and_CUl7uR3}
+  - SCC{W3Lc0m3_70_7h3_LAnD_0F_h1570RY_and_CUl7uR3}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/web_welcome2serbia.zip
+  - ./shared/web_welcome2serbia.zip

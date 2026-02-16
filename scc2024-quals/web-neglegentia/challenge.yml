@@ -5,14 +5,14 @@ description: Our most skilled social engineer managed to access notorious hacker
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://neglegentia.quals.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://neglegentia.playground.cyberhero.rs/"
 flags:
-    - SCC{r3m3mb3r_t0_v3r1fy_uR_JWT}
+  - SCC{r3m3mb3r_t0_v3r1fy_uR_JWT}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/web_neglegentia.zip
+  - ./shared/web_neglegentia.zip

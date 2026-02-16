@@ -5,14 +5,14 @@ description: Demo of the famous zork I game has been created. I made sure to mak
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc zork1-demo.warmup.scc2024.ctf.rs 9006
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc zork1-demo.playground.cyberhero.rs 9006
 flags:
-    - SCC{h4v3_y0u_h34rd_0f_z0rk!??!?!?}
+  - SCC{h4v3_y0u_h34rd_0f_z0rk!??!?!?}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup
 files:
-    - ./public/zork1.zip
+  - ./public/zork1.zip

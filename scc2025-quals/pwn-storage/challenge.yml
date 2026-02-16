@@ -6,17 +6,17 @@ description: Simple storage app, you can store, delete or read text.
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc storage.quals.scc2025.ctf.rs 9104
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc storage.playground.cyberhero.rs 9104
 flags:
-    - SCC{n07h1n6_15_r34lly_h1dd3n_fr0m_f0rm47t3d_pr1n7!}
+  - SCC{n07h1n6_15_r34lly_h1dd3n_fr0m_f0rm47t3d_pr1n7!}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 files:
-    - ./pwn-storage.zip
+  - ./pwn-storage.zip
 # requirements:
 #     - "Sanity Check"

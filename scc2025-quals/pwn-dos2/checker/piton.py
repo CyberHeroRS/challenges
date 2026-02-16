@@ -1,6 +1,6 @@
 from pwn import *
 
-p = remote("dos2.quals.scc2025.ctf.rs", 9108)
+p = remote("dos2.playground.cyberhero.rs", 9108)
 sol_bytes = open("./input.txt", "rb").read()
 
 p.recvuntil(b'Payload length:\n')

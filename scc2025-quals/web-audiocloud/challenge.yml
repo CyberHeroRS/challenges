@@ -6,17 +6,17 @@ description: "Are you an up-and-coming music artist? Come and upload your mp3 fi
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://audiocloud.quals.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://audiocloud.playground.cyberhero.rs/"
 flags:
-    - SCC{1m_c0nfu53d_why_15_my_535510n_4n_mp3_f1l3}
+  - SCC{1m_c0nfu53d_why_15_my_535510n_4n_mp3_f1l3}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 files:
-    - ./web-audiocloud.zip
+  - ./web-audiocloud.zip
 # requirements:
 #     - "Sanity Check"

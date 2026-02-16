@@ -5,14 +5,14 @@ description: Another card game to decide your life. Maybe you should start avoid
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc cry-cards-act-ii.warmup.scc2025.ctf.rs 9022
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc cry-cards-act-ii.playground.cyberhero.rs 9022
 flags:
-    - SCC{subroups_are_groups_too}
+  - SCC{subroups_are_groups_too}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./cry_cards_act_ii.zip
+  - ./cry_cards_act_ii.zip

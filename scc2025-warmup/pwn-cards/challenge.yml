@@ -5,14 +5,14 @@ description: Do you feel lucky, punk?
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc cards.warmup.scc2025.ctf.rs 9009
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc cards.playground.cyberhero.rs 9009
 flags:
-    - SCC{luck_is_not_the_only_f4ctor}
+  - SCC{luck_is_not_the_only_f4ctor}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./pwn_cards.zip
+  - ./pwn_cards.zip

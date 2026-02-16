@@ -5,14 +5,14 @@ description: The witch sent birds to eat all the breadcrumbs, only a few are lef
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc hansel-and-gretel.quals.scc2024.ctf.rs 9018
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc hansel-and-gretel.playground.cyberhero.rs 9018
 flags:
-    - SCC{Y0U_ch4ng3d_th3_st0ry??4m4z1ng!}
+  - SCC{Y0U_ch4ng3d_th3_st0ry??4m4z1ng!}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/hansel_and_gretel.zip
+  - ./shared/hansel_and_gretel.zip

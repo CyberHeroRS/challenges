@@ -5,13 +5,13 @@ description: Notes challenges like these make me all heap-eractive. I hope you c
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc notary.finals.scc2025.ctf.rs 9203
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc notary.playground.cyberhero.rs 9203
 flags:
-    - SCC{Th3r3S_n0_H34p_1ikE_a_n07es_h3aP}
+  - SCC{Th3r3S_n0_H34p_1ikE_a_n07es_h3aP}
 tags: []
 files:
-    - ./pwn-notary.zip
+  - ./pwn-notary.zip

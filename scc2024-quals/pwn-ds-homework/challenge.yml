@@ -5,14 +5,14 @@ description: I recently got my first data structures homework and I finished it 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc ds-homework.quals.scc2024.ctf.rs 9016
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc ds-homework.playground.cyberhero.rs 9016
 flags:
-    - SCC{n3v3r_f0r637_70_0v3rl04d_c0py_45516nm3n7_0p3r470r!}
+  - SCC{n3v3r_f0r637_70_0v3rl04d_c0py_45516nm3n7_0p3r470r!}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/pwn_ds_homework.zip
+  - ./shared/pwn_ds_homework.zip

@@ -2,19 +2,19 @@ name: "SpyMe Level 2"
 author: "DreyAnd"
 attribution: "DreyAnd"
 category: web
-description:  "Great job! You've infiltrated the system and retrieved information from the spies' accounts. However, they didn't leave anything spicy for us. Let's see if you can find the secret code for the spooky admin.\n\n**Note**: When sending URLs to the admin bot, use http://web:3000 instead of the public URL."
+description: "Great job! You've infiltrated the system and retrieved information from the spies' accounts. However, they didn't leave anything spicy for us. Let's see if you can find the secret code for the spooky admin.\n\n**Note**: When sending URLs to the admin bot, use http://web:3000 instead of the public URL."
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://spy-me.quals.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://spy-me.playground.cyberhero.rs/"
 flags:
-    - SCC{w0W_y0u_ar3_th3_g4Zd4_n0W!}
+  - SCC{w0W_y0u_ar3_th3_g4Zd4_n0W!}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 # requirements:
 #     - "Sanity Check"

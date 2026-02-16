@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import http.client
 
-chall_host = "pill.warmup.scc2025.ctf.rs"
+chall_host = "pill.playground.cyberhero.rs"
 chall_port = 443
 
 
@@ -52,4 +52,3 @@ session_id = start()
 for i in range(1, 101):
     current = round(session_id)
     print("Round", i, ":", current, "->", status(session_id))
-

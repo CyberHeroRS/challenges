@@ -13,7 +13,7 @@ import tempfile
 
 import faker.providers.person.en_US as en_person
 
-ENDPOINT = "https://intranet9000.finals.scc2025.ctf.rs/"
+ENDPOINT = "https://intranet9000.playground.cyberhero.rs/"
 
 # Find SHA1 password hash by leaking it using the regex
 
@@ -61,7 +61,7 @@ with tempfile.TemporaryDirectory() as temp_dir:
     with open(temp_dir + "/years.txt", "w") as dictionary_file:
         for year in range(1950, 2000):
             dictionary_file.write(f"{year}\n")
-    
+
     with open(temp_dir + "/hash.txt", "w") as dictionary_file:
         dictionary_file.write(known_hash + "\n")
 
@@ -73,7 +73,7 @@ with tempfile.TemporaryDirectory() as temp_dir:
 
     with open(temp_dir + "/my.pot", "r") as pot_file:
         pot = pot_file.read().strip()
-    
+
     if pot:
         cracked_password = pot.split(":")[1]
         print(f"Cracked password: {cracked_password}")

@@ -5,12 +5,12 @@ description: Someone said to me only those with blind luck could guess this flag
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://blind-luck.warmup.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://blind-luck.playground.cyberhero.rs/"
 flags:
-    - SCC{l00k1n6_1n70_7h3_fu7ur3e}
+  - SCC{l00k1n6_1n70_7h3_fu7ur3e}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup

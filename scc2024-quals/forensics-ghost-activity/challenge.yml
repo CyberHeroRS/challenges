@@ -5,14 +5,14 @@ description: "CyberHero returned from his journey to find echoes in his digital 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc ghost-activity.quals.scc2024.ctf.rs 9013
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc ghost-activity.playground.cyberhero.rs 9013
 flags:
-    - SCC{5h4d0W_u53r_f0und_1n_8yt35}
+  - SCC{5h4d0W_u53r_f0und_1n_8yt35}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/link.txt
+  - ./shared/link.txt

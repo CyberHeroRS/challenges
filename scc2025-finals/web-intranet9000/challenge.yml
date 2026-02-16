@@ -13,7 +13,7 @@ extra:
   decay: 20
   minimum: 50
   function: logarithmic
-connection_info: http://intranet9000.finals.scc2025.ctf.rs
+connection_info: http://intranet9000.playground.cyberhero.rs
 
 flags:
   - "SCC{no_sql_means_no_sql_injection}"

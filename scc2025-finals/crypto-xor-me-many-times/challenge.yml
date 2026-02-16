@@ -5,13 +5,13 @@ description: "XOR me once, shame on you; XOR me twice, shame on me; XOR me many 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc xor-me-many-times.finals.scc2025.ctf.rs 9201
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc xor-me-many-times.playground.cyberhero.rs 9201
 flags:
-    - "SCC{Eucleadian_algorithm_is_bad_randomness_extractor_:(}"
+  - "SCC{Eucleadian_algorithm_is_bad_randomness_extractor_:(}"
 tags: []
 files:
-    - "source/xor_me_many_times.py"
+  - "source/xor_me_many_times.py"

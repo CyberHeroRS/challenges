@@ -6,17 +6,17 @@ description: "Hidden within a fragile legacy program, a variable sits in wait. I
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc dos2.quals.scc2025.ctf.rs 9108
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc dos2.playground.cyberhero.rs 9108
 flags:
-    - SCC{0v3rwrit3n_c0d3_m4nipul4t0r}
+  - SCC{0v3rwrit3n_c0d3_m4nipul4t0r}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 files:
-    - ./pwn-dos2.zip
+  - ./pwn-dos2.zip
 # requirements:
 #     - "Sanity Check"

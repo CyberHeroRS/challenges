@@ -5,14 +5,14 @@ description: Welcome to our simple login and register application. We haven't im
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc login-form.warmup.scc2024.ctf.rs 9005
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc login-form.playground.cyberhero.rs 9005
 flags:
-    - SCC{l00k5_l1k3_y0ur_p455w0rd_15_700_l0n6!}
+  - SCC{l00k5_l1k3_y0ur_p455w0rd_15_700_l0n6!}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup
 files:
-    - ./public/pwn_login_form.zip
+  - ./public/pwn_login_form.zip

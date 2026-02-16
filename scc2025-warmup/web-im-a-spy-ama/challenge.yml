@@ -5,14 +5,14 @@ description: Can you ask the right questions to get the flag?
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://im-a-spy-ama.warmup.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://im-a-spy-ama.playground.cyberhero.rs/"
 flags:
-    - SCC{4_5py_n3v3r_r3v34l5_h15_53cr37s}
+  - SCC{4_5py_n3v3r_r3v34l5_h15_53cr37s}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./web_im_a_spy_ama.zip 
+  - ./web_im_a_spy_ama.zip

@@ -5,12 +5,12 @@ description: Your colleague installed a video surveillance program and allowed y
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://shinobi.warmup.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://shinobi.playground.cyberhero.rs/"
 flags:
-    - SCC{adm1n_4dmin_f0r3v3r}
+  - SCC{adm1n_4dmin_f0r3v3r}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup

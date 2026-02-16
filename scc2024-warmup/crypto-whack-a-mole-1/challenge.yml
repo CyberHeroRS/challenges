@@ -5,14 +5,14 @@ description: I have 5 moles in my backyard. They use a specific pattern to choos
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc whack-a-mole.warmup.scc2024.ctf.rs 9001
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc whack-a-mole.playground.cyberhero.rs 9001
 flags:
-    - SCC{d1d_y0u_b34t_th3m0le??!?!?}
+  - SCC{d1d_y0u_b34t_th3m0le??!?!?}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup
 files:
-    - ./public/server.py
+  - ./public/server.py

@@ -6,18 +6,18 @@ description: "The most provably fair casino of them all"
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc totally-fair-casino.quals.scc2025.ctf.rs 9111
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc totally-fair-casino.playground.cyberhero.rs 9111
 flags:
-    - SCC{W3_D0_N07_3ND0R53_G4MBL1NG}
+  - SCC{W3_D0_N07_3ND0R53_G4MBL1NG}
 tags:
-    - scc2025-quals
-    - medium
+  - scc2025-quals
+  - medium
 files:
-    - ./public/server.py
-    - ./public/requirments.txt
+  - ./public/server.py
+  - ./public/requirments.txt
 # requirements:
 #     - "Sanity Check"

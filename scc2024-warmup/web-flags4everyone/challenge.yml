@@ -5,12 +5,12 @@ description: This is where I keep all my flags. I can show you some, but not all
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://flags4everyone.warmup.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://flags4everyone.playground.cyberhero.rs/"
 flags:
-    - SCC{SQLi_n3v3r_ou7_oF_fash10n}
+  - SCC{SQLi_n3v3r_ou7_oF_fash10n}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup

@@ -5,12 +5,12 @@ description: It's hard working on challenges as a full stack web dev. My flag al
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://anatomy.warmup.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://anatomy.playground.cyberhero.rs/"
 flags:
-    - SCC{AnA7omY_oF_a_w3b_aPP_i5_fuN}
+  - SCC{AnA7omY_oF_a_w3b_aPP_i5_fuN}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup

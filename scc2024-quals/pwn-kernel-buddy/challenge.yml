@@ -5,14 +5,14 @@ description: You bored your buddy too much, so he created a Linux kernel driver 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc kernel_buddy.quals.scc2024.ctf.rs 9019
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc kernel_buddy.playground.cyberhero.rs 9019
 flags:
-    - SCC{y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15}
+  - SCC{y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/pwn_kernel_buddy.zip
+  - ./shared/pwn_kernel_buddy.zip

@@ -6,17 +6,17 @@ description: Embark on a journey through the perilous Stack Forest, battling mem
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc aop1.quals.scc2025.ctf.rs 9102
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc aop1.playground.cyberhero.rs 9102
 flags:
-    - SCC{h3r0_0v3rfl0w3d_7h47_60ld}
+  - SCC{h3r0_0v3rfl0w3d_7h47_60ld}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./pwn-aop1.zip
+  - ./pwn-aop1.zip
 # requirements:
 #     - "Sanity Check"

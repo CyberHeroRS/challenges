@@ -6,17 +6,17 @@ description: "To be honest I have a doom scrolling addiction...\n\n*Note:* The f
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://doomer.quals.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://doomer.playground.cyberhero.rs/"
 flags:
-    - SCC{bonusdrinkgj}
+  - SCC{bonusdrinkgj}
 tags:
-    - scc2025-quals
-    - hard
+  - scc2025-quals
+  - hard
 files:
-    - ./web-doomer.zip
+  - ./web-doomer.zip
 # requirements:
 #     - "Sanity Check"

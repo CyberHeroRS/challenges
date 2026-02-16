@@ -5,14 +5,14 @@ description: Search for Trouble
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://cross.warmup.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://cross.playground.cyberhero.rs/"
 flags:
-    - SCC{cro55_5ite_5cripting}
+  - SCC{cro55_5ite_5cripting}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./web_croSS.zip
+  - ./web_croSS.zip

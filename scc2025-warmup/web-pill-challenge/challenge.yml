@@ -5,14 +5,14 @@ description: You got captured by a criminal mastermind, can you earn your freedo
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://pill.warmup.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://pill.playground.cyberhero.rs/"
 flags:
-    - SCC{r3m3mb3r_70_h4ndl3_y0ur_r4c3_c0nd1t10ns}
+  - SCC{r3m3mb3r_70_h4ndl3_y0ur_r4c3_c0nd1t10ns}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./web_pill_challenge.zip
+  - ./web_pill_challenge.zip

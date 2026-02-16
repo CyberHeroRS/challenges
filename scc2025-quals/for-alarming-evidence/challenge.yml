@@ -10,7 +10,7 @@ extra:
   decay: 20
   minimum: 50
   function: logarithmic
-connection_info: nc for-alarming-evidence.quals.scc2025.ctf.rs 9120
+connection_info: nc for-alarming-evidence.playground.cyberhero.rs 9120
 flags:
   - SCC{4l4rm_tr1gg3r3d_intrus10n_c0nfirm3d}
 tags:

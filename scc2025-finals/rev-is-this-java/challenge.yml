@@ -3,7 +3,7 @@ author: "DragonSec SI"
 category: "rev"
 
 description: I refuse to believe this was written in anything else.
-connection_info: nc isthisjava.finals.scc2025.ctf.rs 9206
+connection_info: nc isthisjava.playground.cyberhero.rs 9206
 value: 500
 type: dynamic
 extra:

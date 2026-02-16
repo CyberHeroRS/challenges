@@ -5,14 +5,14 @@ description: Secure password generator which uses username.
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc secpwdgen.warmup.scc2025.ctf.rs 9012
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc secpwdgen.playground.cyberhero.rs 9012
 flags:
-    - SCC{y0u_sh0uld_b3_c4r3ful_w1th_4_byt3_utf8_ch4rs}
+  - SCC{y0u_sh0uld_b3_c4r3ful_w1th_4_byt3_utf8_ch4rs}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup
 files:
-    - ./misc_secpwdgen.zip
+  - ./misc_secpwdgen.zip

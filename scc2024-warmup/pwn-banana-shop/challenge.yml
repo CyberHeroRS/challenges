@@ -5,14 +5,14 @@ description: Welcome to Banana Shop, where you can buy lots of bananas and maybe
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc banana-shop.warmup.scc2024.ctf.rs 9004
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc banana-shop.playground.cyberhero.rs 9004
 flags:
-    - SCC{b4n4n45_4r3_50m371m35_b3773r_7h4n_fl465!}
+  - SCC{b4n4n45_4r3_50m371m35_b3773r_7h4n_fl465!}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup
 files:
-    - ./public/pwn_banana_shop.zip
+  - ./public/pwn_banana_shop.zip

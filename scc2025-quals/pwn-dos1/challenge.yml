@@ -6,17 +6,17 @@ description: "A forgotten program, still lingering in the depths of a DOS system
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc dos1.quals.scc2025.ctf.rs 9107
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc dos1.playground.cyberhero.rs 9107
 flags:
-    - SCC{buff3r_0v3rfl0w_n1ghtmare}
+  - SCC{buff3r_0v3rfl0w_n1ghtmare}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./pwn-dos1.zip
+  - ./pwn-dos1.zip
 # requirements:
 #     - "Sanity Check"

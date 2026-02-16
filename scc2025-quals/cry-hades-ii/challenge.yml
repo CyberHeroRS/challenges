@@ -6,17 +6,17 @@ description: "Rise, daughter o' Hell, and make your way to Chronos"
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc hades-ii.quals.scc2025.ctf.rs 9110
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc hades-ii.playground.cyberhero.rs 9110
 flags:
-    - SCC{the_magic_of_hecate}
+  - SCC{the_magic_of_hecate}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./public/hades_ii.py
+  - ./public/hades_ii.py
 # requirements:
 #     - "Sanity Check"

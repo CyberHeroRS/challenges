@@ -6,17 +6,17 @@ description: A secret espionage operation is unfolding in the Balkans, aiming to
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://spy-me.quals.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://spy-me.playground.cyberhero.rs/"
 flags:
-    - SCC{th0s3_g0dd4Mn_S3rbS!}
+  - SCC{th0s3_g0dd4Mn_S3rbS!}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./web-spyMe.zip
+  - ./web-spyMe.zip
 # requirements:
 #     - "Sanity Check"

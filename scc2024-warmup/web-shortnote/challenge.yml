@@ -5,14 +5,14 @@ description: I've developed a simple note-taking application, with big plans to 
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://shortnote.warmup.scc2024.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://shortnote.playground.cyberhero.rs/"
 flags:
-    - SCC{D0nt_W0rrY_L000ng_N0te_1s_C0m1ng_S00n}
+  - SCC{D0nt_W0rrY_L000ng_N0te_1s_C0m1ng_S00n}
 tags:
-    - scc2024-warmup
+  - scc2024-warmup
 files:
-    - ./public/web_shortnote.zip
+  - ./public/web_shortnote.zip

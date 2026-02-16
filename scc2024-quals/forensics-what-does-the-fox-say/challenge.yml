@@ -5,14 +5,14 @@ description: In the shadowy realms of cyberspace, where secrets lie hidden in th
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc what-does-the-fox-say.quals.scc2024.ctf.rs 9014
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc what-does-the-fox-say.playground.cyberhero.rs 9014
 flags:
-    - SCC{r1n9_d1n9_D1N9_D1N9_d1N93r1n93d1n!}
+  - SCC{r1n9_d1n9_D1N9_D1N9_d1N93r1n93d1n!}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/forensics_what_does_the_fox_say.zip
+  - ./shared/forensics_what_does_the_fox_say.zip

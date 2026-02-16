@@ -3,7 +3,7 @@ author: "DragonSec SI"
 category: "web"
 
 description: "Welcome to GlitchSnitch, the hottest new bug bounty platform that promises payouts in 'exposure' and discounts on energy drinks."
-connection_info: http://<team-password>-glitchsnitch.finals.scc2025.ctf.rs
+connection_info: http://<team-password>-glitchsnitch.playground.cyberhero.rs
 
 value: 500
 type: "dynamic"

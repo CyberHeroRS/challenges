@@ -30,7 +30,7 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install "ctfcli==${{ inputs.ctfcli_version }}"
 
-    - name: Read CTFd token from Vault
+    - name: Get playground token
       id: vault
       uses: hashicorp/vault-action@v3
       with:
@@ -39,7 +39,7 @@ runs:
         kubernetesTokenPath: /var/run/secrets/vault/token
         role: arc-github-actions-cyberhero-runner
         secrets: |
-          cluster/ctf-playground/token token | CTFD_TOKEN
+          cluster/cyberhero/playground/token TOKEN | CTFD_TOKEN
 
     - name: Publish challenge (sync, fallback to install)
       shell: bash

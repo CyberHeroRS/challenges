@@ -6,17 +6,17 @@ description: "Awaken, child o' Hell, and make your way to Olympus"
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: nc hades.quals.scc2025.ctf.rs 9109
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc hades.playground.cyberhero.rs 9109
 flags:
-    - SCC{may_artemis_guide_my_guesses}
+  - SCC{may_artemis_guide_my_guesses}
 tags:
-    - scc2025-quals
-    - easy
+  - scc2025-quals
+  - easy
 files:
-    - ./public/hades.py
+  - ./public/hades.py
 # requirements:
 #     - "Sanity Check"

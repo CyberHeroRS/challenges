@@ -5,12 +5,12 @@ description: Our library's digital catalog has been compromised, leading to unau
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://flag-the-query.warmup.scc2025.ctf.rs/"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://flag-the-query.playground.cyberhero.rs/"
 flags:
-    - SCC{n0_sql_1njection}
+  - SCC{n0_sql_1njection}
 tags:
-    - scc2025-warmup
+  - scc2025-warmup

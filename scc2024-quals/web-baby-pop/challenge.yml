@@ -5,14 +5,14 @@ description: Fellow pwners love to ROP.. let's introduce it to the web!
 value: 500
 type: dynamic
 extra:
-    initial: 500
-    decay: 20
-    minimum: 50
-    function: logarithmic
-connection_info: "https://baby-pop.quals.scc2024.ctf.rs/login.php"
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://baby-pop.playground.cyberhero.rs/login.php"
 flags:
-    - SCC{W3lc0m3_t0_pHp_P0P_G4dg3ts}
+  - SCC{W3lc0m3_t0_pHp_P0P_G4dg3ts}
 tags:
-    - scc2024-quals
+  - scc2024-quals
 files:
-    - ./shared/web_babypop.zip
+  - ./shared/web_babypop.zip
