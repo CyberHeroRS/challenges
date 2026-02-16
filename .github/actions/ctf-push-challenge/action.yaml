@@ -28,7 +28,7 @@ runs:
         kubernetesTokenPath: /var/run/secrets/vault/token
         role: arc-github-actions-cyberhero-runner
         secrets: |
-          cluster/cyberhero/playground/token TOKEN | CTFD_TOKEN
+          cluster/data/cyberhero/playground/token TOKEN | CTFD_TOKEN
 
     - name: Setup Python
       uses: actions/setup-python@v5
