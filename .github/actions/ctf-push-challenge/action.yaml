@@ -9,7 +9,7 @@ inputs:
   ctfd_url:
     description: "Base URL of the CTFd instance"
     required: false
-    default: "http://ctfd.ctf-playground"
+    default: "https://playground.cyberhero.rs/"
 
   ctfcli_version:
     description: "Pinned ctfcli version"
