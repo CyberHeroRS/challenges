@@ -32,9 +32,6 @@ jobs:
           - dir: scc2025-warmup/web-im-a-spy-ama
           - dir: scc2025-warmup/web-len5
           - dir: scc2025-warmup/web-pill-challenge
-          - dir: scc2025-warmup/web-spy-me-level1
-          - dir: scc2025-warmup/web-spy-me-level2
-          - dir: scc2025-warmup/web-spy-me-level3
           - dir: scc2025-warmup/welcome-hello-world
 
     steps:
