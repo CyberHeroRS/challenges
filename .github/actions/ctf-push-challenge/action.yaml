@@ -48,7 +48,7 @@ runs:
         CTFD_TOKEN: ${{ steps.vault.outputs.CTFD_TOKEN }}
       run: |
         set -euo pipefail
-        printf '%s\n%s\ny\n' "$CTFD_URL" "$CTFD_TOKEN" | ctf ini
+        printf '%s\n%s\ny\n' "$CTFD_URL" "$CTFD_TOKEN" | ctf init
         if ! ctf challenge sync "${{ inputs.challenge_dir }}"; then
           ctf challenge install "${{ inputs.challenge_dir }}"
         fi
