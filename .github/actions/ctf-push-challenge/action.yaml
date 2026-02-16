@@ -19,17 +19,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Get playground token
-      id: vault
-      uses: hashicorp/vault-action@v3
-      with:
-        url: http://vault.vault:8200
-        method: kubernetes
-        kubernetesTokenPath: /var/run/secrets/vault/token
-        role: arc-github-actions-cyberhero-runner
-        secrets: |
-          cluster/data/cyberhero/playground/token TOKEN | CTFD_TOKEN
-
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
@@ -40,6 +29,34 @@ runs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install "ctfcli==${{ inputs.ctfcli_version }}"
+
+    - name: Run package.sh if present
+      shell: bash
+      run: |
+        set -euo pipefail
+        CHAL_DIR="${{ inputs.challenge_dir }}"
+
+        echo "Entering challenge dir: $CHAL_DIR"
+        cd "$CHAL_DIR"
+
+        if [ -f "./package.sh" ]; then
+          echo "package.sh found, executing..."
+          chmod +x ./package.sh
+          ./package.sh
+        else
+          echo "No package.sh found, skipping packaging step."
+        fi
+
+    - name: Get playground token
+      id: vault
+      uses: hashicorp/vault-action@v3
+      with:
+        url: http://vault.vault:8200
+        method: kubernetes
+        kubernetesTokenPath: /var/run/secrets/vault/token
+        role: arc-github-actions-cyberhero-runner
+        secrets: |
+          cluster/data/cyberhero/playground/token TOKEN | CTFD_TOKEN
 
     - name: Publish challenge (sync, fallback to install)
       shell: bash
