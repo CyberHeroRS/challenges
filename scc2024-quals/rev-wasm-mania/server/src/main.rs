@@ -1,6 +1,6 @@
 use leptos::*;
 use arc4::*;
-
+use leptos::prelude::*;
 
 fn main() {
     mount_to_body(|| {
@@ -54,9 +54,9 @@ fn check_flag(s: String) -> bool
     let key = get_key();
     let mut rc4 = new_rc4(&key);
     rc4.encrypt(&mut data);
-    
+
     let expected = get_encoded_flag();
-    
+
     compare_bytes(data, expected)
 }
 
@@ -66,7 +66,7 @@ fn check_flag(s: String) -> bool
 //     let key = get_key();
 //     let mut rc4 = new_rc4(&key);
 //     rc4.encrypt(&mut data);
-    
+
 //     let result = hex::encode(data);
 //     result
 // }
@@ -76,7 +76,7 @@ fn check_flag(s: String) -> bool
 pub fn FlagChecker(
     initial_value: String,
 ) -> impl IntoView {
-    
+
     let (value, set_value) = create_signal(initial_value);
     let (response, set_response) = create_signal("".to_owned());
     view! {
@@ -96,7 +96,7 @@ pub fn FlagChecker(
             }>"Check flag"</button>
             <br/>
             <span>{response}</span>
-            
+
         </div>
     }
 }

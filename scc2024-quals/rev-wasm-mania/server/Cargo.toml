@@ -6,4 +6,4 @@ edition = "2021"
 [dependencies]
 arc4 = "0.1.0"
 hex = "0.4.3"
-leptos = { version = "0.6.9", features = ["csr", "nightly"] }
+leptos = { version = "0.8.15", features = ["csr", "nightly"] }
