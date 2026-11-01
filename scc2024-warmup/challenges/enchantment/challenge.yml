@@ -1,0 +1,18 @@
+name: "enchantment"
+author: "Vucko"
+category: misc
+description: This is some strange language, I think I have seen it in my Minecraft playthrough.
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{BANEOFARTHROPODSV}
+tags:
+  - scc2024-warmup
+files:
+  - public/enchantment.pdf

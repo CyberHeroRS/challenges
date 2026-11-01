@@ -1,0 +1,18 @@
+name: "DS Homework"
+author: "Lazar Mancic"
+category: pwn
+description: I recently got my first data structures homework and I finished it very quickly, but when I sent it in for review the professor told me that I didn't listen during the lecture on special member functions in C++. He said that someone could hack my app, can you do it?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc ds-homework.playground.cyberhero.rs 9016
+flags:
+  - SCC{n3v3r_f0r637_70_0v3rl04d_c0py_45516nm3n7_0p3r470r!}
+tags:
+  - scc2024-quals
+files:
+  - public/pwn_ds_homework.zip

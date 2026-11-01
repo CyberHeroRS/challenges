@@ -1,0 +1,18 @@
+name: "PIN"
+author: "tampon"
+category: rev
+description: Do you have what it takes to uncover the elusive PIN required to crack this safe?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{b2b4a512-019a-4744-b8f7-d62ea5b4f8d8}
+tags:
+  - scc2024-warmup
+files:
+  - public/pin.zip

@@ -1,0 +1,19 @@
+name: "Side Quest"
+author: "Jovan Pavlovic"
+attribution: "Jovan Pavlovic"
+category: rev
+description: You must defeat the evil king and bring back peace.
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+flags:
+  - SCC{wh0_7h0u6h7_ch3351n6_w17h_51d3_ch4nn3l5_15_7h3_w4y_70_60}
+tags:
+  - scc2025-quals
+  - medium
+files:
+  - public/side-quest

@@ -1,0 +1,20 @@
+name: "AudioCloud"
+author: "jvvan"
+attribution: "jvvan"
+category: web
+description: "Are you an up-and-coming music artist? Come and upload your mp3 files to AudioCloud!"
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://audiocloud.playground.cyberhero.rs/"
+flags:
+  - SCC{1m_c0nfu53d_why_15_my_535510n_4n_mp3_f1l3}
+tags:
+  - scc2025-quals
+  - medium
+files:
+  - public/web-audiocloud.zip

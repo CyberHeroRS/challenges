@@ -1,0 +1,20 @@
+name: "GrafijaGuesser 9"
+author: "Gordic"
+attribution: "Gordic"
+category: osint
+description: "CyberHero decided to travel across Serbia and explore every corner of this beautiful land. During his journey, he loved taking pictures so he could always remember the places he liked or where he met new friends. He found one special photo but then remembered he forgot to save the coordinates where it was taken. Can you help him find the coordinates so he can return to his new friend's place? Enter the flag in the format SCC{XX.XXX,YY.YYY}."
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{45.240,19.822}
+tags:
+  - scc2025-quals
+  - medium
+files:
+  - public/image.jpg

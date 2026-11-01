@@ -12,116 +12,116 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: cry-hades
-            context: scc2025-quals/cry-hades/source
-            dockerfile: scc2025-quals/cry-hades/source/Dockerfile
+          - name: hades
+            context: scc2025-quals/challenges/hades/source
+            dockerfile: scc2025-quals/challenges/hades/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/cry-hades
 
-          - name: cry-hades-ii
-            context: scc2025-quals/cry-hades-ii/source
-            dockerfile: scc2025-quals/cry-hades-ii/source/Dockerfile
+          - name: hades-ii
+            context: scc2025-quals/challenges/hades-ii/source
+            dockerfile: scc2025-quals/challenges/hades-ii/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/cry-hades-ii
 
-          - name: cry-totally-fair-casino
-            context: scc2025-quals/cry-totally-fair-casino/source
-            dockerfile: scc2025-quals/cry-totally-fair-casino/source/Dockerfile
+          - name: totally-fair-casino
+            context: scc2025-quals/challenges/totally-fair-casino/source
+            dockerfile: scc2025-quals/challenges/totally-fair-casino/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/cry-totally-fair-casino
 
-          - name: cry-verified-messages
-            context: scc2025-quals/cry-verified-messages/source
-            dockerfile: scc2025-quals/cry-verified-messages/source/Dockerfile
+          - name: verified-messages
+            context: scc2025-quals/challenges/verified-messages/source
+            dockerfile: scc2025-quals/challenges/verified-messages/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/cry-verified-messages
 
-          - name: for-alarming-evidence
-            context: scc2025-quals/for-alarming-evidence/source
-            dockerfile: scc2025-quals/for-alarming-evidence/source/Dockerfile
+          - name: alarming-evidence
+            context: scc2025-quals/challenges/alarming-evidence/source
+            dockerfile: scc2025-quals/challenges/alarming-evidence/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/for-alarming-evidence
 
-          - name: pwn-aop1
-            context: scc2025-quals/pwn-aop1/source
-            dockerfile: scc2025-quals/pwn-aop1/source/Dockerfile
+          - name: aop1
+            context: scc2025-quals/challenges/aop1/source
+            dockerfile: scc2025-quals/challenges/aop1/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-aop1
 
-          - name: pwn-beus-levelx
-            context: scc2025-quals/pwn-beus-levelx/source
-            dockerfile: scc2025-quals/pwn-beus-levelx/source/Dockerfile
+          - name: beus-levelx
+            context: scc2025-quals/challenges/beus-levelx/source
+            dockerfile: scc2025-quals/challenges/beus-levelx/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-beus-levelx
 
-          - name: pwn-dos1
-            context: scc2025-quals/pwn-dos1/source
-            dockerfile: scc2025-quals/pwn-dos1/source/Dockerfile
+          - name: dos1
+            context: scc2025-quals/challenges/dos1/source
+            dockerfile: scc2025-quals/challenges/dos1/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-dos1
 
-          - name: pwn-dos2
-            context: scc2025-quals/pwn-dos2/source
-            dockerfile: scc2025-quals/pwn-dos2/source/Dockerfile
+          - name: dos2
+            context: scc2025-quals/challenges/dos2/source
+            dockerfile: scc2025-quals/challenges/dos2/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-dos2
 
-          - name: pwn-storage
-            context: scc2025-quals/pwn-storage/source
-            dockerfile: scc2025-quals/pwn-storage/source/Dockerfile
+          - name: storage
+            context: scc2025-quals/challenges/storage/source
+            dockerfile: scc2025-quals/challenges/storage/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-storage
 
-          - name: pwn-toddler-jumble
-            context: scc2025-quals/pwn-toddler-jumble/source
-            dockerfile: scc2025-quals/pwn-toddler-jumble/source/Dockerfile
+          - name: toddler-jumble
+            context: scc2025-quals/challenges/toddler-jumble/source
+            dockerfile: scc2025-quals/challenges/toddler-jumble/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-toddler-jumble
 
-          - name: pwn-toddler-jumble2
-            context: scc2025-quals/pwn-toddler-jumble2/source
-            dockerfile: scc2025-quals/pwn-toddler-jumble2/source/Dockerfile
+          - name: toddler-jumble2
+            context: scc2025-quals/challenges/toddler-jumble2/source
+            dockerfile: scc2025-quals/challenges/toddler-jumble2/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/pwn-toddler-jumble2
 
-          - name: web-audiocloud
-            context: scc2025-quals/web-audiocloud/source
-            dockerfile: scc2025-quals/web-audiocloud/source/Dockerfile
+          - name: audiocloud
+            context: scc2025-quals/challenges/audiocloud/source
+            dockerfile: scc2025-quals/challenges/audiocloud/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/web-audiocloud
 
-          - name: web-cyber-store
-            context: scc2025-quals/web-cyber-store/source
-            dockerfile: scc2025-quals/web-cyber-store/source/Dockerfile
+          - name: cyber-store
+            context: scc2025-quals/challenges/cyber-store/source
+            dockerfile: scc2025-quals/challenges/cyber-store/source/Dockerfile
             image: registry.ctf.rs/scc2025-quals/web-cyber-store
 
           # ---- multi-image challenges ----
 
-          - name: web-doomer-web
-            context: scc2025-quals/web-doomer/source
-            dockerfile: scc2025-quals/web-doomer/source/Dockerfile.web
+          - name: doomer-web
+            context: scc2025-quals/challenges/doomer/source
+            dockerfile: scc2025-quals/challenges/doomer/source/Dockerfile.web
             image: registry.ctf.rs/scc2025-quals/web-doomer-web
 
-          - name: web-doomer-bot
-            context: scc2025-quals/web-doomer/source
-            dockerfile: scc2025-quals/web-doomer/source/Dockerfile.bot
+          - name: doomer-bot
+            context: scc2025-quals/challenges/doomer/source
+            dockerfile: scc2025-quals/challenges/doomer/source/Dockerfile.bot
             image: registry.ctf.rs/scc2025-quals/web-doomer-bot
 
-          - name: web-doomer-db
-            context: scc2025-quals/web-doomer/source
-            dockerfile: scc2025-quals/web-doomer/source/Dockerfile.db
+          - name: doomer-db
+            context: scc2025-quals/challenges/doomer/source
+            dockerfile: scc2025-quals/challenges/doomer/source/Dockerfile.db
             image: registry.ctf.rs/scc2025-quals/web-doomer-db
 
-          - name: web-spy-me-level1-web
-            context: scc2025-quals/web-spy-me-level1/source
-            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.web
+          - name: spy-me-level1-web
+            context: scc2025-quals/challenges/spy-me-level1/source
+            dockerfile: scc2025-quals/challenges/spy-me-level1/source/Dockerfile.web
             image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-web
 
-          - name: web-spy-me-level1-bot
-            context: scc2025-quals/web-spy-me-level1/source
-            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.bot
+          - name: spy-me-level1-bot
+            context: scc2025-quals/challenges/spy-me-level1/source
+            dockerfile: scc2025-quals/challenges/spy-me-level1/source/Dockerfile.bot
             image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-bot
 
-          - name: web-spy-me-level1-db
-            context: scc2025-quals/web-spy-me-level1/source
-            dockerfile: scc2025-quals/web-spy-me-level1/source/Dockerfile.db
+          - name: spy-me-level1-db
+            context: scc2025-quals/challenges/spy-me-level1/source
+            dockerfile: scc2025-quals/challenges/spy-me-level1/source/Dockerfile.db
             image: registry.ctf.rs/scc2025-quals/web-spy-me-level1-db
 
-          - name: web-waffles-waf
-            context: scc2025-quals/web-waffles/source/waf
-            dockerfile: scc2025-quals/web-waffles/source/waf/Dockerfile
+          - name: waffles-waf
+            context: scc2025-quals/challenges/waffles/source/waf
+            dockerfile: scc2025-quals/challenges/waffles/source/waf/Dockerfile
             image: registry.ctf.rs/scc2025-quals/web-waffles-waf
 
-          - name: web-waffles-app
-            context: scc2025-quals/web-waffles/source/waffles
-            dockerfile: scc2025-quals/web-waffles/source/waffles/Dockerfile
+          - name: waffles-app
+            context: scc2025-quals/challenges/waffles/source/waffles
+            dockerfile: scc2025-quals/challenges/waffles/source/waffles/Dockerfile
             image: registry.ctf.rs/scc2025-quals/web-waffles-app
 
     steps:

@@ -1,0 +1,18 @@
+name: "Meta Hero"
+author: "Krsman"
+category: forensics
+description: Members of CyberHero love to leave hidden messages everywhere. Can you uncover the secret behind their logo?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{3x1f7o0l_15_JU57_5UP3r10r!!}
+tags:
+  - scc2024-warmup
+files:
+  - public/meta_hero.png

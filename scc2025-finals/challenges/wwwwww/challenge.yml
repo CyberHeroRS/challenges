@@ -1,0 +1,23 @@
+name: "wwwwww"
+author: "Riggle"
+category: "rev"
+
+description: |
+  Did you know this is how you write "lol" in Japanese
+type: "dynamic"
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+
+connection_info: nc wwwwww.playground.cyberhero.rs 9207
+
+files:
+  - public/wwwwww
+flags:
+  - "SCC{Congr4ts_y0u_h4ve_M4d3_1t_But_l0st_the_Gam3_in_The_Proce55}"
+tags: []
+
+state: "visible"
+version: "0.1"

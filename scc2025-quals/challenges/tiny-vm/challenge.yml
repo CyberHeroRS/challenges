@@ -1,0 +1,19 @@
+name: "Tiny VM"
+author: "Jovan Pavlovic"
+attribution: "Jovan Pavlovic"
+category: rev
+description: They say solving VM challenges is really hard — but is it?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+flags:
+  - SCC{vms_arent_so_hard!}
+tags:
+  - scc2025-quals
+  - medium
+files:
+  - public/tiny-vm.py

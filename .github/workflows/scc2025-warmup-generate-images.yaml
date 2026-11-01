@@ -12,76 +12,76 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: cry-cards-act-ii
-            context: scc2025-warmup/cry-cards-act-ii/source
-            dockerfile: scc2025-warmup/cry-cards-act-ii/source/Dockerfile
+          - name: cards-act-ii
+            context: scc2025-warmup/challenges/cards-act-ii/source
+            dockerfile: scc2025-warmup/challenges/cards-act-ii/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/cry-cards-act-ii
 
-          - name: misc-secpwdgen
-            context: scc2025-warmup/misc-secpwdgen/source
-            dockerfile: scc2025-warmup/misc-secpwdgen/source/Dockerfile
+          - name: secpwdgen
+            context: scc2025-warmup/challenges/secpwdgen/source
+            dockerfile: scc2025-warmup/challenges/secpwdgen/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/misc-secpwdgen
 
-          - name: pwn-beus-level1
-            context: scc2025-warmup/pwn-beus-level1/source
-            dockerfile: scc2025-warmup/pwn-beus-level1/source/Dockerfile
+          - name: beus-level1
+            context: scc2025-warmup/challenges/beus-level1/source
+            dockerfile: scc2025-warmup/challenges/beus-level1/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/pwn-beus-level1
 
-          - name: pwn-beus-level2
-            context: scc2025-warmup/pwn-beus-level2/source
-            dockerfile: scc2025-warmup/pwn-beus-level2/source/Dockerfile
+          - name: beus-level2
+            context: scc2025-warmup/challenges/beus-level2/source
+            dockerfile: scc2025-warmup/challenges/beus-level2/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/pwn-beus-level2
 
-          - name: pwn-cards
-            context: scc2025-warmup/pwn-cards/source
-            dockerfile: scc2025-warmup/pwn-cards/source/Dockerfile
+          - name: cards
+            context: scc2025-warmup/challenges/cards/source
+            dockerfile: scc2025-warmup/challenges/cards/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/pwn-cards
 
-          - name: pwn-fancy-restaurant
-            context: scc2025-warmup/pwn-fancy-restaurant/source
-            dockerfile: scc2025-warmup/pwn-fancy-restaurant/source/Dockerfile
+          - name: fancy-restaurant
+            context: scc2025-warmup/challenges/fancy-restaurant/source
+            dockerfile: scc2025-warmup/challenges/fancy-restaurant/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/pwn-fancy-restaurant
 
-          - name: pwn-maze-simulation
-            context: scc2025-warmup/pwn-maze-simulation/source
-            dockerfile: scc2025-warmup/pwn-maze-simulation/source/Dockerfile
+          - name: maze-simulation
+            context: scc2025-warmup/challenges/maze-simulation/source
+            dockerfile: scc2025-warmup/challenges/maze-simulation/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/pwn-maze-simulation
 
-          - name: web-im-a-spy-ama
-            context: scc2025-warmup/web-im-a-spy-ama/source
-            dockerfile: scc2025-warmup/web-im-a-spy-ama/source/Dockerfile
+          - name: im-a-spy-ama
+            context: scc2025-warmup/challenges/im-a-spy-ama/source
+            dockerfile: scc2025-warmup/challenges/im-a-spy-ama/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/web-im-a-spy-ama
 
-          - name: web-len5
-            context: scc2025-warmup/web-len5/source
-            dockerfile: scc2025-warmup/web-len5/source/Dockerfile
+          - name: len5
+            context: scc2025-warmup/challenges/len5/source
+            dockerfile: scc2025-warmup/challenges/len5/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/web-len5
 
-          - name: web-pill-challenge
-            context: scc2025-warmup/web-pill-challenge/source
-            dockerfile: scc2025-warmup/web-pill-challenge/source/Dockerfile
+          - name: pill-challenge
+            context: scc2025-warmup/challenges/pill-challenge/source
+            dockerfile: scc2025-warmup/challenges/pill-challenge/source/Dockerfile
             image: registry.ctf.rs/scc2025-warmup/web-pill-challenge
 
           # ---- multi-image challenges ----
 
-          - name: web-cross-app
-            context: scc2025-warmup/web-cross/source
-            dockerfile: scc2025-warmup/web-cross/source/Dockerfile.app
+          - name: cross-app
+            context: scc2025-warmup/challenges/cross/source
+            dockerfile: scc2025-warmup/challenges/cross/source/Dockerfile.app
             image: registry.ctf.rs/scc2025-warmup/web-cross-app
 
-          - name: web-cross-bot
-            context: scc2025-warmup/web-cross/source
-            dockerfile: scc2025-warmup/web-cross/source/Dockerfile.bot
+          - name: cross-bot
+            context: scc2025-warmup/challenges/cross/source
+            dockerfile: scc2025-warmup/challenges/cross/source/Dockerfile.bot
             image: registry.ctf.rs/scc2025-warmup/web-cross-bot
 
-          - name: web-flag-the-query-app
-            context: scc2025-warmup/web-flag-the-query/source
-            dockerfile: scc2025-warmup/web-flag-the-query/source/Dockerfile.app
+          - name: flag-the-query-app
+            context: scc2025-warmup/challenges/flag-the-query/source
+            dockerfile: scc2025-warmup/challenges/flag-the-query/source/Dockerfile.app
             image: registry.ctf.rs/scc2025-warmup/web-flag-the-query-app
 
-          - name: web-flag-the-query-db
-            context: scc2025-warmup/web-flag-the-query/source
-            dockerfile: scc2025-warmup/web-flag-the-query/source/Dockerfile.db
+          - name: flag-the-query-db
+            context: scc2025-warmup/challenges/flag-the-query/source
+            dockerfile: scc2025-warmup/challenges/flag-the-query/source/Dockerfile.db
             image: registry.ctf.rs/scc2025-warmup/web-flag-the-query-db
     steps:
       - name: Checkout repository

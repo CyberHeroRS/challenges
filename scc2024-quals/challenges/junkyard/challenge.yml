@@ -1,0 +1,18 @@
+name: "Junkyard"
+author: "tampon"
+category: rev
+description: Could you please sort out this trash for me?<br>I will bestow you with a reward.
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{w1nd0w5_p1u5_c_p1u5_p1u5_my_f4v0u2173}
+tags:
+  - scc2024-quals
+files:
+  - public/Junkyard.zip

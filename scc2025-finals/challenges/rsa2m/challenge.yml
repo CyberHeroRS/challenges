@@ -1,0 +1,17 @@
+name: "RSA 2M"
+author: "DragonSec SI"
+category: "crypto"
+description: "Bigger is better."
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+flags:
+  - "SCC{Does_your_qunatum_supercomputer_have_enough_Q-bits?}"
+tags: []
+files:
+  - public/rsa2m.py
+  - public/output.txt

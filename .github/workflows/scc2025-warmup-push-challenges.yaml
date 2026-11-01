@@ -12,27 +12,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dir: scc2025-warmup/cry-cards-act-ii
-          - dir: scc2025-warmup/cry-exponents
-          - dir: scc2025-warmup/cry-gods-and-monsters
-          - dir: scc2025-warmup/cry-lets-create-generators
-          - dir: scc2025-warmup/cry-lets-create-generators-again
-          - dir: scc2025-warmup/forensics-secret-archives
-          - dir: scc2025-warmup/misc-secpwdgen
-          - dir: scc2025-warmup/pwn-beus-level1
-          - dir: scc2025-warmup/pwn-beus-level2
-          - dir: scc2025-warmup/pwn-cards
-          - dir: scc2025-warmup/pwn-fancy-restaurant
-          - dir: scc2025-warmup/pwn-maze-simulation
-          - dir: scc2025-warmup/rev-encryptor
-          - dir: scc2025-warmup/rev-mamba
-          - dir: scc2025-warmup/rev-vault
-          - dir: scc2025-warmup/web-cross
-          - dir: scc2025-warmup/web-flag-the-query
-          - dir: scc2025-warmup/web-im-a-spy-ama
-          - dir: scc2025-warmup/web-len5
-          - dir: scc2025-warmup/web-pill-challenge
-          - dir: scc2025-warmup/welcome-hello-world
+          - dir: scc2025-warmup/challenges/cards-act-ii
+          - dir: scc2025-warmup/challenges/exponents
+          - dir: scc2025-warmup/challenges/gods-and-monsters
+          - dir: scc2025-warmup/challenges/lets-create-generators
+          - dir: scc2025-warmup/challenges/lets-create-generators-again
+          - dir: scc2025-warmup/challenges/secret-archives
+          - dir: scc2025-warmup/challenges/secpwdgen
+          - dir: scc2025-warmup/challenges/beus-level1
+          - dir: scc2025-warmup/challenges/beus-level2
+          - dir: scc2025-warmup/challenges/cards
+          - dir: scc2025-warmup/challenges/fancy-restaurant
+          - dir: scc2025-warmup/challenges/maze-simulation
+          - dir: scc2025-warmup/challenges/encryptor
+          - dir: scc2025-warmup/challenges/mamba
+          - dir: scc2025-warmup/challenges/vault
+          - dir: scc2025-warmup/challenges/cross
+          - dir: scc2025-warmup/challenges/flag-the-query
+          - dir: scc2025-warmup/challenges/im-a-spy-ama
+          - dir: scc2025-warmup/challenges/len5
+          - dir: scc2025-warmup/challenges/pill-challenge
+          - dir: scc2025-warmup/challenges/hello-world
 
     steps:
       - name: Checkout repository

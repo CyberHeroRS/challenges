@@ -1,0 +1,20 @@
+name: "Toddler Jumble"
+author: "k4"
+attribution: "k4"
+category: pwn
+description: Easiest challenge I've ever seen
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc toddler-jumble.playground.cyberhero.rs 9105
+flags:
+  - SCC{even_a_baby_could_solve_this}
+tags:
+  - scc2025-quals
+  - medium
+files:
+  - public/pwn-toddler-jumble.zip

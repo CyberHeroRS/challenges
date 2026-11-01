@@ -1,0 +1,20 @@
+name: "Cyber Store"
+author: "jvvan"
+attribution: "jvvan"
+category: web
+description: "Welcome to the Cyber Store - your one-stop shop for cyber security tools! Can you try ordering something?"
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://cyber-store.playground.cyberhero.rs/"
+flags:
+  - SCC{wh0_kn3w_pdf5_c0uld_r34d_f1l35}
+tags:
+  - scc2025-quals
+  - easy
+files:
+  - public/web-cyber-store.zip

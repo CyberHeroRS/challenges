@@ -1,0 +1,18 @@
+name: "Serbian ROP"
+author: "Lazar Mancic"
+category: pwn
+description: Did you know that Serbia has its own ROP? Can you figure it out?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc serbian-rop.playground.cyberhero.rs 9021
+flags:
+  - SCC{d1d_y0u_kn0w_7h47_5r0p_m34n5_53rb14n_r0p!}
+tags:
+  - scc2024-quals
+files:
+  - public/pwn_serbian_rop.zip

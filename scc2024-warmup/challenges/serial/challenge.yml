@@ -1,0 +1,18 @@
+name: "Serial"
+author: "tampon"
+category: rev
+description: Step into the world of licensing and reverse engineering and put your problem-solving skills to the test. Can you crack the serial to obtain the flag?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{e2355e7d-dd68-4c9e-914c-28f62abaa995}
+tags:
+  - scc2024-warmup
+files:
+  - public/serial.zip

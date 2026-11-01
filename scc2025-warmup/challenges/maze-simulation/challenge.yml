@@ -1,0 +1,18 @@
+name: "Maze Simulation"
+author: "k4"
+category: pwn
+description: Can you think outside of the box?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc maze-simulation.playground.cyberhero.rs 9011
+flags:
+  - SCC{h0w_d0_1_f0rm4t_th1s?_s50r3b04rd}
+tags:
+  - scc2025-warmup
+files:
+  - public/pwn_maze_simulation.zip

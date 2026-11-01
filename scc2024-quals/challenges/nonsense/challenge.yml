@@ -1,0 +1,18 @@
+name: "nosense"
+author: "mirko"
+category: crypto
+description: What will mathematicians not invent?? I thought Diffie Hellman Key Exchange can be done only on numbers??!?!?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{th1s_r3qu1r3d_s0m3_kn0wl3dg3_1n_m4ths???}
+tags:
+  - scc2024-quals
+files:
+  - public/nonsense.zip

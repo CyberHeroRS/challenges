@@ -1,0 +1,18 @@
+name: "Ghostwriter Mystery"
+author: "Krsman"
+category: forensics
+description: In the dimly lit corners of the digital realm, a specter of the past has left whispers in the wind. "Ghostwriter Mystery" beckons CyberHero to unveil secrets encrypted within the silent dance of keys. Dare to decipher the ghostly script, and unearth truths buried beneath the echoes of a forgotten stroke.
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{3cho35_0f_7h3_51l3nt_9h057wr173r}
+tags:
+  - scc2024-quals
+files:
+  - public/forensics_ghostwriter.zip

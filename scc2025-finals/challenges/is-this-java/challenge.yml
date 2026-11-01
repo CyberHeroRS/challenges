@@ -1,0 +1,18 @@
+name: "Is this Java?"
+author: "DragonSec SI"
+category: "rev"
+
+description: I refuse to believe this was written in anything else.
+connection_info: nc isthisjava.playground.cyberhero.rs 9206
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+files:
+  - public/isthisjava
+flags:
+  - "SCC{Th1s_h4s_t0_b3_th3_w0rst_w4y_t0_r3pr3s3nt_4_gr4ph}"
+tags: []

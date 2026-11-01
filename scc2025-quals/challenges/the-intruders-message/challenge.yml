@@ -1,0 +1,20 @@
+name: "The Intruder's Message"
+author: "Gordic"
+attribution: "Gordic"
+category: forensics
+description: "It was a bright, sunny morning when Cyber Hero, an experienced security analyst at Infinity Security Solutions, was jolted awake by his phone’s ringtone. On the other end was his longtime friend Andrew, who sounded uneasy. Andrew quickly explained that something was off with their network and urged Cyber Hero to check his email immediately. Without hesitation, Cyber Hero dashed to his laptop, only to find a very strange email waiting for him. Now, he has turned to you, a cybersecurity expert, to help protect his network. The fate of his system rests in your hands."
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{1n7rud3r_unm45k3d}
+tags:
+  - scc2025-quals
+  - very-easy
+files:
+  - public/email.eml

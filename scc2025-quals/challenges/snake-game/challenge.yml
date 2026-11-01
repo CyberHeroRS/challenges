@@ -1,0 +1,19 @@
+name: "Snake Game"
+author: "tampon"
+attribution: "tampon"
+category: rev
+description: Feed the snake and obtain the flag. As simple as that.
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+flags:
+  - SCC{5n4k3_g4m1ng_d31ux3}
+tags:
+  - scc2025-quals
+  - easy
+files:
+  - public/snake_game

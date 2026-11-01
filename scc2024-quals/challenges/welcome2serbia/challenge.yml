@@ -1,0 +1,18 @@
+name: "Welcome2Serbia"
+author: "Gordic"
+category: web
+description: Discover Serbia through our website, designed for visitors. We opted for files instead of a database for simplicity. It's secure, right?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: "https://welcome2serbia.playground.cyberhero.rs/"
+flags:
+  - SCC{W3Lc0m3_70_7h3_LAnD_0F_h1570RY_and_CUl7uR3}
+tags:
+  - scc2024-quals
+files:
+  - public/web_welcome2serbia.zip

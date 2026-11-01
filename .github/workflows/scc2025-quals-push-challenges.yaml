@@ -12,47 +12,47 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dir: scc2025-quals/cry-hades
-          - dir: scc2025-quals/cry-hades-ii
-          - dir: scc2025-quals/cry-totally-fair-casino
-          - dir: scc2025-quals/cry-verified-messages
+          - dir: scc2025-quals/challenges/hades
+          - dir: scc2025-quals/challenges/hades-ii
+          - dir: scc2025-quals/challenges/totally-fair-casino
+          - dir: scc2025-quals/challenges/verified-messages
 
-          - dir: scc2025-quals/for-alarming-evidence
-          - dir: scc2025-quals/for-cells-of-deception
-          - dir: scc2025-quals/for-the-intruders-message
-          - dir: scc2025-quals/for-unseen-breach
+          - dir: scc2025-quals/challenges/alarming-evidence
+          - dir: scc2025-quals/challenges/cells-of-deception
+          - dir: scc2025-quals/challenges/the-intruders-message
+          - dir: scc2025-quals/challenges/unseen-breach
 
-          - dir: scc2025-quals/hw-lost-in-pixels
+          - dir: scc2025-quals/challenges/lost-in-pixels
 
-          - dir: scc2025-quals/osint-grafijaguesser6
-          - dir: scc2025-quals/osint-grafijaguesser7
-          - dir: scc2025-quals/osint-grafijaguesser8
-          - dir: scc2025-quals/osint-grafijaguesser9
+          - dir: scc2025-quals/challenges/grafijaguesser6
+          - dir: scc2025-quals/challenges/grafijaguesser7
+          - dir: scc2025-quals/challenges/grafijaguesser8
+          - dir: scc2025-quals/challenges/grafijaguesser9
 
-          - dir: scc2025-quals/pwn-aop1
-          - dir: scc2025-quals/pwn-beus-levelx
-          - dir: scc2025-quals/pwn-dos1
-          - dir: scc2025-quals/pwn-dos2
-          - dir: scc2025-quals/pwn-storage
-          - dir: scc2025-quals/pwn-toddler-jumble
-          - dir: scc2025-quals/pwn-toddler-jumble2
+          - dir: scc2025-quals/challenges/aop1
+          - dir: scc2025-quals/challenges/beus-levelx
+          - dir: scc2025-quals/challenges/dos1
+          - dir: scc2025-quals/challenges/dos2
+          - dir: scc2025-quals/challenges/storage
+          - dir: scc2025-quals/challenges/toddler-jumble
+          - dir: scc2025-quals/challenges/toddler-jumble2
 
-          - dir: scc2025-quals/rev-clicker-revenge
-          - dir: scc2025-quals/rev-discombobulation
-          - dir: scc2025-quals/rev-raid
-          - dir: scc2025-quals/rev-side-quest
-          - dir: scc2025-quals/rev-sigill
-          - dir: scc2025-quals/rev-snake-game
-          - dir: scc2025-quals/rev-tiny-vm
+          - dir: scc2025-quals/challenges/clicker-revenge
+          - dir: scc2025-quals/challenges/discombobulation
+          - dir: scc2025-quals/challenges/raid
+          - dir: scc2025-quals/challenges/side-quest
+          - dir: scc2025-quals/challenges/sigill
+          - dir: scc2025-quals/challenges/snake-game
+          - dir: scc2025-quals/challenges/tiny-vm
 
-          - dir: scc2025-quals/sanity-check
+          - dir: scc2025-quals/challenges/sanity-check
 
-          - dir: scc2025-quals/web-audiocloud
-          - dir: scc2025-quals/web-cyber-store
-          - dir: scc2025-quals/web-doomer
-          - dir: scc2025-quals/web-spy-me-level1
-          - dir: scc2025-quals/web-spy-me-level2
-          - dir: scc2025-quals/web-waffles
+          - dir: scc2025-quals/challenges/audiocloud
+          - dir: scc2025-quals/challenges/cyber-store
+          - dir: scc2025-quals/challenges/doomer
+          - dir: scc2025-quals/challenges/spy-me-level1
+          - dir: scc2025-quals/challenges/spy-me-level2
+          - dir: scc2025-quals/challenges/waffles
 
     steps:
       - name: Checkout repository

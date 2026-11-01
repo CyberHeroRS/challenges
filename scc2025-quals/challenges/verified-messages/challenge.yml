@@ -1,0 +1,21 @@
+name: "Verified messages"
+author: "Pimpest"
+attribution: "Pimpest"
+category: crypto
+description: "If you see this message please contact an admin"
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc verified-messages.playground.cyberhero.rs 9112
+flags:
+  - SCC{4dmin_4sked_m3_wh4ts_a_P0p_g4dg3t__321_sk1d}
+tags:
+  - scc2025-quals
+  - easy
+files:
+  - public/server.py
+  - public/requirments.txt

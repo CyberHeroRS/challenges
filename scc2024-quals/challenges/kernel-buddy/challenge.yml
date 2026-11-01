@@ -1,0 +1,18 @@
+name: "Kernel Buddy"
+author: "Vucko"
+category: pwn
+description: You bored your buddy too much, so he created a Linux kernel driver just to keep you away. Can you uncover the secret message he left for you?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc kernel_buddy.playground.cyberhero.rs 9019
+flags:
+  - SCC{y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15}
+tags:
+  - scc2024-quals
+files:
+  - public/pwn_kernel_buddy.zip

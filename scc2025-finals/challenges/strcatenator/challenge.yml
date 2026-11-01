@@ -1,0 +1,20 @@
+name: Strcatenator
+author: DragonSec SI
+category: pwn
+
+description: This program just concatenates strings. Do you really want to know more?
+connection_info: nc strcatenator.playground.cyberhero.rs 9205
+
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+
+files:
+  - public/pwn-strcatenator.zip
+flags:
+  - SCC{aa11d145-c727-4f8c-acf5-5f444cea7e94}
+tags: []

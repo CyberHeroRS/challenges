@@ -1,0 +1,19 @@
+name: "Monochrome"
+author: "DragonSec SI"
+category: "misc"
+
+description: All the best things come in pairs.
+
+value: 500
+type: "dynamic"
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+
+files:
+  - public/capture.pcapng
+flags:
+  - "SCC{HIDHIDHURA}"
+tags: []

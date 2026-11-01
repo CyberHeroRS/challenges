@@ -12,50 +12,50 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dir: scc2024-quals/crypto-bitten
-          - dir: scc2024-quals/crypto-live-laugh-love
-          - dir: scc2024-quals/crypto-nonsense
-          - dir: scc2024-quals/crypto-rsapq
-          - dir: scc2024-quals/crypto-solar-ellipse
-          - dir: scc2024-quals/crypto-the-three-encryption-problem
+          - dir: scc2024-quals/challenges/bitten
+          - dir: scc2024-quals/challenges/live-laugh-love
+          - dir: scc2024-quals/challenges/nonsense
+          - dir: scc2024-quals/challenges/rsapq
+          - dir: scc2024-quals/challenges/solar-ellipse
+          - dir: scc2024-quals/challenges/the-three-encryption-problem
 
-          - dir: scc2024-quals/forensics-ghost-activity
-          - dir: scc2024-quals/forensics-ghostwriter-mystery
-          - dir: scc2024-quals/forensics-rocket-science
-          - dir: scc2024-quals/forensics-space-echoes
-          - dir: scc2024-quals/forensics-spookier-macro
-          - dir: scc2024-quals/forensics-vacation-nightmare
-          - dir: scc2024-quals/forensics-what-does-the-fox-say
+          - dir: scc2024-quals/challenges/ghost-activity
+          - dir: scc2024-quals/challenges/ghostwriter-mystery
+          - dir: scc2024-quals/challenges/rocket-science
+          - dir: scc2024-quals/challenges/space-echoes
+          - dir: scc2024-quals/challenges/spookier-macro
+          - dir: scc2024-quals/challenges/vacation-nightmare
+          - dir: scc2024-quals/challenges/what-does-the-fox-say
 
-          - dir: scc2024-quals/misc-alien-communication
-          - dir: scc2024-quals/misc-slaga1337za
+          - dir: scc2024-quals/challenges/alien-communication
+          - dir: scc2024-quals/challenges/slaga1337za
 
-          - dir: scc2024-quals/osint-grafija-guessr-1
-          - dir: scc2024-quals/osint-grafija-guessr-2
-          - dir: scc2024-quals/osint-grafija-guessr-3
+          - dir: scc2024-quals/challenges/grafija-guessr-1
+          - dir: scc2024-quals/challenges/grafija-guessr-2
+          - dir: scc2024-quals/challenges/grafija-guessr-3
 
-          - dir: scc2024-quals/pwn-ds-homework
-          - dir: scc2024-quals/pwn-efficient-todo
-          - dir: scc2024-quals/pwn-hansel-and-gretel
-          - dir: scc2024-quals/pwn-kernel-buddy
-          - dir: scc2024-quals/pwn-outer-product
-          - dir: scc2024-quals/pwn-serbian-rop
+          - dir: scc2024-quals/challenges/ds-homework
+          - dir: scc2024-quals/challenges/efficient-todo
+          - dir: scc2024-quals/challenges/hansel-and-gretel
+          - dir: scc2024-quals/challenges/kernel-buddy
+          - dir: scc2024-quals/challenges/outer-product
+          - dir: scc2024-quals/challenges/serbian-rop
 
-          - dir: scc2024-quals/rev-clicker-game
-          - dir: scc2024-quals/rev-cxorruption
-          - dir: scc2024-quals/rev-elf-patrol
-          - dir: scc2024-quals/rev-junkyard
-          - dir: scc2024-quals/rev-riscy-encryptor
-          - dir: scc2024-quals/rev-vmderful
-          - dir: scc2024-quals/rev-wasm-mania
+          - dir: scc2024-quals/challenges/clicker-game
+          - dir: scc2024-quals/challenges/cxorruption
+          - dir: scc2024-quals/challenges/elf-patrol
+          - dir: scc2024-quals/challenges/junkyard
+          - dir: scc2024-quals/challenges/riscy-encryptor
+          - dir: scc2024-quals/challenges/vmderful
+          - dir: scc2024-quals/challenges/wasm-mania
 
-          - dir: scc2024-quals/web-baby-pop
-          - dir: scc2024-quals/web-ecology
-          - dir: scc2024-quals/web-long-note
-          - dir: scc2024-quals/web-loooose
-          - dir: scc2024-quals/web-neglegentia
-          - dir: scc2024-quals/web-see-in-the-dark
-          - dir: scc2024-quals/web-welcome2serbia
+          - dir: scc2024-quals/challenges/baby-pop
+          - dir: scc2024-quals/challenges/ecology
+          - dir: scc2024-quals/challenges/long-note
+          - dir: scc2024-quals/challenges/loooose
+          - dir: scc2024-quals/challenges/neglegentia
+          - dir: scc2024-quals/challenges/see-in-the-dark
+          - dir: scc2024-quals/challenges/welcome2serbia
 
     steps:
       - name: Checkout repository

@@ -12,76 +12,76 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: crypto-fair-casino
-            context: scc2025-finals/crypto-fair-casino
-            dockerfile: scc2025-finals/crypto-fair-casino/Dockerfile
+          - name: fair-casino
+            context: scc2025-finals/challenges/fair-casino/source
+            dockerfile: scc2025-finals/challenges/fair-casino/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/crypto-fair-casino
 
-          - name: crypto-xor-me-many-times
-            context: scc2025-finals/crypto-xor-me-many-times
-            dockerfile: scc2025-finals/crypto-xor-me-many-times/Dockerfile
+          - name: xor-me-many-times
+            context: scc2025-finals/challenges/xor-me-many-times/source
+            dockerfile: scc2025-finals/challenges/xor-me-many-times/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/crypto-xor-me-many-times
 
-          - name: misc-bee-punctual
-            context: scc2025-finals/misc-bee-punctual
-            dockerfile: scc2025-finals/misc-bee-punctual/Dockerfile
+          - name: bee-punctual
+            context: scc2025-finals/challenges/bee-punctual/source
+            dockerfile: scc2025-finals/challenges/bee-punctual/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/misc-bee-punctual
 
-          - name: pwn-notary
-            context: scc2025-finals/pwn-notary/source
-            dockerfile: scc2025-finals/pwn-notary/source/Dockerfile
+          - name: notary
+            context: scc2025-finals/challenges/notary/source
+            dockerfile: scc2025-finals/challenges/notary/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/pwn-notary
 
-          - name: pwn-shootingrange
-            context: scc2025-finals/pwn-shootingrange/source
-            dockerfile: scc2025-finals/pwn-shootingrange/source/Dockerfile
+          - name: shootingrange
+            context: scc2025-finals/challenges/shootingrange/source
+            dockerfile: scc2025-finals/challenges/shootingrange/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/pwn-shootingrange
 
-          - name: pwn-strcatenator
-            context: scc2025-finals/pwn-strcatenator/src
-            dockerfile: scc2025-finals/pwn-strcatenator/src/Dockerfile
+          - name: strcatenator
+            context: scc2025-finals/challenges/strcatenator/source
+            dockerfile: scc2025-finals/challenges/strcatenator/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/pwn-strcatenator
 
-          - name: rev-is-this-java
-            context: scc2025-finals/rev-is-this-java
-            dockerfile: scc2025-finals/rev-is-this-java/Dockerfile
+          - name: is-this-java
+            context: scc2025-finals/challenges/is-this-java/source
+            dockerfile: scc2025-finals/challenges/is-this-java/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/rev-is-this-java
 
-          - name: rev-wwwwww
-            context: scc2025-finals/rev-wwwwww
-            dockerfile: scc2025-finals/rev-wwwwww/Dockerfile
+          - name: wwwwww
+            context: scc2025-finals/challenges/wwwwww/source
+            dockerfile: scc2025-finals/challenges/wwwwww/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/rev-wwwwww
 
-          - name: web-git-bin
-            context: scc2025-finals/web-git-bin/hosting
-            dockerfile: scc2025-finals/web-git-bin/hosting/Dockerfile
+          - name: git-bin
+            context: scc2025-finals/challenges/git-bin/source
+            dockerfile: scc2025-finals/challenges/git-bin/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/web-git-bin
 
           # ---- web-glitch-snitch is multi-image ----
-          - name: web-glitch-snitch
-            context: scc2025-finals/web-glitch-snitch/hosting
-            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile
+          - name: glitch-snitch
+            context: scc2025-finals/challenges/glitch-snitch/source
+            dockerfile: scc2025-finals/challenges/glitch-snitch/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/web-glitch-snitch
 
-          - name: web-glitch-snitch-backend
-            context: scc2025-finals/web-glitch-snitch/hosting
-            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile.backend
+          - name: glitch-snitch-backend
+            context: scc2025-finals/challenges/glitch-snitch/source
+            dockerfile: scc2025-finals/challenges/glitch-snitch/source/Dockerfile.backend
             image: registry.ctf.rs/scc2025-finals/web-glitch-snitch-backend
 
-          - name: web-glitch-snitch-frontend
-            context: scc2025-finals/web-glitch-snitch/hosting
-            dockerfile: scc2025-finals/web-glitch-snitch/hosting/Dockerfile.frontend
+          - name: glitch-snitch-frontend
+            context: scc2025-finals/challenges/glitch-snitch/source
+            dockerfile: scc2025-finals/challenges/glitch-snitch/source/Dockerfile.frontend
             image: registry.ctf.rs/scc2025-finals/web-glitch-snitch-frontend
 
           # ---- web-intranet9000 is multi-image ----
-          - name: web-intranet9000
-            context: scc2025-finals/web-intranet9000/source
-            dockerfile: scc2025-finals/web-intranet9000/source/Dockerfile
+          - name: intranet9000
+            context: scc2025-finals/challenges/intranet9000/source
+            dockerfile: scc2025-finals/challenges/intranet9000/source/Dockerfile
             image: registry.ctf.rs/scc2025-finals/web-intranet9000
 
-          - name: web-intranet9000-mongo
-            context: scc2025-finals/web-intranet9000/source
-            dockerfile: scc2025-finals/web-intranet9000/source/Dockerfile.mongo
+          - name: intranet9000-mongo
+            context: scc2025-finals/challenges/intranet9000/source
+            dockerfile: scc2025-finals/challenges/intranet9000/source/Dockerfile.mongo
             image: registry.ctf.rs/scc2025-finals/web-intranet9000-mongo
 
     steps:

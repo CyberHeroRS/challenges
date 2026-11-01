@@ -1,0 +1,18 @@
+name: "rsapq"
+author: "mirko"
+category: crypto
+description: I was explaining RSA algorithm to my friend for a whole day. In the end he encrypted everything he could and sent it over the school network. Can you use our intercepted conversation and retrieve his gmail password? Should i worry??
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{th1s_1s_4_very_long_fl4g_1snt_1t_re4lly_long_or_1s_th1s_too_short_th1s_1s_4_very_long_fl4g_1snt_1t_re4lly_long_or_1s_th1s_too_short_th1s_1s_4_very_long_fl4g_1snt_1t_re4lly_long_or_1s_th1s_too_short_th1s_1s_4_very_long_fl4g_1snt_1t_re4lly_long_or_1s_t}
+tags:
+  - scc2024-quals
+files:
+  - public/crypto_rsapq.zip

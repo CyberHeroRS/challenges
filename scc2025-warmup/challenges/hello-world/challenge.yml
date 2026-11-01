@@ -1,0 +1,18 @@
+name: "Hello World"
+author: "Marko Gordic"
+category: welcome
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+value: 10
+type: dynamic
+extra:
+  initial: 10
+  decay: 10
+  minimum: 10
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{sanity_check}
+tags:
+  - scc2025-warmup
+files:
+  - public/welcome_hello_world.zip

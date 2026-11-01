@@ -11,59 +11,59 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: crypto-whack-a-mole-1
-            context: scc2024-warmup/crypto-whack-a-mole-1/source
-            dockerfile: scc2024-warmup/crypto-whack-a-mole-1/source/Dockerfile
+          - name: whack-a-mole-1
+            context: scc2024-warmup/challenges/whack-a-mole-1/source
+            dockerfile: scc2024-warmup/challenges/whack-a-mole-1/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/crypto-whack-a-mole-1
 
-          - name: misc-gmq-accc
-            context: scc2024-warmup/misc-gmq-accc/source
-            dockerfile: scc2024-warmup/misc-gmq-accc/source/Dockerfile
+          - name: gmq-accc
+            context: scc2024-warmup/challenges/gmq-accc/source
+            dockerfile: scc2024-warmup/challenges/gmq-accc/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/misc-gmq-accc
 
-          - name: misc-kalkulator
-            context: scc2024-warmup/misc-kalkulator/source
-            dockerfile: scc2024-warmup/misc-kalkulator/source/Dockerfile
+          - name: kalkulator
+            context: scc2024-warmup/challenges/kalkulator/source
+            dockerfile: scc2024-warmup/challenges/kalkulator/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/misc-kalkulator
 
-          - name: pwn-banana-shop
-            context: scc2024-warmup/pwn-banana-shop/source
-            dockerfile: scc2024-warmup/pwn-banana-shop/source/Dockerfile
+          - name: banana-shop
+            context: scc2024-warmup/challenges/banana-shop/source
+            dockerfile: scc2024-warmup/challenges/banana-shop/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/pwn-banana-shop
 
-          - name: pwn-login-form
-            context: scc2024-warmup/pwn-login-form/source
-            dockerfile: scc2024-warmup/pwn-login-form/source/Dockerfile
+          - name: login-form
+            context: scc2024-warmup/challenges/login-form/source
+            dockerfile: scc2024-warmup/challenges/login-form/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/pwn-login-form
 
-          - name: pwn-zork1-demo
-            context: scc2024-warmup/pwn-zork1-demo/source
-            dockerfile: scc2024-warmup/pwn-zork1-demo/source/Dockerfile
+          - name: zork1-demo
+            context: scc2024-warmup/challenges/zork1-demo/source
+            dockerfile: scc2024-warmup/challenges/zork1-demo/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/pwn-zork1-demo
 
-          - name: web-anatomy
-            context: scc2024-warmup/web-anatomy/source
-            dockerfile: scc2024-warmup/web-anatomy/source/Dockerfile
+          - name: anatomy
+            context: scc2024-warmup/challenges/anatomy/source
+            dockerfile: scc2024-warmup/challenges/anatomy/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/web-anatomy
 
-          - name: web-blind-luck
-            context: scc2024-warmup/web-blind-luck/source
-            dockerfile: scc2024-warmup/web-blind-luck/source/Dockerfile
+          - name: blind-luck
+            context: scc2024-warmup/challenges/blind-luck/source
+            dockerfile: scc2024-warmup/challenges/blind-luck/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/web-blind-luck
 
-          - name: web-flags4everyone
-            context: scc2024-warmup/web-flags4everyone/source
-            dockerfile: scc2024-warmup/web-flags4everyone/source/Dockerfile
+          - name: flags4everyone
+            context: scc2024-warmup/challenges/flags4everyone/source
+            dockerfile: scc2024-warmup/challenges/flags4everyone/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/web-flags4everyone
 
-          - name: web-shinobi
-            context: scc2024-warmup/web-shinobi/source
-            dockerfile: scc2024-warmup/web-shinobi/source/Dockerfile
+          - name: shinobi
+            context: scc2024-warmup/challenges/shinobi/source
+            dockerfile: scc2024-warmup/challenges/shinobi/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/web-shinobi
 
-          - name: web-shortnote
-            context: scc2024-warmup/web-shortnote/source
-            dockerfile: scc2024-warmup/web-shortnote/source/Dockerfile
+          - name: shortnote
+            context: scc2024-warmup/challenges/shortnote/source
+            dockerfile: scc2024-warmup/challenges/shortnote/source/Dockerfile
             image: registry.ctf.rs/scc2024-warmup/web-shortnote
 
     steps:

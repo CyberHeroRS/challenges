@@ -1,0 +1,18 @@
+name: "Hansel And Gretel"
+author: "mirko"
+category: pwn
+description: The witch sent birds to eat all the breadcrumbs, only a few are left. Can you find your way out?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info: nc hansel-and-gretel.playground.cyberhero.rs 9018
+flags:
+  - SCC{Y0U_ch4ng3d_th3_st0ry??4m4z1ng!}
+tags:
+  - scc2024-quals
+files:
+  - public/hansel_and_gretel.zip

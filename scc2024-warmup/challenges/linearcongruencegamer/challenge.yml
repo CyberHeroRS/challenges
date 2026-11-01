@@ -1,0 +1,18 @@
+name: "LinearCongruenceGamer"
+author: "Lofer"
+category: crypto
+description: Hey, Gamer! So I was making the RNG for our game, but I think I lost the flag in there. Can you help me out?
+value: 500
+type: dynamic
+extra:
+  initial: 500
+  decay: 20
+  minimum: 50
+  function: logarithmic
+connection_info:
+flags:
+  - SCC{l1n34r_s3c4r1ty_i5_p00r_s3c4r1ty}
+tags:
+  - scc2024-warmup
+files:
+  - public/LinearCongruenceGamer.zip
