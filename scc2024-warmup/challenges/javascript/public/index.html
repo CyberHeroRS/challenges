@@ -1,0 +1,31 @@
+<html>
+<script src="source.js"></script>
+<title>Password Checker</title>
+<style>
+    button:hover {
+        color: green !important;
+        cursor: pointer;
+    }
+</style>
+
+<body style="background-color: black; zoom: 2;">
+    <div style="width: 100%; height: 100%; justify-content: center; justify-items: center; display: flex; flex-direction: column; align-items: center;
+        margin-top: auto; margin-bottom: auto;
+        ">
+        <div style="width: 100%; display: flex; justify-content: center;">
+            <input id="password" placeholder="Password" type="text"
+                style="background-color: black; border: 2px solid #20c20e; padding: 5px; outline: none; color: #20c20e;" />
+            <button
+                style="padding: 10px; margin-left: 10px; border-radius: 10px; background-color: black; color: #20c20e; border: 2px solid #20c20e;"
+                onclick="A()">Submit</button>
+        </div>
+
+        <div>
+            <p id="flag" style="user-select: all; font-family: Consolas;">
+                &nbsp;
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

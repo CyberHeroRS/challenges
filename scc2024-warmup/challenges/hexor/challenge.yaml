@@ -11,4 +11,5 @@ flags:
   body: R43L_h4x0rs_kNoW_xor!
 instancing: false
 files:
-- public/Hexor.zip
+- public/source.py
+- public/out.txt

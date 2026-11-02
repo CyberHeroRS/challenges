@@ -12,4 +12,5 @@ flags:
   body: P0w3r5h3LL_N1njA5_Unl34sh3D
 instancing: false
 files:
-- public/Weaponized_Key.zip
+- public/Weaponized_Key/SecretWeapon.ps1
+- public/Weaponized_Key/SecretWeaponRaw.ps1

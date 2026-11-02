@@ -11,4 +11,5 @@ flags:
   body: l1n34r_s3c4r1ty_i5_p00r_s3c4r1ty
 instancing: false
 files:
-- public/LinearCongruenceGamer.zip
+- public/source.py
+- public/out.txt

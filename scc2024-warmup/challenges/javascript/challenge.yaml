@@ -12,4 +12,5 @@ flags:
   body: 6a147d68-e9ef-483c-af0e-9a64da5204c6
 instancing: false
 files:
-- public/javascript.zip
+- public/source.js
+- public/index.html

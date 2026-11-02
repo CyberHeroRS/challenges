@@ -12,4 +12,5 @@ flags:
   body: h0w_4b0u7_7h47_y0u_c4n_d3cryp7_4nything?!?!
 instancing: false
 files:
-- public/crossed.zip
+- public/attachments/output.txt
+- public/attachments/server.py
