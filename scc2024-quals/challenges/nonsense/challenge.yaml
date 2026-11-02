@@ -13,3 +13,12 @@ instancing: false
 files:
 - public/attachments/service.py
 - public/attachments/output.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/attachments/output.txt
+    target: /solution/output.txt
