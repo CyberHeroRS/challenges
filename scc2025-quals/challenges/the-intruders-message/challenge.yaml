@@ -16,3 +16,9 @@ flags:
   body: 1n7rud3r_unm45k3d
 files:
 - public/email.eml
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
