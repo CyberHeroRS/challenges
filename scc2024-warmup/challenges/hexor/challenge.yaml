@@ -13,3 +13,9 @@ instancing: false
 files:
 - public/source.py
 - public/out.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
