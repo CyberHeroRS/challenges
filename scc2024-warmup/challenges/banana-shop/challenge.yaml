@@ -12,18 +12,28 @@ flags:
   body: b4n4n45_4r3_50m371m35_b3773r_7h4n_fl465!
 instancing: true
 files:
-- public/pwn_banana_shop.zip
+- public/Dockerfile
+- public/build-docker.sh
+- public/source.c
+- build://participant/bananas
 services:
 - name: app
   image:
     type: dockerfile
-    context: source
-    path: Dockerfile
+    context: .
+    path: source/Dockerfile
   ports:
   - name: main
     containerPort: 1337
     type: netcat
     expose: true
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: .
+    path: source/Dockerfile
+    target: participant
 test:
 - name: solve
   image:
