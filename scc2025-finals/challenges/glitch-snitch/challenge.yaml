@@ -11,7 +11,40 @@ flags:
   body: development_in_production_oh_no
 instancing: true
 files:
-- public/chall.zip
+- source/.dockerignore
+- source/.gitignore
+- source/backend/DB.js
+- source/backend/helpers.js
+- source/backend/index.js
+- source/backend/package-lock.json
+- source/backend/package.json
+- public/docker-compose.yml
+- source/Dockerfile
+- source/frontend/.gitignore
+- source/frontend/eslint.config.js
+- source/frontend/index.html
+- source/frontend/package-lock.json
+- source/frontend/package.json
+- source/frontend/src/App.tsx
+- source/frontend/src/config.ts
+- source/frontend/src/func.ts
+- source/frontend/src/hooks/useFetch.ts
+- source/frontend/src/hooks/useUser.ts
+- source/frontend/src/LoginContext.tsx
+- source/frontend/src/main.tsx
+- source/frontend/src/MainNavigation.tsx
+- source/frontend/src/pages/Dashboard.tsx
+- source/frontend/src/pages/Login.tsx
+- source/frontend/src/pages/Main.tsx
+- source/frontend/src/pages/Register.tsx
+- source/frontend/src/types.ts
+- source/frontend/style.css
+- source/frontend/tsconfig.app.json
+- source/frontend/tsconfig.json
+- source/frontend/tsconfig.node.json
+- source/frontend/vite.config.ts
+- source/nginx.conf
+- source/start.sh
 services:
 - name: nginx
   image:

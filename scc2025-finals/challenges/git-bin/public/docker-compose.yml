@@ -1,0 +1,10 @@
+services:
+  gitbin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        FLAG: SCC{FLAG_HERE}
+    container_name: gitbin
+    ports:
+      - "9080:80"

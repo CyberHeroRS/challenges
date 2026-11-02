@@ -5,7 +5,7 @@ RUN apt-get update && \
     useradd --create-home --uid 1001 user
 
 WORKDIR /home/user
-COPY --chmod=0555 chall/app ./chall
+COPY --chmod=0555 public/app ./chall
 EXPOSE 1337
 ENV TIMEOUT=120
 USER user

@@ -10,7 +10,10 @@ flags:
   body: Y0u_5hoU1d_g0_7o_IPSC_n0t_ECSC
 instancing: true
 files:
-- public/pwn-shootingrange.zip
+- source/libc.so.6
+- source/app
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:

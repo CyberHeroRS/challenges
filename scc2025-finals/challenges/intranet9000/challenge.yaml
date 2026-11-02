@@ -16,7 +16,27 @@ flags:
   body: no_sql_means_no_sql_injection
 instancing: true
 files:
-- public/web-intranet9000.zip
+- source/server.py
+- source/endpoints/__init__.py
+- source/endpoints/notes.py
+- source/endpoints/directory.py
+- source/endpoints/login.py
+- source/init_db.py
+- source/requirements.txt
+- source/Dockerfile.mongo
+- source/docker-entrypoint-mongo.sh
+- source/db.py
+- source/templates/notes.html
+- source/templates/login.html
+- source/templates/directory.html
+- source/docker-compose.yml
+- source/static/css/common.css
+- source/static/js/notes.js
+- source/static/js/intranet.js
+- source/static/js/directory.js
+- source/Dockerfile
+- source/docker-entrypoint.sh
+- source/auth.py
 services:
 - name: server
   image:

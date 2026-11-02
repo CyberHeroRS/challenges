@@ -11,7 +11,34 @@ flags:
   body: g1t_syml1nk_r3kt
 instancing: true
 files:
-- public/chall.zip
+- source/.gitignore
+- source/app/app.py
+- source/app/db.py
+- source/app/frontend.py
+- source/app/git_server.py
+- source/app/hooks/pre-receive
+- source/app/includes/git.py
+- source/app/main.py
+- source/app/requirements.txt
+- source/app/static/css/main.css
+- source/app/static/css/toastr.min.css
+- source/app/static/img/favicon.ico
+- source/app/static/js/jquery-3.7.1.min.js
+- source/app/static/js/main.js
+- source/app/static/js/toastr.min.js
+- source/app/templates/base.html
+- source/app/templates/index.html
+- source/app/templates/repo.html
+- source/app/templates/template.html
+- public/docker-compose.yml
+- source/Dockerfile
+- source/entrypoint.sh
+- source/repo-templates/basic/.repo.yml
+- source/repo-templates/basic/README.md
+- source/repo-templates/empty/.repo.yml
+- source/repo-templates/html/.repo.yml
+- source/repo-templates/html/index.html
+- source/repo-templates/html/README.md
 services:
 - name: app
   image:

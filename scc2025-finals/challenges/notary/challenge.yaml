@@ -11,7 +11,11 @@ flags:
   body: Th3r3S_n0_H34p_1ikE_a_n07es_h3aP
 instancing: true
 files:
-- public/pwn-notary.zip
+- source/libc.so.6
+- source/ld-linux-x86-64.so.2
+- build://participant/app
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:
@@ -26,3 +30,10 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

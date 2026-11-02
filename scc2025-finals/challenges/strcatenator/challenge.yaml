@@ -10,13 +10,16 @@ flags:
   body: aa11d145-c727-4f8c-acf5-5f444cea7e94
 instancing: true
 files:
-- public/pwn-strcatenator.zip
+- source/strcatenator.pas
+- public/app
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:
     type: dockerfile
-    context: source
-    path: Dockerfile
+    context: .
+    path: source/Dockerfile
   ports:
   - name: main
     containerPort: 1337
