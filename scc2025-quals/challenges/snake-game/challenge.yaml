@@ -10,3 +10,9 @@ flags:
   body: 5n4k3_g4m1ng_d31ux3
 files:
 - public/snake_game
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

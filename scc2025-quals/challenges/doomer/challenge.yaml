@@ -114,3 +114,9 @@ services:
   - name: MYSQL_ROOT_PASSWORD
     value: root_password
   - *id001
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

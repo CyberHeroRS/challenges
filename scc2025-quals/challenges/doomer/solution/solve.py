@@ -1,3 +1,4 @@
+import os
 from urllib.parse import quote
 import httpx
 import random
@@ -98,8 +99,8 @@ def STTF_Gadget(client: httpx.Client, username: str, REPORT_SERVER_URL: str, ORA
             break
 
 def exploit():
-    BASE_URL = "http://doomer.playground.cyberhero.rs:1337"
-    ORACLE_SERVER_URL = "http://<VPS_IP>:9999"
+    BASE_URL = os.environ["SERVICE_WEB_HTTP_ENDPOINT"]
+    ORACLE_SERVER_URL = os.environ["ORACLE_SERVER_URL"]
     REPORT_SERVER_URL = "http://web:1337"
 
     client = httpx.Client(

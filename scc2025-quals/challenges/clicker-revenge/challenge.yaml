@@ -10,3 +10,9 @@ flags:
   body: clicking_is_so_fun_i_could_do_it_all_day
 files:
 - public/clickers-revenge.exe
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

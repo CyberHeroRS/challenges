@@ -1,4 +1,6 @@
-SITE_URL = "http://localhost:5000"
+import os
+
+SITE_URL = os.environ["SERVICE_APP_HTTP_ENDPOINT"]
 
 import requests
 from itsdangerous import URLSafeSerializer

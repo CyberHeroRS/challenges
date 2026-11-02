@@ -10,3 +10,9 @@ flags:
   body: 8e41f1c6-20ec-4c85-8f7b-51cc0d980cb5
 files:
 - public/sigill
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

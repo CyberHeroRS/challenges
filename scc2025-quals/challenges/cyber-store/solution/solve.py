@@ -1,4 +1,6 @@
-SITE_URL = "http://localhost:3000"
+import os
+
+SITE_URL = os.environ["SERVICE_APP_HTTP_ENDPOINT"]
 
 import requests
 from PyPDF2 import PdfReader

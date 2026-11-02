@@ -19,3 +19,22 @@ files:
 - public/disks/disk_3
 - public/disks/disk_1
 - public/disks/disk_2
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/disks/disk_p
+    target: /inputs/disks/disk_p
+  - source: public/disks/disk_q
+    target: /inputs/disks/disk_q
+  - source: public/disks/disk_0
+    target: /inputs/disks/disk_0
+  - source: public/disks/disk_3
+    target: /inputs/disks/disk_3
+  - source: public/disks/disk_1
+    target: /inputs/disks/disk_1
+  - source: public/disks/disk_2
+    target: /inputs/disks/disk_2
