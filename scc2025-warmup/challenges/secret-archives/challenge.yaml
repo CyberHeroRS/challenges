@@ -10,3 +10,12 @@ flags:
   body: d0cx_15_ju57_4n_4rch1v3
 files:
 - source/Secret Archives.docx
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/Secret Archives.docx
+    target: /solution/challenge.docx
