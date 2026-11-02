@@ -16,3 +16,9 @@ flags:
   body: h1dd3n_c3lls_h0ld_th3_r34l_f0rmul4
 files:
 - public/important.xlsm
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

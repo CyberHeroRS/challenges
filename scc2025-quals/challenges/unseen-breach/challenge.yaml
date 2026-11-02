@@ -16,3 +16,12 @@ flags:
   body: c0mm4nd_1nj3c710n_r3v34l3d
 files:
 - public/capture.pcapng
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/capture.pcapng
+    target: /solution/capture.pcapng
