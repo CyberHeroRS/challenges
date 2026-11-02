@@ -12,3 +12,9 @@ instancing: false
 files:
 - public/attachments/out.txt
 - public/attachments/server.py
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
