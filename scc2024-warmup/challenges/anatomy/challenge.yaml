@@ -21,3 +21,9 @@ services:
     containerPort: 1337
     type: http
     expose: true
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
