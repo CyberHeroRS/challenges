@@ -10,7 +10,11 @@ flags:
   body: even_a_baby_could_solve_this
 instancing: true
 files:
-- public/pwn-toddler-jumble.zip
+- source/libc.so.6
+- source/ld-linux-x86-64.so.2
+- public/Dockerfile
+- source/chal
+- source/docker-compose.yaml
 services:
 - name: app
   image:

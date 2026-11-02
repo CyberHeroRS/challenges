@@ -12,7 +12,38 @@ flags:
   body: th0s3_g0dd4Mn_S3rbS!
 instancing: true
 files:
-- public/web-spyMe.zip
+- source/src/whitelist/spy_icvorovic.json
+- source/src/whitelist/spy_admin.json
+- source/src/whitelist/spy_mnikic.json
+- source/src/middleware/auth.js
+- source/src/db.js
+- source/src/utils.js
+- source/src/controllers.js
+- source/src/index.js
+- source/src/routes.js
+- source/views/src/App.js
+- source/views/src/context/AuthContext.js
+- source/views/src/index.js
+- source/views/src/components/Register.js
+- source/views/src/components/Login.js
+- source/views/src/components/AgentIndex.js
+- source/views/src/components/ProtectedRoute.js
+- source/views/src/components/Account.js
+- source/views/package-lock.json
+- source/views/public/index.html
+- source/views/package.json
+- source/init.sql
+- source/entrypoint.sh
+- source/run.sh
+- source/Dockerfile.db
+- source/Dockerfile.bot
+- source/bot/package-lock.json
+- source/bot/index.js
+- source/bot/package.json
+- source/Dockerfile.web
+- source/docker-compose.yml
+- source/package-lock.json
+- source/package.json
 services:
 - name: web
   image:

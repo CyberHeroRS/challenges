@@ -12,4 +12,10 @@ flags:
 - name: main
   body: g4l01s_f13ld_1s_s1mpl3_3n0ugh
 files:
-- public/rev-raid.zip
+- public/a.exe
+- public/disks/disk_p
+- public/disks/disk_q
+- public/disks/disk_0
+- public/disks/disk_3
+- public/disks/disk_1
+- public/disks/disk_2

@@ -18,7 +18,38 @@ flags:
   body: bonusdrinkgj
 instancing: true
 files:
-- public/web-doomer.zip
+- source/app.js
+- source/views/login.ejs
+- source/views/partials/header.ejs
+- source/views/partials/footer.ejs
+- source/views/gifs/4.gif
+- source/views/gifs/5.gif
+- source/views/gifs/2.gif
+- source/views/gifs/6.gif
+- source/views/gifs/3.gif
+- source/views/gifs/1.gif
+- source/views/register.ejs
+- source/views/error.ejs
+- source/views/profile.ejs
+- source/views/index.ejs
+- source/config/database.js
+- source/utils/auth.js
+- source/utils/post.js
+- source/utils/db.js
+- source/utils/user.js
+- source/init.sql
+- public/Dockerfile.db
+- source/Dockerfile.bot
+- public/build-docker.sh
+- source/bot/index.js
+- source/bot/package.json
+- source/Dockerfile.web
+- source/routes/users.js
+- source/routes/auth.js
+- source/routes/index.js
+- source/docker-compose.yml
+- source/package-lock.json
+- source/package.json
 services:
 - name: web
   image:

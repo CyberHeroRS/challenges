@@ -11,7 +11,11 @@ flags:
   body: h3r0_0v3rfl0w3d_7h47_60ld
 instancing: true
 files:
-- public/pwn-aop1.zip
+- source/glibc/libc.so.6
+- source/glibc/ld-linux-x86-64.so.2
+- source/aop1
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:

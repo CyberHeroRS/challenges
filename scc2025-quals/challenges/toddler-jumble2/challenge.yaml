@@ -10,7 +10,12 @@ flags:
   body: when_you_were_little_you_played_with_chunks_instead_of_legos
 instancing: true
 files:
-- public/pwn-toddler-jumble2.zip
+- source/libc.so.6
+- source/ld-linux-x86-64.so.2
+- source/0001-add-double-free-fastbin-check.patch
+- public/Dockerfile
+- source/chal
+- source/docker-compose.yaml
 services:
 - name: app
   image:

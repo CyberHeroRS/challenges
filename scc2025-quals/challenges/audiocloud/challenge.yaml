@@ -11,7 +11,12 @@ flags:
   body: 1m_c0nfu53d_why_15_my_535510n_4n_mp3_f1l3
 instancing: true
 files:
-- public/web-audiocloud.zip
+- source/requirements.txt
+- source/session.py
+- source/templates/index.html
+- source/app.py
+- source/Dockerfile
+- source/docker-compose.yaml
 services:
 - name: app
   image:

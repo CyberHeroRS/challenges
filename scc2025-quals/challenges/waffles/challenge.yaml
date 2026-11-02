@@ -11,7 +11,24 @@ flags:
   body: h0w_d1d_y0u_8yp455_my_w4ffl3_w4f?_175_m4d3_1n_ru57
 instancing: true
 files:
-- public/web-waffles.zip
+- source/waffles/requirements.txt
+- source/waffles/main.py
+- source/waffles/templates/gallery.html
+- source/waffles/Dockerfile
+- source/waffles/public/liege.jpg
+- source/waffles/public/classic-belgian.jpg
+- source/waffles/public/stroopwafel.jpg
+- source/waffles/public/american.jpg
+- source/waffles/public/swedish.jpg
+- source/waffles/public/panda.jpg
+- source/waffles/public/chocolate-chip.jpg
+- source/waffles/public/pizzelle.jpg
+- source/waf/src/main.rs
+- source/waf/Cargo.lock
+- source/waf/.gitignore
+- source/waf/Cargo.toml
+- source/waf/Dockerfile
+- source/docker-compose.yaml
 services:
 - name: waf
   image:

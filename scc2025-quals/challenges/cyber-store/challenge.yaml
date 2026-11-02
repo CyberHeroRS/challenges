@@ -11,7 +11,21 @@ flags:
   body: wh0_kn3w_pdf5_c0uld_r34d_f1l35
 instancing: true
 files:
-- public/web-cyber-store.zip
+- source/src/index.js
+- source/src/cleanup.js
+- source/views/cart.ejs
+- source/views/products.ejs
+- source/views/layouts/main.ejs
+- source/views/order-complete.ejs
+- source/views/checkout.ejs
+- source/views/index.ejs
+- source/views/receipt-template.ejs
+- source/entrypoint.sh
+- source/data/products.json
+- source/Dockerfile
+- source/package-lock.json
+- source/package.json
+- source/docker-compose.yaml
 services:
 - name: app
   image:

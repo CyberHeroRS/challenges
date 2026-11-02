@@ -10,7 +10,9 @@ flags:
   body: n07h1n6_15_r34lly_h1dd3n_fr0m_f0rm47t3d_pr1n7!
 instancing: true
 files:
-- public/pwn-storage.zip
+- source/docker-compose.yml
+- public/Dockerfile
+- source/storage
 services:
 - name: app
   image:
