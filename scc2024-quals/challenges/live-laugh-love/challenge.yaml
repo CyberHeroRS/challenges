@@ -9,7 +9,7 @@ authors:
 flags:
 - name: main
   body: sh0rt_FL4g!
-instancing: true
+instancing: false
 files:
 - public/crypto_live_laugh_love.zip
 services:

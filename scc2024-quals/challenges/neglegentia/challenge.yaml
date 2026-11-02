@@ -12,7 +12,7 @@ authors:
 flags:
 - name: main
   body: r3m3mb3r_t0_v3r1fy_uR_JWT
-instancing: true
+instancing: false
 files:
 - public/web_neglegentia.zip
 services:

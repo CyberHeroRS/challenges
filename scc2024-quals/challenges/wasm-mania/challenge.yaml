@@ -9,7 +9,7 @@ authors:
 flags:
 - name: main
   body: w45M_i5NT_Th4t_H4RD_0r_I5_It?
-instancing: true
+instancing: false
 services:
 - name: app
   image:

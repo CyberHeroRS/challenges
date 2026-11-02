@@ -9,7 +9,7 @@ authors:
 flags:
 - name: main
   body: y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15
-instancing: true
+instancing: false
 files:
 - public/pwn_kernel_buddy.zip
 services:

@@ -22,3 +22,6 @@ services:
     containerPort: 5000
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG

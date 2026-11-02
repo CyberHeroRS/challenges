@@ -6,6 +6,7 @@ import string
 import socket
 import sched
 import time
+import os
 import sys
 
 correct_password = None
@@ -66,7 +67,7 @@ def handle_client(client_socket, address):
             elif answer == correct_password:
                 client_socket.send(("🔴" * password_length + "\n").encode())
                 client_socket.send(
-                    f"{Fore.GREEN}SCC{{tr3f_k4r0_tr3f_pWn}}{Fore.RESET}\n".encode()
+                    f"{Fore.GREEN}{os.environ['FLAG']}{Fore.RESET}\n".encode()
                 )
                 break
 

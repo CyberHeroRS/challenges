@@ -1,3 +1,4 @@
+import os
 import time
 from selenium import webdriver
 from selenium.webdriver.firefox.service import Service
@@ -16,7 +17,7 @@ def visit(theme, url):
     driver.add_cookie(
         {
             "name": "flag",
-            "value": "SCC{n0w_yoU_cAn_see_1n_Th3_D4rk}",
+            "value": os.environ["FLAG"],
             "httpOnly": True,
         }
     )

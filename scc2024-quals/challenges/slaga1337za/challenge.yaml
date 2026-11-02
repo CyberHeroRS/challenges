@@ -22,3 +22,6 @@ services:
     containerPort: 3735
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: FLAG

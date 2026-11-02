@@ -7,7 +7,7 @@ if (isset($_GET['destination'])) {
         'http' => array(
             'method' => 'POST',
             'header' => 'Content-Type: text/plain',
-            'content' => 'SCC{p4ram3t3r_p0llu7i0n_i5_fuN}'
+            'content' => getenv('FLAG')
         )
     );
     

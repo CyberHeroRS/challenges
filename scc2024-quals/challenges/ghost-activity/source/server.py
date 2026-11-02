@@ -1,3 +1,4 @@
+import os
 import socket
 
 # Define your questions and answers
@@ -51,7 +52,7 @@ def handle_client(client_socket):
             client_socket.sendall(b"Wrong answer.\n")
             break
     if correct == len(questions):
-        client_socket.sendall(b"Congratulations, here is your flag: SCC{5h4d0W_u53r_f0und_1n_8yt35}\n")
+        client_socket.sendall(f"Congratulations, here is your flag: {os.environ['FLAG']}\n".encode())
     client_socket.sendall(b"Thanks for playing!\n")
     client_socket.close()
 

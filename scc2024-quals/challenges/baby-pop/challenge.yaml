@@ -22,6 +22,9 @@ services:
     containerPort: 80
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 - name: db
   image:
     type: dockerfile

@@ -29,3 +29,6 @@ services:
     containerPort: 1501
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: FLAG
