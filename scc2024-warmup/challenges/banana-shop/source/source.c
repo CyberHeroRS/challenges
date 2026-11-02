@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -36,7 +37,7 @@ int main()
                 break;
             }
             money -= 13620000;
-            puts("Flag is: SCC{b4n4n45_4r3_50m371m35_b3773r_7h4n_fl465!}");
+            printf("Flag is: %s\n", getenv("FLAG"));
             break;
         case 3:
             active = 0;

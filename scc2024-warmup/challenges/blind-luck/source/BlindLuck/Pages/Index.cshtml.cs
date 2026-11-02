@@ -4,7 +4,8 @@ namespace BlindLuck.Pages
 {
     public class IndexModel : PageModel
     {
-        private static string _flag = "SCC{l00k1n6_1n70_7h3_fu7ur3e}";
+        private static string _flag = Environment.GetEnvironmentVariable("FLAG")
+            ?? throw new InvalidOperationException("FLAG is not set");
 
         private Random _random = new Random();
 

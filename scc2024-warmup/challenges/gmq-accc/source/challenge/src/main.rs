@@ -43,6 +43,6 @@ fn main() {
     println!("Congratulations! All answers are correct.");
     println!(
         "Here is your flag agent, {}",
-        "SCC{1_6u355_4l13n5_4r3n7_c0mpl1c473d_4f73r_4ll}"
+        std::env::var("FLAG").expect("FLAG is not set")
     );
 }

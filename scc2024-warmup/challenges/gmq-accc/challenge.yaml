@@ -21,6 +21,9 @@ services:
     containerPort: 1337
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:

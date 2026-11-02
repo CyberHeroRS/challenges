@@ -17,7 +17,7 @@ app.get('/super', (req, res) => {
 app.post('/super', (req, res) => {
     const { mail, pass } = req.body;
     if (mail === 'admin@shinobi.video' && pass === 'admin') {
-        res.render('dashboard');
+        res.render('dashboard', { flag: process.env.FLAG });
     } else {
         res.render('login', { error: 'Please check your login credentials.' });
     }

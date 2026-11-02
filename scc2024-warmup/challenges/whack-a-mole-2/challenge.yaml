@@ -10,7 +10,7 @@ authors:
 flags:
 - name: main
   body: '202420242024202420242024'
-instancing: true
+instancing: false
 files:
 - ../whack-a-mole-1/public/server.py
 services:

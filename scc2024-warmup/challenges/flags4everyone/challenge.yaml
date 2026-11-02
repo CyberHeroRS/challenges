@@ -8,7 +8,7 @@ authors:
 flags:
 - name: main
   body: SQLi_n3v3r_ou7_oF_fash10n
-instancing: true
+instancing: false
 services:
 - name: app
   image:

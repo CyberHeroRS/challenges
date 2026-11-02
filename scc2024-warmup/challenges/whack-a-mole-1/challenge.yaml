@@ -10,7 +10,7 @@ authors:
 flags:
 - name: main
   body: d1d_y0u_b34t_th3m0le??!?!?
-instancing: true
+instancing: false
 files:
 - public/server.py
 services:

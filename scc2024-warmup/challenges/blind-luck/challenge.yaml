@@ -23,3 +23,6 @@ services:
     containerPort: 8080
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG
