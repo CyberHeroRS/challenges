@@ -10,6 +10,10 @@ COPY . .
 RUN pip install -r requirements-build.txt --break-system-packages
 RUN cargo build --release
 
+# The published binary is the one built here (as in the Makefile's dist target).
+FROM scratch AS participant
+COPY --from=builder /build/target/release/wwwwww /wwwwww
+
 FROM debian:12.10-slim
 
 ENV DEBIAN_FRONTEND=noninteractive

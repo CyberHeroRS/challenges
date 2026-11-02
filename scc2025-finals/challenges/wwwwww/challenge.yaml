@@ -10,7 +10,7 @@ flags:
   body: Congr4ts_y0u_h4ve_M4d3_1t_But_l0st_the_Gam3_in_The_Proce55
 instancing: true
 files:
-- public/wwwwww
+- build://participant/wwwwww
 services:
 - name: app
   image:
@@ -25,3 +25,10 @@ services:
   flags:
   - name: main
     file: /app/flag.txt
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant
