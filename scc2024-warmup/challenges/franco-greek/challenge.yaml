@@ -13,3 +13,9 @@ flags:
 instancing: false
 files:
 - public/encoded.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
