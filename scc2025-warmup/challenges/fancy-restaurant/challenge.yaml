@@ -35,3 +35,9 @@ build:
     context: source
     path: Dockerfile
     target: participant
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

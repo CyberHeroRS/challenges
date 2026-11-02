@@ -1,3 +1,5 @@
+import os
+
 from pwn import remote
 
 p = 1054510945910607851467964685929741094129513043460423391244893493596392448882307 # prime
@@ -10,7 +12,7 @@ gt = pow(g, t, p)
 SUCCESS = False
 
 while not SUCCESS:
-    io = remote("localhost", "13300")
+    io = remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"]))
     io.sendline(hex(p)[2:].encode())
     io.sendline(hex(gt)[2:].encode())
 

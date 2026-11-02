@@ -1,7 +1,9 @@
+import os
+
 import requests
 import time
 
-target_url = "http://localhost:3000"
+target_url = os.environ["SERVICE_APP_HTTP_ENDPOINT"]
 
 alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_}"
 

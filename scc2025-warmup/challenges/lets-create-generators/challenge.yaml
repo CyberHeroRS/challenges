@@ -12,3 +12,12 @@ flags:
 files:
 - public/out.txt
 - source/generator.py
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/out.txt
+    target: /solution/out.txt

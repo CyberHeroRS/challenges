@@ -1,7 +1,8 @@
 import requests
 import json
+import os
 
-url = input('Enter instance url: ')
+url = os.environ['SERVICE_APP_HTTP_ENDPOINT']
 path = "/query?search={\"$ne\":\"\"}"
 complete_url = url+path
 
@@ -10,6 +11,7 @@ try:
 
     try:
         data = response.json()
+        print(json.dumps(data))
     except json.JSONDecodeError:
         print("❌ Error: Response is not valid JSON. Challenge might be broken.")
         exit(1)

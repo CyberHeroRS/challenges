@@ -12,3 +12,12 @@ flags:
 files:
 - public/flag.enc
 - public/encryptor
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/flag.enc
+    target: /solution/flag.enc

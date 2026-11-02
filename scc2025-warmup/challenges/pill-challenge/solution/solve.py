@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 import http.client
+import os
 
-chall_host = "pill.playground.cyberhero.rs"
-chall_port = 443
+chall_host = os.environ["SERVICE_APP_HTTP_HOST"]
+chall_port = int(os.environ["SERVICE_APP_HTTP_PORT"])
 
 
 def start():
-    conn = http.client.HTTPSConnection(chall_host, chall_port)
+    conn = http.client.HTTPConnection(chall_host, chall_port)
     conn.request("POST", "/start")
     res = conn.getresponse()
     return res.getheader("x-session-id")
 
 
 def round(session_id):
-    redConn = http.client.HTTPSConnection(chall_host, chall_port)
+    redConn = http.client.HTTPConnection(chall_host, chall_port)
     redConn.connect()
     redConn.putrequest("POST", "/guess")
     redConn.putheader("x-session-id", session_id)
@@ -21,7 +22,7 @@ def round(session_id):
     redConn.putheader("Content-Length", len("red"))
     redConn.endheaders()
 
-    blueConn = http.client.HTTPSConnection(chall_host, chall_port)
+    blueConn = http.client.HTTPConnection(chall_host, chall_port)
     blueConn.request(
         "POST",
         "/guess",
@@ -42,7 +43,7 @@ def round(session_id):
 
 
 def status(session_id):
-    conn = http.client.HTTPSConnection(chall_host, chall_port)
+    conn = http.client.HTTPConnection(chall_host, chall_port)
     conn.request("GET", "/status", headers={"x-session-id": session_id})
     res = conn.getresponse()
     return res.read().decode()
