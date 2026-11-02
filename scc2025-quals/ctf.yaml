@@ -1,0 +1,43 @@
+name: scc2025-quals
+fullName: SCC 2025 Quals
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/alarming-evidence/challenge.yaml
+- challenges/aop1/challenge.yaml
+- challenges/audiocloud/challenge.yaml
+- challenges/beus-levelx/challenge.yaml
+- challenges/cells-of-deception/challenge.yaml
+- challenges/clicker-revenge/challenge.yaml
+- challenges/cyber-store/challenge.yaml
+- challenges/discombobulation/challenge.yaml
+- challenges/doomer/challenge.yaml
+- challenges/dos1/challenge.yaml
+- challenges/dos2/challenge.yaml
+- challenges/grafijaguesser6/challenge.yaml
+- challenges/grafijaguesser7/challenge.yaml
+- challenges/grafijaguesser8/challenge.yaml
+- challenges/grafijaguesser9/challenge.yaml
+- challenges/hades/challenge.yaml
+- challenges/hades-ii/challenge.yaml
+- challenges/lost-in-pixels/challenge.yaml
+- challenges/raid/challenge.yaml
+- challenges/sanity-check/challenge.yaml
+- challenges/side-quest/challenge.yaml
+- challenges/sigill/challenge.yaml
+- challenges/snake-game/challenge.yaml
+- challenges/spy-me-level1/challenge.yaml
+- challenges/spy-me-level2/challenge.yaml
+- challenges/storage/challenge.yaml
+- challenges/the-intruders-message/challenge.yaml
+- challenges/tiny-vm/challenge.yaml
+- challenges/toddler-jumble/challenge.yaml
+- challenges/toddler-jumble2/challenge.yaml
+- challenges/totally-fair-casino/challenge.yaml
+- challenges/unseen-breach/challenge.yaml
+- challenges/verified-messages/challenge.yaml
+- challenges/waffles/challenge.yaml

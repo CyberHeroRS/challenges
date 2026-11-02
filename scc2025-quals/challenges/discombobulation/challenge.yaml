@@ -1,0 +1,14 @@
+name: discombobulation
+fullName: DisCOMbobulation
+description: Initialize. Discombobulate. Load object. Discombobulate. Query interface.
+  Discombobulate. Create instance. Discombobulate. Encrypt file. Discombobulate.
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: wh47_3v3n_4r3_c0m_0bj3ct5_f45016ee
+files:
+- public/enc.dll
+- public/flag.enc

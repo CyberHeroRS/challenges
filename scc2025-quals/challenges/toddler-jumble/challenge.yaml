@@ -1,0 +1,27 @@
+name: toddler-jumble
+fullName: Toddler Jumble
+description: Easiest challenge I've ever seen
+categories:
+- pwn
+authors:
+- k4
+flags:
+- name: main
+  body: even_a_baby_could_solve_this
+instancing: true
+files:
+- public/pwn-toddler-jumble.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag

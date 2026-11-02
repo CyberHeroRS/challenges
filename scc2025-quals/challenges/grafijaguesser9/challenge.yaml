@@ -1,0 +1,17 @@
+name: grafijaguesser9
+fullName: GrafijaGuesser 9
+description: CyberHero decided to travel across Serbia and explore every corner of
+  this beautiful land. During his journey, he loved taking pictures so he could always
+  remember the places he liked or where he met new friends. He found one special photo
+  but then remembered he forgot to save the coordinates where it was taken. Can you
+  help him find the coordinates so he can return to his new friend's place? Enter
+  the flag in the format SCC{XX.XXX,YY.YYY}.
+categories:
+- osint
+authors:
+- Gordic
+flags:
+- name: main
+  body: 45.240,19.822
+files:
+- public/image.jpg

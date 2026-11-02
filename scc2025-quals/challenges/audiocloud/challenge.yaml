@@ -1,0 +1,28 @@
+name: audiocloud
+fullName: AudioCloud
+description: Are you an up-and-coming music artist? Come and upload your mp3 files
+  to AudioCloud!
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: main
+  body: 1m_c0nfu53d_why_15_my_535510n_4n_mp3_f1l3
+instancing: true
+files:
+- public/web-audiocloud.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 5000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

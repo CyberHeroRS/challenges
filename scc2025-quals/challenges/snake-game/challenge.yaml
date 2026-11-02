@@ -1,0 +1,12 @@
+name: snake-game
+fullName: Snake Game
+description: Feed the snake and obtain the flag. As simple as that.
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: 5n4k3_g4m1ng_d31ux3
+files:
+- public/snake_game

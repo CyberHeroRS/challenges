@@ -1,0 +1,31 @@
+name: dos1
+fullName: 'DOS1: Overflowing Shadows'
+description: 'A forgotten program, still lingering in the depths of a DOS system,
+  silently accepts input with no questions asked. What could go wrong with a simple
+  string? Little did its creators know that a single careless input could unravel
+  everything. The system has one job: handle the input. But can it handle what you’ve
+  got in store?'
+categories:
+- pwn
+authors:
+- Vucko
+flags:
+- name: main
+  body: buff3r_0v3rfl0w_n1ghtmare
+instancing: true
+files:
+- public/pwn-dos1.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 9198
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

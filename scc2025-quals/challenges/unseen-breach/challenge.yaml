@@ -1,0 +1,18 @@
+name: unseen-breach
+fullName: Unseen Breach
+description: Infinity Security Solutions recently launched a web platform that allows
+  users to verify file hashes to check if their files are infected. However, shortly
+  after the launch, strange incidents began to occur. Computers started shutting down
+  on their own, and employees reported random pop-up windows. Cyber Hero noticed unusual
+  network activity a few days ago, suggesting that someone may have gained unauthorized
+  access. Now, the task falls to you, the cybersecurity expert, to investigate and
+  solve this mystery.
+categories:
+- foren
+authors:
+- Gordic & Krsman
+flags:
+- name: main
+  body: c0mm4nd_1nj3c710n_r3v34l3d
+files:
+- public/capture.pcapng

@@ -1,0 +1,12 @@
+name: clicker-revenge
+fullName: Clickers Revenge
+description: You did not have enough clicks last year.
+categories:
+- rev
+authors:
+- Jovan Pavlovic
+flags:
+- name: main
+  body: clicking_is_so_fun_i_could_do_it_all_day
+files:
+- public/clickers-revenge.exe

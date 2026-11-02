@@ -1,0 +1,16 @@
+name: lost-in-pixels
+fullName: Lost in the Pixels
+description: A mysterious device has been discovered at the heart of a classified
+  research lab. The device appears to be a simple embedded system, but something isn’t
+  quite right. It seems like it was meant to display critical data on a small I2C
+  screen, but the data was never meant to be seen by the human eye.
+categories:
+- hw
+authors:
+- Vucko
+flags:
+- name: main
+  body: i2c_ssd1306
+files:
+- public/dump.sr
+- public/hw-lost-in-pixels.jpg

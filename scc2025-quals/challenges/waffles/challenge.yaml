@@ -1,0 +1,38 @@
+name: waffles
+fullName: Waffles
+description: I created a gallery of my favorite waffles. Hmm, one image doesn't seem
+  to be loading.
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: main
+  body: h0w_d1d_y0u_8yp455_my_w4ffl3_w4f?_175_m4d3_1n_ru57
+instancing: true
+files:
+- public/web-waffles.zip
+services:
+- name: waf
+  image:
+    type: dockerfile
+    context: source/waf
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 8000
+    type: http
+    expose: true
+- name: waffles
+  image:
+    type: dockerfile
+    context: source/waffles
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: false
+  flags:
+  - name: main
+    env: FLAG

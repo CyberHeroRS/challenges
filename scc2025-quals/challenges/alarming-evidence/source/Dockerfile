@@ -9,4 +9,6 @@ COPY . .
 
 EXPOSE 1501
 
+RUN useradd --create-home --uid 1000 user
+USER user
 CMD socat tcp-l:1501,reuseaddr,fork exec:"python3 /usr/src/app/server.py",pty,raw,echo=0,stderr

@@ -1,0 +1,27 @@
+name: toddler-jumble2
+fullName: Toddler Jumble 2
+description: pwning from the womb
+categories:
+- pwn
+authors:
+- k4
+flags:
+- name: main
+  body: when_you_were_little_you_played_with_chunks_instead_of_legos
+instancing: true
+files:
+- public/pwn-toddler-jumble2.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag

@@ -1,0 +1,85 @@
+name: doomer
+fullName: Doomer
+description: 'To be honest I have a doom scrolling addiction...
+
+
+  *Note:* The flag consists of only lowercase alphanumerics to save you some time
+  for more scrolling :)
+
+
+  **Note 2**: When sending URLs to the admin bot, use http://web:1337 instead of the
+  public URL.'
+categories:
+- web
+authors:
+- DreyAnd
+flags:
+- name: main
+  body: bonusdrinkgj
+instancing: true
+files:
+- public/web-doomer.zip
+services:
+- name: web
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.web
+  ports:
+  - name: http
+    containerPort: 1337
+    type: http
+    expose: true
+  env:
+  - name: NODE_ENV
+    value: development
+  - name: SESSION_SECRET
+    value: your_secret_key_here
+  - name: DB_HOST
+    value: mysql
+  - name: DB_USER
+    value: doomer
+  - name: DB_PASSWORD
+    value: doomer_password
+  - name: DB_NAME
+    value: doomer_db
+  - &id001
+    name: ADMIN_PASSWORD
+    value: your_admin_password_here
+  flags:
+  - name: main
+    env: FLAG
+- name: bot
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.bot
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: false
+  env:
+  - *id001
+  - name: APP_URL
+    value: http://web:1337
+- name: mysql
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.db
+  ports:
+  - name: mysql
+    containerPort: 3306
+    type: netcat
+    expose: false
+  env:
+  - name: MYSQL_DATABASE
+    value: doomer_db
+  - name: MYSQL_USER
+    value: doomer
+  - name: MYSQL_PASSWORD
+    value: doomer_password
+  - name: MYSQL_ROOT_PASSWORD
+    value: root_password
+  - *id001

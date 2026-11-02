@@ -1,0 +1,16 @@
+name: grafijaguesser7
+fullName: GrafijaGuesser 7
+description: Team Serbia's trainer took a flight in January, flying from Amsterdam
+  Schiphol to Serbia's main airport, Nikola Tesla. CyberHero is curious about where
+  the photo was taken. He believes there's a way to determine the exact minute the
+  picture was captured. Can you help him find the coordinates? Enter the flag in the
+  format SCC{XX.XX,YY.YY}.
+categories:
+- osint
+authors:
+- Gordic
+flags:
+- name: main
+  body: 51.44,6.86
+files:
+- public/image.jpg

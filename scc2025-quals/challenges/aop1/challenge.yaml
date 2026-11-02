@@ -1,0 +1,28 @@
+name: aop1
+fullName: Adventures of Pwnzor 1
+description: Embark on a journey through the perilous Stack Forest, battling memory-corrupting
+  creatures and exploiting vulnerabilities to claim the ultimate treasure.
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: h3r0_0v3rfl0w3d_7h47_60ld
+instancing: true
+files:
+- public/pwn-aop1.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

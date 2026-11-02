@@ -1,3 +1,4 @@
+import os
 questions = [
   {
     "question": "1. What is the website's fully qualified domain name that was targeted in the attack?",
@@ -63,7 +64,7 @@ def main():
             break
 
     if correct == len(questions):
-        print("Congratulations, here is your flag: SCC{4l4rm_tr1gg3r3d_intrus10n_c0nfirm3d}")
+        print(f"Congratulations, here is your flag: {os.environ['FLAG']}")
     
     print("Thanks for playing!")
 

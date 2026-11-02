@@ -1,0 +1,27 @@
+name: hades
+fullName: Hades
+description: Awaken, child o' Hell, and make your way to Olympus
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: may_artemis_guide_my_guesses
+instancing: true
+files:
+- public/hades.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 13300
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /flag.txt

@@ -1,0 +1,31 @@
+name: dos2
+fullName: 'DOS2: The Overwritten Mind'
+description: Hidden within a fragile legacy program, a variable sits in wait. It was
+  once a beacon of logic and structure, but time has corroded its defenses. A slight
+  alteration could be the key to unlocking its hidden potential. If you can overwrite
+  the right value, the program will bend to your will — but be careful, for this system
+  will only tolerate so much before it collapses under the pressure.
+categories:
+- pwn
+authors:
+- Vucko
+flags:
+- name: main
+  body: 0v3rwrit3n_c0d3_m4nipul4t0r
+instancing: true
+files:
+- public/pwn-dos2.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 9199
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

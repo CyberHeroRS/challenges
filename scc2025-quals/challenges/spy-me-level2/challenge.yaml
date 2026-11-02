@@ -1,0 +1,70 @@
+name: spy-me-level2
+fullName: SpyMe Level 2
+description: 'Great job! You''ve infiltrated the system and retrieved information
+  from the spies'' accounts. However, they didn''t leave anything spicy for us. Let''s
+  see if you can find the secret code for the spooky admin.
+
+
+  **Note**: When sending URLs to the admin bot, use http://web:3000 instead of the
+  public URL.'
+categories:
+- web
+authors:
+- DreyAnd
+flags:
+- name: main
+  body: w0W_y0u_ar3_th3_g4Zd4_n0W!
+instancing: true
+services:
+- name: web
+  image:
+    type: dockerfile
+    context: ../spy-me-level1/source
+    path: Dockerfile.web
+  env: &id001
+  - name: MYSQL_HOST
+    value: db
+  - name: MYSQL_USER
+    value: spyme
+  - name: MYSQL_PASSWORD
+    value: spyme123
+  - name: MYSQL_DATABASE
+    value: spyme
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG2
+- name: admin-bot
+  image:
+    type: dockerfile
+    context: ../spy-me-level1/source
+    path: Dockerfile.bot
+  env: *id001
+  ports:
+  - name: http
+    containerPort: 3001
+    type: http
+    expose: false
+- name: db
+  image:
+    type: dockerfile
+    context: ../spy-me-level1/source
+    path: Dockerfile.db
+  env:
+  - name: MYSQL_ROOT_PASSWORD
+    value: root
+  - name: MYSQL_DATABASE
+    value: spyme
+  - name: MYSQL_USER
+    value: spyme
+  - name: MYSQL_PASSWORD
+    value: spyme123
+  ports:
+  - name: mysql
+    containerPort: 3306
+    type: netcat
+    expose: false

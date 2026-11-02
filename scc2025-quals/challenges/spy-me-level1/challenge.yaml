@@ -1,0 +1,68 @@
+name: spy-me-level1
+fullName: SpyMe Level 1
+description: A secret espionage operation is unfolding in the Balkans, aiming to influence
+  regional governments. We've gained access to their internal platform. Can you infiltrate
+  their system and retrieve information from the spies' accounts?
+categories:
+- web
+authors:
+- DreyAnd
+flags:
+- name: main
+  body: th0s3_g0dd4Mn_S3rbS!
+instancing: true
+files:
+- public/web-spyMe.zip
+services:
+- name: web
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.web
+  env: &id001
+  - name: MYSQL_HOST
+    value: db
+  - name: MYSQL_USER
+    value: spyme
+  - name: MYSQL_PASSWORD
+    value: spyme123
+  - name: MYSQL_DATABASE
+    value: spyme
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG1
+- name: admin-bot
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.bot
+  env: *id001
+  ports:
+  - name: http
+    containerPort: 3001
+    type: http
+    expose: false
+- name: db
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.db
+  env:
+  - name: MYSQL_ROOT_PASSWORD
+    value: root
+  - name: MYSQL_DATABASE
+    value: spyme
+  - name: MYSQL_USER
+    value: spyme
+  - name: MYSQL_PASSWORD
+    value: spyme123
+  ports:
+  - name: mysql
+    containerPort: 3306
+    type: netcat
+    expose: false

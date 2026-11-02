@@ -1,0 +1,12 @@
+name: tiny-vm
+fullName: Tiny VM
+description: They say solving VM challenges is really hard — but is it?
+categories:
+- rev
+authors:
+- Jovan Pavlovic
+flags:
+- name: main
+  body: vms_arent_so_hard!
+files:
+- public/tiny-vm.py

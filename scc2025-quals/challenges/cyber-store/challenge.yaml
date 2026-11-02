@@ -1,0 +1,28 @@
+name: cyber-store
+fullName: Cyber Store
+description: Welcome to the Cyber Store - your one-stop shop for cyber security tools!
+  Can you try ordering something?
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: main
+  body: wh0_kn3w_pdf5_c0uld_r34d_f1l35
+instancing: true
+files:
+- public/web-cyber-store.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

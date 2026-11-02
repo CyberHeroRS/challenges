@@ -1,0 +1,27 @@
+name: hades-ii
+fullName: Hades II
+description: Rise, daughter o' Hell, and make your way to Chronos
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: the_magic_of_hecate
+instancing: true
+files:
+- public/hades_ii.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 13301
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /flag.txt

@@ -1,0 +1,28 @@
+name: totally-fair-casino
+fullName: Totally Fair Casino
+description: The most provably fair casino of them all
+categories:
+- crypto
+authors:
+- Pimpest
+flags:
+- name: main
+  body: W3_D0_N07_3ND0R53_G4MBL1NG
+instancing: true
+files:
+- public/server.py
+- public/requirments.txt
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 9112
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

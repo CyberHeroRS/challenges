@@ -8,4 +8,6 @@ COPY flag.txt /flag.txt
 
 EXPOSE 13301
 
+RUN useradd --create-home --uid 1000 user
+USER user
 CMD socat tcp-l:13301,reuseaddr,fork exec:"python3 /srv/hades_ii.py",pty,raw
