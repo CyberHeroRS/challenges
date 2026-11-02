@@ -13,7 +13,7 @@ flags:
   body: n3v3r_f0r637_70_0v3rl04d_c0py_45516nm3n7_0p3r470r!
 instancing: true
 files:
-- source/build-docker.sh
+- public/build-docker.sh
 - source/source.cpp
 - public/flag.txt
 - public/Dockerfile

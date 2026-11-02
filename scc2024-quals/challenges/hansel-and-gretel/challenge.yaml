@@ -14,7 +14,7 @@ files:
 - source/libc.so.6
 - source/libs/libc.so.6
 - source/libs/ld-linux-x86-64.so.2
-- source/build-docker.sh
+- public/build-docker.sh
 - source/hgp
 - public/flag.txt
 - source/ld-linux-x86-64.so.2

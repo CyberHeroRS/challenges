@@ -16,7 +16,7 @@ files:
 - source/compress.sh
 - public/Dockerfile
 - source/bzImage
-- source/build-docker.sh
+- public/build-docker.sh
 - public/initramfs.cpio.gz
 - source/connect.sh
 services:
