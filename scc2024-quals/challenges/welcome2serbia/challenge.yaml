@@ -44,3 +44,9 @@ services:
   flags:
   - name: main
     file: /usr/src/app/flag.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
