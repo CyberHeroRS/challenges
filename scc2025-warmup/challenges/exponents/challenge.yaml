@@ -12,3 +12,12 @@ flags:
 files:
 - source/exponents.py
 - public/out.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/out.txt
+    target: /solution/public/out.txt
