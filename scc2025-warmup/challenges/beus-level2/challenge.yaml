@@ -12,7 +12,7 @@ instancing: true
 files:
 - source/docker-compose.yml
 - public/Dockerfile
-- source/beus2
+- build://participant/beus2
 services:
 - name: app
   image:
@@ -27,3 +27,10 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

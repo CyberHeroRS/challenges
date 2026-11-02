@@ -11,7 +11,7 @@ flags:
   body: l051n6_w316h7_15n'7_50_h4rd_4f73r_4ll
 instancing: true
 files:
-- source/fancy
+- build://participant/fancy
 - source/docker-compose.yml
 - public/Dockerfile
 services:
@@ -28,3 +28,10 @@ services:
   flags:
   - name: main
     env: FLAG
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

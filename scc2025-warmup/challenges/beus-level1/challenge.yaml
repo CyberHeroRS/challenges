@@ -11,7 +11,7 @@ flags:
   body: 0v3rfl0w1n6_buff3r_15_4lw4y5_4_w1n
 instancing: true
 files:
-- source/beus1
+- build://participant/beus1
 - source/docker-compose.yml
 - public/Dockerfile
 services:
@@ -28,3 +28,10 @@ services:
   flags:
   - name: main
     env: FLAG
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

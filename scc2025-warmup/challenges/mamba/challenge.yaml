@@ -11,4 +11,10 @@ flags:
 - name: main
   body: 526a887e-8aff-41c5-9781-ec62375f69c4
 files:
-- public/mamba.pyc
+- build://pyc/mamba.pyc
+build:
+- name: pyc
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile

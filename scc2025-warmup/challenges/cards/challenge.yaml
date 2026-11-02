@@ -12,7 +12,7 @@ instancing: true
 files:
 - source/docker-compose.yml
 - public/Dockerfile
-- source/chal
+- build://participant/chal
 services:
 - name: app
   image:
@@ -27,3 +27,10 @@ services:
   flags:
   - name: main
     env: FLAG
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant
