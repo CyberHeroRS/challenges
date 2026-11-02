@@ -33,3 +33,12 @@ services:
   flags:
   - name: main
     env: FLAG
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/access.log
+    target: /solution/access.log
