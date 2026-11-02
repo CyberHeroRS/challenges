@@ -28,3 +28,12 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/app
+    target: /solution/solution/chall/app

@@ -12,3 +12,14 @@ files:
 - public/chall
 - public/source.c
 - public/output.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/source.c
+    target: /solution/public/source.c
+  - source: public/output.txt
+    target: /solution/public/output.txt

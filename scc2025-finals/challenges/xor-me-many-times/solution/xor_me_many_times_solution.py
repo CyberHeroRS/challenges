@@ -21,7 +21,7 @@ def depth(a, b):
 #     print(depth(int(input()), SECRET))
 # print(bytes(x ^ y ^ z for x, y, z in zip(MASK, FLAG, MASK[::-1])).hex())
 
-with remote("10.20.10.10", 9201) as rem:
+with remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"])) as rem:
 # with connect('localhost', 1337) as rem:
     def depth_(x):
         # return (depth (x, FLAG_))

@@ -59,7 +59,7 @@ def find_collision(gambler_id):
     return
 
 for _i in range(10):
-    with remote("10.20.10.10", 9200) as rem:
+    with remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"])) as rem:
     # with connect('localhost', 1337) as rem:
         rem.recvuntil(b'Wellcome ')
         gambler_id = int(rem.recvline().decode()[:19])

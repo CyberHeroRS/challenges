@@ -37,3 +37,12 @@ build:
     context: source
     path: Dockerfile
     target: participant
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/libc.so.6
+    target: /solution/libc.so.6

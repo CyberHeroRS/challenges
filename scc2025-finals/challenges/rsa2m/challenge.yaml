@@ -11,3 +11,12 @@ flags:
 files:
 - public/rsa2m.py
 - public/output.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/output.txt
+    target: /solution/public/output.txt

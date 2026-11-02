@@ -130,7 +130,7 @@ def get_remote_ref_raw(repo_name, ref_name):
         repo_name (str): The name of the repository.
         ref_name (str): The ref to fetch (e.g., 'refs/heads/main').
     """
-    repo_url = f"http://localhost:9080/git/{repo_name}"
+    repo_url = f"http://{os.environ['SERVICE_APP_HTTP_HOST']}:{os.environ['SERVICE_APP_HTTP_PORT']}/git/{repo_name}"
 
     # Create the request.dat file
     create_request_dat(ref_name)

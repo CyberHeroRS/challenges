@@ -4,7 +4,7 @@ import subprocess
 import requests
 from bs4 import BeautifulSoup
 
-BACKEND = "localhost:9080"
+BACKEND = os.environ["SERVICE_APP_HTTP_HOST"] + ":" + os.environ["SERVICE_APP_HTTP_PORT"]
 
 
 def push_symlink_repo_yml(target, repo_name, password):

