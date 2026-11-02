@@ -30,4 +30,4 @@ services:
     expose: true
   flags:
   - name: main
-    file: /home/user/flag.txt
+    file: /home/user/flag
