@@ -11,7 +11,7 @@ flags:
   body: r37urn1n6_70_l1bc_15_345y_50lv3
 instancing: true
 files:
-- source/beusX
+- build://participant/beusX
 - source/glibc/libc-2.31.so
 - source/glibc/libc.so.6
 - source/glibc/ld-2.31.so
@@ -31,3 +31,10 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

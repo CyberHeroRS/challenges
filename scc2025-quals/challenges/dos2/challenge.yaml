@@ -14,7 +14,7 @@ flags:
   body: 0v3rwrit3n_c0d3_m4nipul4t0r
 instancing: true
 files:
-- source/b/MAIN2.EXE
+- build://participant/MAIN2.EXE
 - source/b/compile.bat
 - source/b/main2.cpp
 - source/a/README.COM
@@ -805,3 +805,10 @@ services:
   flags:
   - name: main
     env: FLAG
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant

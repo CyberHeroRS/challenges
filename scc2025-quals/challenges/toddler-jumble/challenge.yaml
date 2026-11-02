@@ -13,7 +13,7 @@ files:
 - source/libc.so.6
 - source/ld-linux-x86-64.so.2
 - public/Dockerfile
-- source/chal
+- build://participant/chal
 - source/docker-compose.yaml
 services:
 - name: app
@@ -29,3 +29,10 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+build:
+- name: participant
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+    target: participant
