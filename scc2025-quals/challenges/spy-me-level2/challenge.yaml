@@ -68,3 +68,9 @@ services:
     containerPort: 3306
     type: netcat
     expose: false
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
