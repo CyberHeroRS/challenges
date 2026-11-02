@@ -1,0 +1,12 @@
+name: hello-world
+fullName: Hello World
+description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+categories:
+- welcome
+authors:
+- Marko Gordic
+flags:
+- name: main
+  body: sanity_check
+files:
+- public/welcome_hello_world.zip

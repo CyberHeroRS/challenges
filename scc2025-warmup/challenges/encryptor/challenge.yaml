@@ -1,0 +1,13 @@
+name: encryptor
+fullName: Encryptor
+description: My flag file somehow got corrupted, surely I should be able to recover
+  it?
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: 441245a9-0db2-4def-8489-ad84567f6647
+files:
+- public/rev_encryptor.zip

@@ -1,0 +1,28 @@
+name: cards-act-ii
+fullName: Cards, Act II
+description: Another card game to decide your life. Maybe you should start avoiding
+  dimly lit rooms...
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: subroups_are_groups_too
+instancing: true
+files:
+- public/cry_cards_act_ii.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 13300
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

@@ -1,0 +1,27 @@
+name: beus-level2
+fullName: BEUS Level 2
+description: Congratulations, you passed Level 1, but are you ready for Level 2?
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: r34d1n6_w17h_r34d_15n'7_5m4r7_4f73r_4ll
+instancing: true
+files:
+- public/pwn_beus_level2.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag

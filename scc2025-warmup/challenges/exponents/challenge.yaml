@@ -1,0 +1,13 @@
+name: exponents
+fullName: Exponents
+description: Privacy this, privacy that. Why keep things private if we can encrypt
+  them instead?
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: pr1vat3_3xpoN3nts_n33d_t0_st4y_pr1v4t3
+files:
+- public/cry_exponents.zip

@@ -1,0 +1,28 @@
+name: pill-challenge
+fullName: Pill Challenge
+description: You got captured by a criminal mastermind, can you earn your freedom
+  back?
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: main
+  body: r3m3mb3r_70_h4ndl3_y0ur_r4c3_c0nd1t10ns
+instancing: true
+files:
+- public/web_pill_challenge.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

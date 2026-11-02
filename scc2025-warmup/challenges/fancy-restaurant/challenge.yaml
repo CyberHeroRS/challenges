@@ -1,0 +1,28 @@
+name: fancy-restaurant
+fullName: Fancy Restaurant
+description: You've come across a suspiciously fancy restaurant. Can you go inside
+  and see if there’s something hidden?
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: l051n6_w316h7_15n'7_50_h4rd_4f73r_4ll
+instancing: true
+files:
+- public/pwn_fancy_restaurant.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

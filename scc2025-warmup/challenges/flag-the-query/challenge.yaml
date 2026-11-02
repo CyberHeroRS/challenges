@@ -1,0 +1,47 @@
+name: flag-the-query
+fullName: Flag The Query
+description: Our library's digital catalog has been compromised, leading to unauthorized
+  access and mysterious disappearances of rare book records. Investigate the breach,
+  uncover the exploit used by the perpetrators, and help us secure our treasured collection.
+categories:
+- web
+authors:
+- legasi
+flags:
+- name: main
+  body: n0_sql_1njection
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.app
+  ports:
+  - name: http
+    containerPort: 1331
+    type: http
+    expose: true
+  env:
+  - name: MONGO_URI
+    value: mongodb://admin:verysecure@mongo:27017/scc_books_challenge?authSource=admin
+- name: mongo
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.db
+  ports:
+  - name: mongo
+    containerPort: 27017
+    type: netcat
+    expose: false
+  env:
+  - name: MONGO_INITDB_ROOT_USERNAME
+    value: admin
+  - name: MONGO_INITDB_ROOT_PASSWORD
+    value: verysecure
+  - name: MONGO_INITDB_DATABASE
+    value: scc_books_challenge
+  flags:
+  - name: main
+    env: FLAG

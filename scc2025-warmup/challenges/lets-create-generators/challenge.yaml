@@ -1,0 +1,13 @@
+name: lets-create-generators
+fullName: Let's Create Generators
+description: Let's create a safe generator! I'll generate, and you see if my flag's
+  safe.
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: too_much_info?
+files:
+- public/cry_lets_create_generators.zip

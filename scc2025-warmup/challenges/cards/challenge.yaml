@@ -1,0 +1,27 @@
+name: cards
+fullName: Cards
+description: Do you feel lucky, punk?
+categories:
+- pwn
+authors:
+- k4
+flags:
+- name: main
+  body: luck_is_not_the_only_f4ctor
+instancing: true
+files:
+- public/pwn_cards.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

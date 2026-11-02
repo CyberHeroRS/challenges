@@ -1,0 +1,12 @@
+name: lets-create-generators-again
+fullName: Let's Create Generators Again
+description: Last time I gave a bit too much info. Let's try again!
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: maybe_i_should_give_up...
+files:
+- public/cry_lets_create_generators_again.zip

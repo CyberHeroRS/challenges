@@ -1,0 +1,27 @@
+name: len5
+fullName: len5
+description: Can you give us the number we need to be worthy of a flag?
+categories:
+- web
+authors:
+- legasi
+flags:
+- name: main
+  body: 4rray5_are_p4r53d_7oo
+instancing: true
+files:
+- public/web_len5.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 1312
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

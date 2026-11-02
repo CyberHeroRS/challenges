@@ -1,0 +1,27 @@
+name: secpwdgen
+fullName: secpwdgen
+description: Secure password generator which uses username.
+categories:
+- misc
+authors:
+- Vucko
+flags:
+- name: main
+  body: y0u_sh0uld_b3_c4r3ful_w1th_4_byt3_utf8_ch4rs
+instancing: true
+files:
+- public/misc_secpwdgen.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

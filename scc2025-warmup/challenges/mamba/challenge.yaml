@@ -1,0 +1,14 @@
+name: mamba
+fullName: Mamba
+description: I hear mambas are a group of highly venomous snakes belonging to the
+  genus Dendroaspis, found primarily in sub-Saharan Africa. They are known for their
+  speed, agility, and potent neurotoxic venom.
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: 526a887e-8aff-41c5-9781-ec62375f69c4
+files:
+- public/rev_mamba.zip

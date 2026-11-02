@@ -1,0 +1,14 @@
+name: gods-and-monsters
+fullName: Gods & Monsters
+description: You stand atop the summit, a trail of bodies lay behind you. You brace
+  yourself. "This is it", you utter, and the doors open to reveal a creature beyond
+  comprehension. Slay it, and you shall go down in history.
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: ev3n_g0d5_bl33d
+files:
+- public/cry_gods_and_monsters.zip

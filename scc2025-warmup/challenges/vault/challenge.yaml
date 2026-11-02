@@ -1,0 +1,13 @@
+name: vault
+fullName: Vault
+description: I got my hands on a password protected program that apparently contains
+  a free flag. It should be easy work, but how do I enter the password!?
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: 2405de8b-943a-4770-ae08-5a467f82b176
+files:
+- public/rev_vault.zip

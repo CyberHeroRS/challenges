@@ -1,0 +1,27 @@
+name: im-a-spy-ama
+fullName: I'm a Spy AMA
+description: Can you ask the right questions to get the flag?
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: main
+  body: 4_5py_n3v3r_r3v34l5_h15_53cr37s
+instancing: true
+files:
+- public/web_im_a_spy_ama.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 3000
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

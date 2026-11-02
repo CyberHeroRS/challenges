@@ -1,0 +1,28 @@
+name: beus-level1
+fullName: BEUS Level 1
+description: Have you heard about the Binary Exploitation Unit of Serbia? This is
+  their test, can you clear all the levels.
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: 0v3rfl0w1n6_buff3r_15_4lw4y5_4_w1n
+instancing: true
+files:
+- public/pwn_beus_level1.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

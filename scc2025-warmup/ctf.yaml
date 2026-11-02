@@ -1,0 +1,30 @@
+name: scc2025-warmup
+fullName: SCC 2025 Warmup
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/beus-level1/challenge.yaml
+- challenges/beus-level2/challenge.yaml
+- challenges/cards/challenge.yaml
+- challenges/cards-act-ii/challenge.yaml
+- challenges/cross/challenge.yaml
+- challenges/encryptor/challenge.yaml
+- challenges/exponents/challenge.yaml
+- challenges/fancy-restaurant/challenge.yaml
+- challenges/flag-the-query/challenge.yaml
+- challenges/gods-and-monsters/challenge.yaml
+- challenges/hello-world/challenge.yaml
+- challenges/im-a-spy-ama/challenge.yaml
+- challenges/len5/challenge.yaml
+- challenges/lets-create-generators/challenge.yaml
+- challenges/lets-create-generators-again/challenge.yaml
+- challenges/mamba/challenge.yaml
+- challenges/maze-simulation/challenge.yaml
+- challenges/pill-challenge/challenge.yaml
+- challenges/secpwdgen/challenge.yaml
+- challenges/secret-archives/challenge.yaml
+- challenges/vault/challenge.yaml

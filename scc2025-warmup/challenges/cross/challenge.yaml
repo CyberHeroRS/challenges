@@ -1,0 +1,37 @@
+name: cross
+fullName: croSS
+description: Search for Trouble
+categories:
+- web
+authors:
+- legasi
+flags:
+- name: main
+  body: cro55_5ite_5cripting
+instancing: true
+files:
+- public/web_croSS.zip
+services:
+- name: web-cross-app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.app
+  ports:
+  - name: http
+    containerPort: 1213
+    type: http
+    expose: true
+- name: web-cross-bot
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.bot
+  ports:
+  - name: http
+    containerPort: 4000
+    type: http
+    expose: false
+  flags:
+  - name: main
+    env: FLAG
