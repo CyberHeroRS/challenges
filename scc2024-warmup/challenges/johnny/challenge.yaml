@@ -14,3 +14,9 @@ flags:
 instancing: false
 files:
 - public/johnny.zip
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
