@@ -11,4 +11,10 @@ flags:
   body: BANEOFARTHROPODSV
 instancing: false
 files:
-- public/enchantment.pdf
+- build://pdf/enchantment.pdf
+build:
+- name: pdf
+  image:
+    type: dockerfile
+    context: assets
+    path: Dockerfile
