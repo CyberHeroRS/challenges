@@ -11,7 +11,10 @@ flags:
   body: h4v3_y0u_h34rd_0f_z0rk!??!?!?
 instancing: true
 files:
-- public/zork1.zip
+- source/Dockerfile
+- source/zork1
+- public/build-docker.sh
+- public/flag.txt
 services:
 - name: app
   image:

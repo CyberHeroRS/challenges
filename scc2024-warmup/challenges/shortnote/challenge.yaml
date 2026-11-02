@@ -12,7 +12,18 @@ flags:
   body: D0nt_W0rrY_L000ng_N0te_1s_C0m1ng_S00n
 instancing: true
 files:
-- public/web_shortnote.zip
+- source/Dockerfile
+- public/build-docker.sh
+- source/src/package.json
+- source/src/package-lock.json
+- source/src/app.js
+- source/src/views/index.ejs
+- source/src/views/visit.ejs
+- source/src/views/checkNote.ejs
+- source/src/static/styles.css
+- source/src/static/checkNote.css
+- public/src/bot.js
+- public/src/.env
 services:
 - name: app
   image:
