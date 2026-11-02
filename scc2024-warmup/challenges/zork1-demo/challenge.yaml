@@ -1,0 +1,28 @@
+name: zork1-demo
+fullName: zork1 demo
+description: Demo of the famous zork I game has been created. I made sure to make
+  the monster unbeatable, prove me wrong and you will earn a valuable prize.
+categories:
+- pwn
+authors:
+- mirko
+flags:
+- name: main
+  body: h4v3_y0u_h34rd_0f_z0rk!??!?!?
+instancing: true
+files:
+- public/zork1.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt

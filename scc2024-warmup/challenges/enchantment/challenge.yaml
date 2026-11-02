@@ -1,0 +1,14 @@
+name: enchantment
+fullName: enchantment
+description: This is some strange language, I think I have seen it in my Minecraft
+  playthrough.
+categories:
+- misc
+authors:
+- Vucko
+flags:
+- name: main
+  body: BANEOFARTHROPODSV
+instancing: false
+files:
+- public/enchantment.pdf

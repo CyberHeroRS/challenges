@@ -1,0 +1,23 @@
+name: anatomy
+fullName: Anatomy
+description: It's hard working on challenges as a full stack web dev. My flag always
+  ends up everywhere!
+categories:
+- web
+authors:
+- s4ndu
+flags:
+- name: main
+  body: AnA7omY_oF_a_w3b_aPP_i5_fuN
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: http
+    expose: true

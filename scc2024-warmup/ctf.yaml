@@ -1,0 +1,41 @@
+name: scc2024-warmup
+fullName: SCC 2024 Warmup
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/anatomy/challenge.yaml
+- challenges/art/challenge.yaml
+- challenges/banana-shop/challenge.yaml
+- challenges/blind-luck/challenge.yaml
+- challenges/crossed/challenge.yaml
+- challenges/enchantment/challenge.yaml
+- challenges/flags4everyone/challenge.yaml
+- challenges/franco-greek/challenge.yaml
+- challenges/gmq-accc/challenge.yaml
+- challenges/grafijaguesser-1/challenge.yaml
+- challenges/grafijaguesser-2/challenge.yaml
+- challenges/hexor/challenge.yaml
+- challenges/hidden-cat/challenge.yaml
+- challenges/insecure-ftp-1/challenge.yaml
+- challenges/insecure-ftp-2/challenge.yaml
+- challenges/javascript/challenge.yaml
+- challenges/johnny/challenge.yaml
+- challenges/kalkulator/challenge.yaml
+- challenges/linearcongruencegamer/challenge.yaml
+- challenges/login-form/challenge.yaml
+- challenges/meta-hero/challenge.yaml
+- challenges/monkey-magic/challenge.yaml
+- challenges/password/challenge.yaml
+- challenges/pin/challenge.yaml
+- challenges/serial/challenge.yaml
+- challenges/shinobi/challenge.yaml
+- challenges/shortnote/challenge.yaml
+- challenges/spookymacro/challenge.yaml
+- challenges/weaponized-key/challenge.yaml
+- challenges/whack-a-mole-1/challenge.yaml
+- challenges/whack-a-mole-2/challenge.yaml
+- challenges/zork1-demo/challenge.yaml

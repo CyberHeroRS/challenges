@@ -1,0 +1,14 @@
+name: meta-hero
+fullName: Meta Hero
+description: Members of CyberHero love to leave hidden messages everywhere. Can you
+  uncover the secret behind their logo?
+categories:
+- forensics
+authors:
+- Krsman
+flags:
+- name: main
+  body: 3x1f7o0l_15_JU57_5UP3r10r!!
+instancing: false
+files:
+- public/meta_hero.png

@@ -1,0 +1,14 @@
+name: hexor
+fullName: Hexor
+description: I did it! I figured out how to make a OTP! Hah! Take that, Boneh! Now
+  I just need to figure out what format to use\u2026
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: R43L_h4x0rs_kNoW_xor!
+instancing: false
+files:
+- public/Hexor.zip

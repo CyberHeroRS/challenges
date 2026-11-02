@@ -1,0 +1,14 @@
+name: spookymacro
+fullName: SpookyMacro
+description: We found some strange word document on Cyber Hero's workstation. Can
+  you look into it?
+categories:
+- forensics
+authors:
+- Krsman
+flags:
+- name: main
+  body: 5p00ky_5c4ry_5k3l370n5_607_1n70_y0ur_w0rd
+instancing: false
+files:
+- public/SpookyMacro.zip

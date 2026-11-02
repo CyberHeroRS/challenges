@@ -1,0 +1,29 @@
+name: gmq-accc
+fullName: GMQ_ACCC
+description: "Welcome to Galactic Math Quest: Alien Cipher Communication Challenge!\r\
+  \n\r\nYou need to initialize communication with aliens using math protocol."
+categories:
+- misc
+authors:
+- Vucko
+flags:
+- name: main
+  body: 1_6u355_4l13n5_4r3n7_c0mpl1c473d_4f73r_4ll
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

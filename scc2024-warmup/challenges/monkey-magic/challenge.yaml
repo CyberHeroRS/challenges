@@ -1,0 +1,14 @@
+name: monkey-magic
+fullName: Monkey magic
+description: With the rise of AI and hex editors, monkeys learned how to mess with
+  image magic to make their secret operation hidden. Can you fix this image?
+categories:
+- forensics
+authors:
+- Krsman
+flags:
+- name: main
+  body: h34d_0f_m0nk3y_bu51n355
+instancing: false
+files:
+- public/monkey_magic.jpg

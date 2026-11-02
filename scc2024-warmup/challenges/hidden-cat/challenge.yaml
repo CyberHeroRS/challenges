@@ -1,0 +1,13 @@
+name: hidden-cat
+fullName: Hidden Cat
+description: My cat's evil twin is hiding somewhere. Can you help me find it?
+categories:
+- misc
+authors:
+- TheProxy
+flags:
+- name: main
+  body: h1dd3n_1n_pl41n_516h7
+instancing: false
+files:
+- public/hidden_cat.png

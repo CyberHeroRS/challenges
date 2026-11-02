@@ -1,0 +1,14 @@
+name: linearcongruencegamer
+fullName: LinearCongruenceGamer
+description: Hey, Gamer! So I was making the RNG for our game, but I think I lost
+  the flag in there. Can you help me out?
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: l1n34r_s3c4r1ty_i5_p00r_s3c4r1ty
+instancing: false
+files:
+- public/LinearCongruenceGamer.zip

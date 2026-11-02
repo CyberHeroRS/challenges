@@ -1,0 +1,26 @@
+name: whack-a-mole-2
+fullName: Whack A Mole 2
+description: I have 5 moles in my backyard. They use a specific pattern to choose
+  which hole to appear in. Sadly, there are too many holes to guess. Can you help
+  me identify their pattern? If successful, I will reward you with a flag.
+categories:
+- crypto
+authors:
+- mirko
+flags:
+- name: main
+  body: '202420242024202420242024'
+instancing: true
+files:
+- ../whack-a-mole-1/public/server.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: ../whack-a-mole-1/source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true

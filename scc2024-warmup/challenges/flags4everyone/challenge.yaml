@@ -1,0 +1,22 @@
+name: flags4everyone
+fullName: Flags4Everyone
+description: This is where I keep all my flags. I can show you some, but not all!
+categories:
+- web
+authors:
+- s4ndu
+flags:
+- name: main
+  body: SQLi_n3v3r_ou7_oF_fash10n
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: http
+    expose: true

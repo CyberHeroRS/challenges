@@ -1,6 +1,8 @@
+import os
+
 from pwn import *
 
-p = remote("localhost", 5000)
+p = remote(os.environ["SERVICE_APP_MAIN_HOST"], int(os.environ["SERVICE_APP_MAIN_PORT"]))
 
 for i in range(500):
     p.recvuntil(b"Round ")
@@ -8,4 +10,4 @@ for i in range(500):
     solution = int(equation[1]) + int(equation[3])
     p.sendline(str(solution).encode())
 
-p.interactive()
+print(p.recvall().decode())

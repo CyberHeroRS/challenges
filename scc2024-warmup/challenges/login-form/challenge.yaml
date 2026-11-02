@@ -1,0 +1,35 @@
+name: login-form
+fullName: login form
+description: Welcome to our simple login and register application. We haven't implemented
+  an admin system yet, but there is still a way to login as admin. Can you find that
+  way?
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: l00k5_l1k3_y0ur_p455w0rd_15_700_l0n6!
+instancing: true
+files:
+- public/pwn_login_form.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

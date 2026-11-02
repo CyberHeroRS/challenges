@@ -19,4 +19,5 @@ COPY . .
 RUN chown -R bot:bot /app
 USER bot
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+EXPOSE 7777
 ENTRYPOINT ["node", "app.js"]

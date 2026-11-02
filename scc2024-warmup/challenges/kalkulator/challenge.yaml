@@ -1,0 +1,26 @@
+name: kalkulator
+fullName: kalkulator
+description: kalkulator is a simple calculator which can evaluate any mathematical
+  expression, there shouldn\u2019t be anything to worry about, right?
+categories:
+- misc
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: 3v4lu471n6_u53r_1npu7_c4n_b3_d4n63r0u5!
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt

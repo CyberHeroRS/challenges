@@ -1,0 +1,32 @@
+name: banana-shop
+fullName: banana shop
+description: Welcome to Banana Shop, where you can buy lots of bananas and maybe something
+  else. Someone said that you can buy negative bananas, but we're not sure what they
+  meant by that.
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: b4n4n45_4r3_50m371m35_b3773r_7h4n_fl465!
+instancing: true
+files:
+- public/pwn_banana_shop.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

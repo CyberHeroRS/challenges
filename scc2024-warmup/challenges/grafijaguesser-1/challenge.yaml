@@ -1,0 +1,15 @@
+name: grafijaguesser-1
+fullName: GrafijaGuesser 1
+description: "CyberHero needs your help! He found some old images and he wants to\
+  \ know where he took them.\r\n\r\nYou need to provide him coordinates of places\
+  \ where the image was shot.\r\nFlag Format : SCC{XX.XXX,YY.YYY}"
+categories:
+- osint
+authors:
+- Gordic
+flags:
+- name: main
+  body: 44.807,20.463
+instancing: false
+files:
+- public/image.png

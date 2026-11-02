@@ -1,0 +1,15 @@
+name: insecure-ftp-1
+fullName: Insecure FTP 1
+description: An accident happened in CyberHero HQ and FTP encryption failed. Accident
+  went unnoticed until today. It looks like some sensitive files are exfiltrated,
+  take a look.
+categories:
+- forensics
+authors:
+- Gordic
+flags:
+- name: main
+  body: f7p_7r4ff1c_mu57_b3_3ncryp73d
+instancing: false
+files:
+- public/Insecure_FTP_1_2.zip

@@ -1,0 +1,25 @@
+name: blind-luck
+fullName: Blind Luck
+description: 'Someone said to me only those with blind luck could guess this flag.
+
+
+  '
+categories:
+- web
+authors:
+- TheProxy
+flags:
+- name: main
+  body: l00k1n6_1n70_7h3_fu7ur3e
+instancing: true
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 8080
+    type: http
+    expose: true
