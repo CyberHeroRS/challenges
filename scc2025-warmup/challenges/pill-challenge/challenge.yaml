@@ -11,7 +11,12 @@ flags:
   body: r3m3mb3r_70_h4ndl3_y0ur_r4c3_c0nd1t10ns
 instancing: true
 files:
-- public/web_pill_challenge.zip
+- source/src/index.html
+- source/src/index.js
+- source/Dockerfile
+- source/package-lock.json
+- source/package.json
+- source/docker-compose.yaml
 services:
 - name: app
   image:

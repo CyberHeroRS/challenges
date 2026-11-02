@@ -9,4 +9,4 @@ flags:
 - name: main
   body: sanity_check
 files:
-- public/welcome_hello_world.zip
+- public/flag.txt

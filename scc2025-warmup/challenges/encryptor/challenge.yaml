@@ -10,4 +10,5 @@ flags:
 - name: main
   body: 441245a9-0db2-4def-8489-ad84567f6647
 files:
-- public/rev_encryptor.zip
+- public/flag.enc
+- public/encryptor

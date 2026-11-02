@@ -10,7 +10,15 @@ flags:
   body: cro55_5ite_5cripting
 instancing: true
 files:
-- public/web_croSS.zip
+- source/src/app.js
+- source/src/routes.js
+- source/Dockerfile.app
+- source/views/index.html
+- source/Dockerfile.bot
+- source/bot/bot.js
+- source/docker-compose.yml
+- source/package-lock.json
+- source/package.json
 services:
 - name: web-cross-app
   image:

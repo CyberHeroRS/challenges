@@ -11,7 +11,9 @@ flags:
   body: subroups_are_groups_too
 instancing: true
 files:
-- public/cry_cards_act_ii.zip
+- public/build_docker.sh
+- source/cards.py
+- public/Dockerfile
 services:
 - name: app
   image:

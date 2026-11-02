@@ -10,4 +10,5 @@ flags:
 - name: main
   body: too_much_info?
 files:
-- public/cry_lets_create_generators.zip
+- public/out.txt
+- source/generator.py

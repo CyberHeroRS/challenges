@@ -10,7 +10,9 @@ flags:
   body: luck_is_not_the_only_f4ctor
 instancing: true
 files:
-- public/pwn_cards.zip
+- source/docker-compose.yml
+- public/Dockerfile
+- source/chal
 services:
 - name: app
   image:

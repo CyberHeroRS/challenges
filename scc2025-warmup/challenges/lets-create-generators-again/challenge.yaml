@@ -9,4 +9,5 @@ flags:
 - name: main
   body: maybe_i_should_give_up...
 files:
-- public/cry_lets_create_generators_again.zip
+- public/out.txt
+- source/generator.py

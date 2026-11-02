@@ -11,7 +11,9 @@ flags:
   body: l051n6_w316h7_15n'7_50_h4rd_4f73r_4ll
 instancing: true
 files:
-- public/pwn_fancy_restaurant.zip
+- source/fancy
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:

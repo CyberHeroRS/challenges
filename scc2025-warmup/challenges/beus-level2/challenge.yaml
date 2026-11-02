@@ -10,7 +10,9 @@ flags:
   body: r34d1n6_w17h_r34d_15n'7_5m4r7_4f73r_4ll
 instancing: true
 files:
-- public/pwn_beus_level2.zip
+- source/docker-compose.yml
+- public/Dockerfile
+- source/beus2
 services:
 - name: app
   image:

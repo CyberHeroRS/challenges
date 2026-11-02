@@ -10,7 +10,10 @@ flags:
   body: y0u_sh0uld_b3_c4r3ful_w1th_4_byt3_utf8_ch4rs
 instancing: true
 files:
-- public/misc_secpwdgen.zip
+- source/src/main.rs
+- source/Cargo.toml
+- source/docker-compose.yml
+- public/Dockerfile
 services:
 - name: app
   image:

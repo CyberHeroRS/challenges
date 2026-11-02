@@ -10,7 +10,12 @@ flags:
   body: 4rray5_are_p4r53d_7oo
 instancing: true
 files:
-- public/web_len5.zip
+- source/src/app.js
+- source/views/index.html
+- source/docker-compose.yml
+- source/Dockerfile
+- source/package-lock.json
+- source/package.json
 services:
 - name: app
   image:

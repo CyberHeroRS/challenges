@@ -10,7 +10,13 @@ flags:
   body: 4_5py_n3v3r_r3v34l5_h15_53cr37s
 instancing: true
 files:
-- public/web_im_a_spy_ama.zip
+- source/index.html
+- source/Dockerfile
+- source/answer.html
+- source/package-lock.json
+- source/index.js
+- source/package.json
+- source/docker-compose.yaml
 services:
 - name: app
   image:

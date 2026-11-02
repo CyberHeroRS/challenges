@@ -10,4 +10,5 @@ flags:
 - name: main
   body: pr1vat3_3xpoN3nts_n33d_t0_st4y_pr1v4t3
 files:
-- public/cry_exponents.zip
+- source/exponents.py
+- public/out.txt

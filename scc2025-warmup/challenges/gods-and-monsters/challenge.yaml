@@ -11,4 +11,5 @@ flags:
 - name: main
   body: ev3n_g0d5_bl33d
 files:
-- public/cry_gods_and_monsters.zip
+- public/out.txt
+- source/gods_and_monsters.py

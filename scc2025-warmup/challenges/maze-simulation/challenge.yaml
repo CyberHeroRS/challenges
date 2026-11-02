@@ -10,7 +10,9 @@ flags:
   body: h0w_d0_1_f0rm4t_th1s?_s50r3b04rd
 instancing: true
 files:
-- public/pwn_maze_simulation.zip
+- source/docker-compose.yml
+- public/Dockerfile
+- source/chal
 services:
 - name: app
   image:
