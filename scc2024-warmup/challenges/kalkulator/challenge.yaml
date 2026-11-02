@@ -24,3 +24,9 @@ services:
   flags:
   - name: main
     file: /home/user/flag.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

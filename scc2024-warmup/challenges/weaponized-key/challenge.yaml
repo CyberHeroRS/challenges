@@ -14,3 +14,12 @@ instancing: false
 files:
 - public/Weaponized_Key/SecretWeapon.ps1
 - public/Weaponized_Key/SecretWeaponRaw.ps1
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/Weaponized_Key/SecretWeapon.ps1
+    target: /solution/SecretWeapon.ps1

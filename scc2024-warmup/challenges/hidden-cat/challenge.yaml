@@ -11,3 +11,12 @@ flags:
 instancing: false
 files:
 - public/hidden_cat.png
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/hidden_cat.png
+    target: /solution/hidden_cat.png

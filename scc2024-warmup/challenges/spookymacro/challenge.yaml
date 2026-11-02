@@ -12,3 +12,9 @@ flags:
 instancing: false
 files:
 - public/secret.docm
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

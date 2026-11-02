@@ -18,3 +18,9 @@ build:
     type: dockerfile
     context: assets
     path: Dockerfile
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

@@ -12,3 +12,12 @@ flags:
 instancing: false
 files:
 - public/meta_hero.png
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/meta_hero.png
+    target: /solution/public/meta_hero.png
