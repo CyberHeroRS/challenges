@@ -1,4 +1,6 @@
-SITE_URL = "http://localhost:8000"
+import os
+
+SITE_URL = f"http://{os.environ['SERVICE_WAF_HTTP_HOST']}:{os.environ['SERVICE_WAF_HTTP_PORT']}"
 
 import requests
 from requests.models import PreparedRequest
@@ -25,8 +27,31 @@ def get_flag_image():
 def get_flag_text():
     image_data = get_flag_image()
     print("Image data fetched, processing...")
-    image = Image.open(BytesIO(image_data))
-    return pytesseract.image_to_string(image).strip()
+    image = Image.open(BytesIO(image_data)).convert("L")
+    # The flag is rendered at a tiny font size to fit a 400x100px image, so
+    # upscaling before OCR (same recovered image, just easier for tesseract
+    # to read) substantially improves accuracy over running it on the raw
+    # image directly.
+    image = image.resize((image.width * 4, image.height * 4), Image.BICUBIC)
+    return pytesseract.image_to_string(image, config="--psm 7").strip()
 
 
-print(get_flag_text())
+def normalize(s):
+    # OCR of this tiny leetspeak font reliably confuses 0/O, 1/I/l and 4/a;
+    # fold those together so a correct-but-imperfectly-OCR'd read still
+    # matches the expected flag.
+    s = s.lower()
+    for a, b in (("o", "0"), ("i", "1"), ("l", "1"), ("a", "4")):
+        s = s.replace(a, b)
+    return s
+
+
+flag_text = get_flag_text()
+print(flag_text)
+
+expected = os.environ.get("flag_main")
+if expected and normalize(expected) in normalize(flag_text):
+    print("MATCH")
+else:
+    print("NO MATCH")
+    raise SystemExit(1)
