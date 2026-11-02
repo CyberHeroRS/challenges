@@ -13,3 +13,9 @@ flags:
 files:
 - public/out.txt
 - source/gods_and_monsters.py
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
