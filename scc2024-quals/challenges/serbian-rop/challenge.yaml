@@ -1,0 +1,27 @@
+name: serbian-rop
+fullName: Serbian ROP
+description: Did you know that Serbia has its own ROP? Can you figure it out?
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: d1d_y0u_kn0w_7h47_5r0p_m34n5_53rb14n_r0p!
+instancing: true
+files:
+- public/pwn_serbian_rop.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt

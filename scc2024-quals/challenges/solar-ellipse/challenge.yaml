@@ -1,0 +1,13 @@
+name: solar-ellipse
+fullName: solar ellipse
+description: I thought solar eclipse is later on this year? OH YOU MEANT ELLIPSE :D
+categories:
+- crypto
+authors:
+- mirko
+flags:
+- name: main
+  body: 3cc_0r_syst3m_0f_p01yn0m14ls?
+instancing: false
+files:
+- public/solar_ellipse.zip

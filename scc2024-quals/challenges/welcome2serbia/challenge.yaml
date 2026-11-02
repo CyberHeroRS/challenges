@@ -1,0 +1,28 @@
+name: welcome2serbia
+fullName: Welcome2Serbia
+description: Discover Serbia through our website, designed for visitors. We opted
+  for files instead of a database for simplicity. It's secure, right?
+categories:
+- web
+authors:
+- Gordic
+flags:
+- name: main
+  body: W3Lc0m3_70_7h3_LAnD_0F_h1570RY_and_CUl7uR3
+instancing: true
+files:
+- public/web_welcome2serbia.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 3500
+    type: http
+    expose: true
+  flags:
+  - name: main
+    file: /usr/src/app/flag.txt

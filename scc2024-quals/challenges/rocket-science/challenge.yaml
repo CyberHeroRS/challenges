@@ -1,0 +1,16 @@
+name: rocket-science
+fullName: Rocket Science
+description: CyberHero has just optimized their network with a cutting-edge internet
+  acceleration program. However, amidst the boost in cyber speed, a critical file
+  has mysteriously disappeared. Can you delve into the digital depths and retrieve
+  the lost asset before it's too late?
+categories:
+- foren
+authors:
+- Krsman
+flags:
+- name: main
+  body: c2_5ur3_5p33ds_up_w1nd0w5
+instancing: false
+files:
+- public/link.txt

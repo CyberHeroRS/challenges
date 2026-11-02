@@ -1,0 +1,19 @@
+name: grafija-guessr-1
+fullName: GrafijaGuesser 3
+description: 'CyberHero needs your help! He found some old images and he wants to
+  know where he took them.
+
+
+  You need to provide him coordinates of places where the image was shot.
+
+  Flag Format : SCC{XX.XXX,YY.YYY}'
+categories:
+- osint
+authors:
+- Gordic
+flags:
+- name: main
+  body: 45.255,19.845
+instancing: false
+files:
+- public/osint_grafijaguessr1.zip

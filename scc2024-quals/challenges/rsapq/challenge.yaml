@@ -1,0 +1,15 @@
+name: rsapq
+fullName: rsapq
+description: I was explaining RSA algorithm to my friend for a whole day. In the end
+  he encrypted everything he could and sent it over the school network. Can you use
+  our intercepted conversation and retrieve his gmail password? Should i worry??
+categories:
+- crypto
+authors:
+- mirko
+# The legacy flag body is 250 characters long, which exceeds the manifest's
+# 127-character flag body limit, so it cannot be represented. See TESTING.md.
+flags: []
+instancing: false
+files:
+- public/crypto_rsapq.zip

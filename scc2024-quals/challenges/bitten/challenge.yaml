@@ -1,0 +1,13 @@
+name: bitten
+fullName: Bitten
+description: A few bits here, a few there- what could go wrong?
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: kronecker_or_legrenge_or_jacobi
+instancing: false
+files:
+- public/crypto_bitten.zip

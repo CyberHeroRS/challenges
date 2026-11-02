@@ -1,0 +1,28 @@
+name: outer-product
+fullName: Outer Product
+description: Outer product of two coordinate vectors is The Matrix, but in this application
+  it can be much more.
+categories:
+- pwn
+authors:
+- Lazar Mancic
+flags:
+- name: main
+  body: 35c4p1n6_m47r1x_w17h_b0f_15n'7_700_h4rd!
+instancing: true
+files:
+- public/pwn_outer_product.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt

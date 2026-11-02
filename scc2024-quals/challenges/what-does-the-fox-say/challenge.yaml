@@ -1,0 +1,31 @@
+name: what-does-the-fox-say
+fullName: What Does The Fox Say?
+description: In the shadowy realms of cyberspace, where secrets lie hidden in the
+  digital ether, your ally, the enigmatic CyberHero, has vanished without a trace.
+  Tasked with unraveling the mystery of their disappearance, you must delve into the
+  arcane depths of CyberHero's browser, a labyrinth of codes and clues. Within this
+  digital Pandora's box, you will seek out the vestiges of their online journey, piecing
+  together the puzzle to ensure their intentions were pure. Can you navigate this
+  web of intrigue and uncover the truth behind CyberHero's activities before it's
+  too late?
+categories:
+- foren
+authors:
+- Gordic
+flags:
+- name: main
+  body: r1n9_d1n9_D1N9_D1N9_d1N93r1n93d1n!
+instancing: true
+files:
+- public/forensics_what_does_the_fox_say.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1501
+    type: netcat
+    expose: true

@@ -1,10 +1,23 @@
-FROM cybersecnatlab/challenge-jail@sha256:7bf77225063b039960f654307cf5d6f977f892ff548606357a2e8fe8067d0a88
-COPY ./hgp /home/user/chall
-COPY ./libc.so.6 /home/user/
-COPY ./ld-linux-x86-64.so.2 /home/user/
-COPY ./libs /home/user/libs
+FROM ubuntu:22.04 AS patch
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends patchelf && \
+    rm -rf /var/lib/apt/lists/*
+COPY ./hgp /chall
+# Equivalent of the former challenge-jail SET_INTERPRETER/SET_RPATH settings.
+RUN patchelf --set-interpreter /home/user/libs/ld-linux-x86-64.so.2 --set-rpath /home/user/libs /chall
 
-ENV SET_INTERPRETER /home/user/libs/ld-linux-x86-64.so.2
-ENV SET_RPATH /home/user/libs
+FROM ubuntu:22.04
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends socat coreutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd --create-home --uid 1000 user
+WORKDIR /home/user
+COPY --from=patch --chmod=0555 /chall ./chall
+COPY ./libc.so.6 ./
+COPY ./ld-linux-x86-64.so.2 ./
+COPY ./libs ./libs
+
 EXPOSE 1337
 ENV TIMEOUT=120
+USER user
+CMD ["sh", "-c", "exec socat TCP-LISTEN:1337,reuseaddr,fork \"EXEC:timeout ${TIMEOUT} ./chall,stderr\""]

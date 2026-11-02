@@ -1,0 +1,47 @@
+name: scc2024-quals
+fullName: SCC 2024 Quals
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/alien-communication/challenge.yaml
+- challenges/baby-pop/challenge.yaml
+- challenges/bitten/challenge.yaml
+- challenges/clicker-game/challenge.yaml
+- challenges/cxorruption/challenge.yaml
+- challenges/ds-homework/challenge.yaml
+- challenges/ecology/challenge.yaml
+- challenges/efficient-todo/challenge.yaml
+- challenges/elf-patrol/challenge.yaml
+- challenges/ghost-activity/challenge.yaml
+- challenges/ghostwriter-mystery/challenge.yaml
+- challenges/grafija-guessr-1/challenge.yaml
+- challenges/grafija-guessr-2/challenge.yaml
+- challenges/grafija-guessr-3/challenge.yaml
+- challenges/hansel-and-gretel/challenge.yaml
+- challenges/junkyard/challenge.yaml
+- challenges/kernel-buddy/challenge.yaml
+- challenges/live-laugh-love/challenge.yaml
+- challenges/long-note/challenge.yaml
+- challenges/loooose/challenge.yaml
+- challenges/neglegentia/challenge.yaml
+- challenges/nonsense/challenge.yaml
+- challenges/outer-product/challenge.yaml
+- challenges/riscy-encryptor/challenge.yaml
+- challenges/rocket-science/challenge.yaml
+- challenges/rsapq/challenge.yaml
+- challenges/see-in-the-dark/challenge.yaml
+- challenges/serbian-rop/challenge.yaml
+- challenges/slaga1337za/challenge.yaml
+- challenges/solar-ellipse/challenge.yaml
+- challenges/space-echoes/challenge.yaml
+- challenges/spookier-macro/challenge.yaml
+- challenges/the-three-encryption-problem/challenge.yaml
+- challenges/vacation-nightmare/challenge.yaml
+- challenges/vmderful/challenge.yaml
+- challenges/wasm-mania/challenge.yaml
+- challenges/welcome2serbia/challenge.yaml
+- challenges/what-does-the-fox-say/challenge.yaml

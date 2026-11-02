@@ -1,0 +1,13 @@
+name: alien-communication
+fullName: Alien Communication
+description: none
+categories:
+- misc
+authors:
+- TheProxy
+flags:
+- name: main
+  body: 4ud10_1m4635_4r3_b357!
+instancing: false
+files:
+- public/misc_alien_communication.zip

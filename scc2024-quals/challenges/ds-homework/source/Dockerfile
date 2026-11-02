@@ -1,17 +1,24 @@
 FROM ubuntu:22.04 AS app
 
-RUN apt-get update && apt-get install -y build-essential
+RUN apt-get update && apt-get install -y build-essential patchelf
 
 WORKDIR /app
 COPY source.cpp .
 COPY flag.txt .
 RUN g++ source.cpp -ggdb -Wall -fstack-protector -Wl,-z,relro,-z,now -o run
+# Equivalent of the former challenge-jail SET_INTERPRETER/SET_RPATH settings.
+RUN patchelf --set-interpreter /home/user/libs/ld-linux-x86-64.so.2 --set-rpath /home/user/libs run
 
-FROM cybersecnatlab/challenge-jail@sha256:7bf77225063b039960f654307cf5d6f977f892ff548606357a2e8fe8067d0a88
-COPY --from=app /app/run /home/user/chall
-COPY --from=app /lib/x86_64-linux-gnu /home/user/libs
+FROM ubuntu:22.04
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends socat coreutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd --create-home --uid 1000 user
+WORKDIR /home/user
+COPY --from=app --chmod=0555 /app/run ./chall
+COPY --from=app /lib/x86_64-linux-gnu ./libs
 
-ENV SET_INTERPRETER /home/user/libs/ld-linux-x86-64.so.2
-ENV SET_RPATH /home/user/libs
 EXPOSE 1337
 ENV TIMEOUT=120
+USER user
+CMD ["sh", "-c", "exec socat TCP-LISTEN:1337,reuseaddr,fork \"EXEC:timeout ${TIMEOUT} ./chall,stderr\""]

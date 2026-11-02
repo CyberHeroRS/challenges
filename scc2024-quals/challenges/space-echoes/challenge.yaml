@@ -1,0 +1,18 @@
+name: space-echoes
+fullName: Space Echoes
+description: 'Amidst the silent void of the cosmos, a faint signal emerges, carrying
+  secrets from an ancient civilization lost to time. You''ve stumbled upon coordinates
+  encrypted with knowledge that predates the stars, a message beckoning from the edges
+  of the unknown. Deciphering its contents could unravel the mysteries of the universe,
+  or it could lead you down a path from which there is no return. The choice is yours:
+  will you heed the call of the cosmos and unlock the secrets that lie beyond?'
+categories:
+- foren
+authors:
+- Gordic
+flags:
+- name: main
+  body: wH15P3r5_0f_aNc13n7_aL13n5_3Ch0_7hR0ugh_71m3
+instancing: false
+files:
+- public/forensics_space_echoes.zip

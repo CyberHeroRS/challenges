@@ -1,0 +1,25 @@
+name: see-in-the-dark
+fullName: See in the Dark
+description: I am developing a simple blog app. Feel free to report any bugs you encounter!
+  🐞
+categories:
+- web
+authors:
+- s4ndu
+flags:
+- name: main
+  body: n0w_yoU_cAn_see_1n_Th3_D4rk
+instancing: true
+files:
+- public/web_see_in_the_dark.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 2000
+    type: http
+    expose: true

@@ -1,5 +1,12 @@
-FROM cybersecnatlab/challenge-jail@sha256:7bf77225063b039960f654307cf5d6f977f892ff548606357a2e8fe8067d0a88
-COPY ./serbian_rop /home/user/chall
+FROM ubuntu:22.04
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends socat coreutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd --create-home --uid 1000 user
+WORKDIR /home/user
+COPY --chmod=0555 ./serbian_rop ./chall
 
 EXPOSE 1337
 ENV TIMEOUT=120
+USER user
+CMD ["sh", "-c", "exec socat TCP-LISTEN:1337,reuseaddr,fork \"EXEC:timeout ${TIMEOUT} ./chall,stderr\""]

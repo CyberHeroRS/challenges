@@ -1,0 +1,25 @@
+name: ghostwriter-mystery
+fullName: Ghostwriter Mystery
+description: In the dimly lit corners of the digital realm, a specter of the past
+  has left whispers in the wind. "Ghostwriter Mystery" beckons CyberHero to unveil
+  secrets encrypted within the silent dance of keys. Dare to decipher the ghostly
+  script, and unearth truths buried beneath the echoes of a forgotten stroke.
+categories:
+- foren
+authors:
+- Krsman
+flags:
+- name: main
+  body: 3cho35_0f_7h3_51l3nt_9h057wr173r
+instancing: false
+files:
+- public/forensics_ghostwriter.zip
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/ghostwriter.pcap
+    target: /inputs/ghostwriter.pcap

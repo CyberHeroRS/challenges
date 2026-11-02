@@ -1,0 +1,27 @@
+name: ghost-activity
+fullName: Ghost Activity
+description: 'CyberHero returned from his journey to find echoes in his digital domain,
+  suggesting an uninvited guest had been at his computer. He sent you the memory dump,
+  a cryptic puzzle of activity and silence, for analysis. Your mission: sift through
+  the shadows, decode the mystery, and reveal the intruder''s digital dance.'
+categories:
+- foren
+authors:
+- Krsman
+flags:
+- name: main
+  body: 5h4d0W_u53r_f0und_1n_8yt35
+instancing: true
+files:
+- public/link.txt
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1500
+    type: netcat
+    expose: true

@@ -1,0 +1,24 @@
+name: ecology
+fullName: Ecology
+description: This service shares the flag only with the internal services, right?
+categories:
+- web
+authors:
+- s4ndu
+flags:
+- name: main
+  body: p4ram3t3r_p0llu7i0n_i5_fuN
+instancing: true
+files:
+- public/web_ecology.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 5000
+    type: http
+    expose: true

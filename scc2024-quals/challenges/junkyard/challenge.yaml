@@ -1,0 +1,14 @@
+name: junkyard
+fullName: Junkyard
+description: Could you please sort out this trash for me?<br>I will bestow you with
+  a reward.
+categories:
+- rev
+authors:
+- tampon
+flags:
+- name: main
+  body: w1nd0w5_p1u5_c_p1u5_p1u5_my_f4v0u2173
+instancing: false
+files:
+- public/Junkyard.zip

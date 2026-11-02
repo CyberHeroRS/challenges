@@ -1,0 +1,28 @@
+name: neglegentia
+fullName: Neglegentia
+description: Our most skilled social engineer managed to access notorious hackers'
+  private network (he stole their WPA2 password), register his own account on their
+  custom chat platform and steal the source code. Since you are our most skilled hacker,
+  he gave you the credentials (`johmdoe:password123`) and the source code. Your mission
+  is to get our flag back. Those chats may be hiding something ...
+categories:
+- web
+authors:
+- s4ndu
+flags:
+- name: main
+  body: r3m3mb3r_t0_v3r1fy_uR_JWT
+instancing: true
+files:
+- public/web_neglegentia.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: http
+    expose: true

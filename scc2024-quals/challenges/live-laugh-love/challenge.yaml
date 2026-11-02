@@ -1,0 +1,25 @@
+name: live-laugh-love
+fullName: Live Laugh Love
+description: '"Live Laugh Love" is the official slogan of the Poly2585 hash family.
+  Fast hashing, now with NSA-approved key deriving.'
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: main
+  body: sh0rt_FL4g!
+instancing: true
+files:
+- public/crypto_live_laugh_love.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 13300
+    type: netcat
+    expose: true

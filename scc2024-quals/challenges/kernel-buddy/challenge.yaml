@@ -1,0 +1,25 @@
+name: kernel-buddy
+fullName: Kernel Buddy
+description: You bored your buddy too much, so he created a Linux kernel driver just
+  to keep you away. Can you uncover the secret message he left for you?
+categories:
+- pwn
+authors:
+- Vucko
+flags:
+- name: main
+  body: y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15
+instancing: true
+files:
+- public/pwn_kernel_buddy.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: stty
+    expose: true

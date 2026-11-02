@@ -1,0 +1,14 @@
+name: cxorruption
+fullName: cxorruption
+description: At our company all our files were corrupted with this binary. Could you
+  help us reverse this cxorruption scheme and recover our files?
+categories:
+- rev
+authors:
+- Vucko
+flags:
+- name: main
+  body: x0r_15_700_345y_70_d3c1ph3r
+instancing: false
+files:
+- public/rev-cxorruption.zip

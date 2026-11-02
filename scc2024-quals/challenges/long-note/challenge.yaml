@@ -1,0 +1,28 @@
+name: long-note
+fullName: LooooongNooooote
+description: AAAAAH, someone has ruined ShortNote! It's time for revenge. This time,
+  I've come up with a new, modern note-taking app, I even apply sanitization!
+categories:
+- web
+authors:
+- kodz
+flags:
+- name: main
+  body: Th1s_W4s_T00_l000ng_S0rry_AAAAAAAAAA!
+instancing: true
+files:
+- public/web_looooongnooooote.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 7777
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG
