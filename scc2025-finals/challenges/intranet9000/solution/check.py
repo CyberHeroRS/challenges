@@ -5,6 +5,7 @@
 #   "requests~=2.32",
 # ]
 # ///
+import os
 import re
 import requests
 import itertools
@@ -13,7 +14,18 @@ import tempfile
 
 import faker.providers.person.en_US as en_person
 
-ENDPOINT = "https://intranet9000.playground.cyberhero.rs/"
+# When run as a containerized solver, the service address is injected by the
+# test runner as SERVICE_<SERVICE>_<PORT>_* env vars; fall back to the live
+# playground instance for manual/local use.
+if "SERVICE_SERVER_HTTP_ENDPOINT" in os.environ:
+    ENDPOINT = os.environ["SERVICE_SERVER_HTTP_ENDPOINT"]
+elif "SERVICE_SERVER_HTTP_HOST" in os.environ:
+    host = os.environ["SERVICE_SERVER_HTTP_HOST"]
+    port = os.environ["SERVICE_SERVER_HTTP_PORT"]
+    ENDPOINT = f"http://{host}:{port}"
+else:
+    ENDPOINT = "https://intranet9000.playground.cyberhero.rs"
+ENDPOINT = ENDPOINT.rstrip("/")
 
 # Find SHA1 password hash by leaking it using the regex
 
@@ -45,10 +57,26 @@ print(f"Leaked SHA1 password hash: {known_hash}")
 print("Cracking password using dictionary attack...")
 
 def crack_combination(files):
-    cmd = "combinator3 " + " ".join(files) + " | hashcat -O --potfile-path=my.pot -d 3 -a 0 -m 100 hash.txt"
-    print("Running command: ", cmd)
-    proc = subprocess.Popen(cmd, shell=True, cwd=temp_dir)
-    proc.wait()
+    # hashcat's built-in "-a 1" combinator attack only concatenates two
+    # wordlists at a time (the same way the external `combinator3` tool
+    # chains three), so the first two files are pre-combined into one
+    # wordlist with a "--stdout" pass, then combined with the third file in
+    # the real cracking attempt. "-D 1" selects the CPU OpenCL device type,
+    # since the container has no GPU available.
+    combined_path = temp_dir + "/combined.txt"
+    with open(combined_path, "wb") as combined_file:
+        subprocess.run(
+            ["hashcat", "-a", "1", "--stdout", files[0], files[1]],
+            cwd=temp_dir,
+            stdout=combined_file,
+            check=True,
+        )
+    cmd = [
+        "hashcat", "-O", "--potfile-path=my.pot", "-D", "1",
+        "-a", "1", "-m", "100", "hash.txt", "combined.txt", files[2],
+    ]
+    print("Running command:", " ".join(cmd))
+    proc = subprocess.run(cmd, cwd=temp_dir)
     return proc.returncode == 0
 
 with tempfile.TemporaryDirectory() as temp_dir:

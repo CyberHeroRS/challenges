@@ -6,5 +6,6 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.98"
 httpdate = "1.0.3"
-reqwest = { version = "0.12.15", features = ["multipart", "json"] }
+reqwest = { version = "0.12.15", features = ["multipart", "json", "cookies"] }
+serde_json = "1.0.140"
 tokio = { version = "1.45.0", features = ["full"] }

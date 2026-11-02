@@ -11,3 +11,9 @@ authors:
 flags:
 - name: main
   body: iv_got_99_problems_but_the_key_ain't_one
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile

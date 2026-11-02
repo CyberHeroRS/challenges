@@ -73,3 +73,9 @@ services:
   flags:
   - name: main
     env: FLAG
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
