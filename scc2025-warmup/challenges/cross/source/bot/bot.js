@@ -19,10 +19,13 @@ app.post('/visit', async (req, res) => {
     });
 
     const page = await browser.newPage();
+    // The cookie is scoped to the URL the bot is about to visit (instead of a
+    // hardcoded production domain) so it still applies under any hosting
+    // setup that doesn't route challenge instances through a shared domain.
     await page.setCookie({
       name: 'flag',
       value: flag,
-      domain: '.ctf.rs',
+      url,
     });
     await page.goto(url, { waitUntil: 'networkidle2' });
     await browser.close();
