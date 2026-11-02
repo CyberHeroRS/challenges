@@ -1,0 +1,30 @@
+name: bee-punctual
+fullName: Bee Punctual
+description: Bee punctual, or face a paranthestinger! This puzzling swarm is packed
+  with sticky pauses, buzzing brackets, and pointy periods. Don't let a misplaced
+  mark penalize you.
+categories:
+- misc
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: I_wanted_to_put_the_bee_movie_script_in_the_flag_but_they_wouldnt_let_me
+instancing: true
+files:
+- public/Dockerfile
+- public/bee_punctual.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /flag.txt

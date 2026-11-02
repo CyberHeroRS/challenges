@@ -1,0 +1,48 @@
+name: intranet9000
+fullName: Intranet 9000
+description: 'Welcome to **Intranet 9000**! We tasked our best engineers to rewrite
+  our previous SQL-injection-vulnerable directory app using NoSQL technology, meaning
+  we''ll never have an SQL injection problem again!
+
+  Not only is our company directory app now GDPR-compliant, allowing employees to
+  mark their contact information non-public, we have also added a brand new feature
+  for storing important company secrets: Secure Notes!'
+categories:
+- web
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: no_sql_means_no_sql_injection
+instancing: true
+files:
+- public/web-intranet9000.zip
+services:
+- name: server
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 8000
+    type: http
+    expose: true
+- name: mongo
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.mongo
+  env:
+  - name: MONGO_INITDB_ROOT_USERNAME
+    value: root
+  - name: MONGO_INITDB_ROOT_PASSWORD
+    value: example
+  ports:
+  - name: mongo
+    containerPort: 27017
+    type: netcat
+    expose: false
+  flags:
+  - name: main
+    env: FLAG

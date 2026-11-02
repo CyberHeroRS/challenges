@@ -2,7 +2,6 @@ FROM python:3.12-slim
 
 EXPOSE 1337
 
-ENV FLAG="SCC{trutle_and_rabbit_for_the_win}"
 
 RUN apt-get -y update && \
     apt-get install -y socat coreutils && \
@@ -12,6 +11,8 @@ COPY ./fair_casino.py /
 
 RUN chmod 555 /fair_casino.py
 
+RUN useradd --create-home --uid 1000 user
+USER user
 ENTRYPOINT []
 CMD socat -T 1500 \
     TCP-LISTEN:1337,nodelay,reuseaddr,fork \

@@ -1,0 +1,27 @@
+name: is-this-java
+fullName: Is this Java?
+description: I refuse to believe this was written in anything else.
+categories:
+- rev
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: Th1s_h4s_t0_b3_th3_w0rst_w4y_t0_r3pr3s3nt_4_gr4ph
+instancing: true
+files:
+- public/isthisjava
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /flag.txt

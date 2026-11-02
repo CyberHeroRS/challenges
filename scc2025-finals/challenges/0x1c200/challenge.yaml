@@ -1,0 +1,10 @@
+name: '0x1c200'
+fullName: '0x1C200'
+description: We can't talk over USB, we'll have to think of something else...
+categories:
+- hw
+authors:
+- Stefan Jovanovic (Quarks Team)
+flags:
+- name: main
+  body: un1v3rs4l_a5ynchr0n0us_tr4nsf3r_i5_th3_b35t

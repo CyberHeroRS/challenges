@@ -1,0 +1,27 @@
+name: fair-casino
+fullName: Fair Casino
+description: Our casino is fair, but is it too fair?
+categories:
+- crypto
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: trutle_and_rabbit_for_the_win
+instancing: true
+files:
+- public/fair_casino.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

@@ -1,0 +1,28 @@
+name: xor-me-many-times
+fullName: XOR me many times
+description: XOR me once, shame on you; XOR me twice, shame on me; XOR me many times,
+  ...
+categories:
+- crypto
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: Eucleadian_algorithm_is_bad_randomness_extractor_:(
+instancing: true
+files:
+- public/xor_me_many_times.py
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

@@ -1,0 +1,28 @@
+name: scc2025-finals
+fullName: SCC 2025 Finals
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/0x1c200/challenge.yaml
+- challenges/bee-punctual/challenge.yaml
+- challenges/burn-it-down/challenge.yaml
+- challenges/fair-casino/challenge.yaml
+- challenges/forget-me-not/challenge.yaml
+- challenges/future-gadget-42-sanusb/challenge.yaml
+- challenges/git-bin/challenge.yaml
+- challenges/glitch-snitch/challenge.yaml
+- challenges/intranet9000/challenge.yaml
+- challenges/is-this-java/challenge.yaml
+- challenges/marathon/challenge.yaml
+- challenges/monochrome/challenge.yaml
+- challenges/notary/challenge.yaml
+- challenges/rsa2m/challenge.yaml
+- challenges/rusty-espionage/challenge.yaml
+- challenges/shootingrange/challenge.yaml
+- challenges/strcatenator/challenge.yaml
+- challenges/wwwwww/challenge.yaml
+- challenges/xor-me-many-times/challenge.yaml

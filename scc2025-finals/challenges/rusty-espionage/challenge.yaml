@@ -1,0 +1,11 @@
+name: rusty-espionage
+fullName: Rusty ESPionage
+description: WE GOT IT! All we need for getting the fourth flag! Oh, wait... It's
+  encrypted...
+categories:
+- hw
+authors:
+- Stefan Jovanovic (Quarks Team)
+flags:
+- name: main
+  body: g0ph3r_1n_th3_m4z3!

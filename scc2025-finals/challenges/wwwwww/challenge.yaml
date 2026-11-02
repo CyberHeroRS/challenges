@@ -1,0 +1,27 @@
+name: wwwwww
+fullName: wwwwww
+description: Did you know this is how you write "lol" in Japanese
+categories:
+- rev
+authors:
+- Riggle
+flags:
+- name: main
+  body: Congr4ts_y0u_h4ve_M4d3_1t_But_l0st_the_Gam3_in_The_Proce55
+instancing: true
+files:
+- public/wwwwww
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /app/flag.txt

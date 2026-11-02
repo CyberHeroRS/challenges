@@ -1,0 +1,28 @@
+name: git-bin
+fullName: GitBin
+description: GitBin is a service that lets you host Git repositories quickly - like
+  PasteBin, but for Git.
+categories:
+- web
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: g1t_syml1nk_r3kt
+instancing: true
+files:
+- public/chall.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: http
+    containerPort: 80
+    type: http
+    expose: true
+  flags:
+  - name: main
+    env: FLAG

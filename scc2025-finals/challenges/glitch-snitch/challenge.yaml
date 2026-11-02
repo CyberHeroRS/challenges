@@ -1,0 +1,42 @@
+name: glitch-snitch
+fullName: GlitchSnitch
+description: Welcome to GlitchSnitch, the hottest new bug bounty platform that promises
+  payouts in 'exposure' and discounts on energy drinks.
+categories:
+- web
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: development_in_production_oh_no
+instancing: true
+files:
+- public/chall.zip
+services:
+- name: nginx
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile.nginx
+  ports:
+  - name: http
+    containerPort: 80
+    type: http
+    expose: true
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: frontend
+    containerPort: 3000
+    type: http
+    expose: false
+  - name: backend
+    containerPort: 5000
+    type: http
+    expose: false
+  flags:
+  - name: main
+    env: FLAG

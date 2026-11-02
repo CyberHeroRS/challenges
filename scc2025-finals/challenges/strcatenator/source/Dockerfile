@@ -1,8 +1,13 @@
-#FROM ubuntu:20.04
-FROM cybersecnatlab/challenge-jail:ubuntu-focal@sha256:a89dad107b158a13c547deadf8aeed5d6e558e0ce3d261955ffde5be3b3f3c9c
+FROM debian:bookworm-slim
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends socat coreutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd --create-home --uid 1001 user
 
+WORKDIR /home/user
+COPY --chmod=0555 chall/app ./chall
 EXPOSE 1337
-
-COPY chall/app /home/user/chall
-
 ENV TIMEOUT=120
+USER user
+
+CMD ["sh", "-c", "exec socat TCP-LISTEN:1337,reuseaddr,fork \"EXEC:timeout ${TIMEOUT} stdbuf -i0 -o0 -e0 ./chall,stderr\""]

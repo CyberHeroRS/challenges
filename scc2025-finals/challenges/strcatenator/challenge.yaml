@@ -1,0 +1,27 @@
+name: strcatenator
+fullName: Strcatenator
+description: This program just concatenates strings. Do you really want to know more?
+categories:
+- pwn
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: aa11d145-c727-4f8c-acf5-5f444cea7e94
+instancing: true
+files:
+- public/pwn-strcatenator.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag

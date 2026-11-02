@@ -1,0 +1,14 @@
+name: marathon
+fullName: marathon
+description: Lemme give you the source too, cause this sure ain't gonna be a sprint.
+categories:
+- rev
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: sTiLL_fAsT3r_tH4n_pYtH0N
+files:
+- public/chall
+- public/source.c
+- public/output.txt

@@ -1,0 +1,10 @@
+name: burn-it-down
+fullName: burn_it_down.wav
+description: Seriously though, why are people burning their chips?
+categories:
+- hw
+authors:
+- Stefan Jovanovic (Quarks Team)
+flags:
+- name: main
+  body: l3t5_burn_th3_eFu53

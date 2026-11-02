@@ -1,0 +1,28 @@
+name: notary
+fullName: Notary
+description: Notes challenges like these make me all heap-eractive. I hope you can
+  finish this one for me.
+categories:
+- pwn
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: Th3r3S_n0_H34p_1ikE_a_n07es_h3aP
+instancing: true
+files:
+- public/pwn-notary.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag

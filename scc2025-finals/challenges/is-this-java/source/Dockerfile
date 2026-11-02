@@ -12,6 +12,8 @@ COPY chall/isthisjava /
 RUN chmod 555 /isthisjava && \
     chmod 444 /flag.txt
 
+# Ubuntu 24.04 ships the non-root user ubuntu (UID 1000).
+USER ubuntu
 CMD socat -T 30 \
     TCP-LISTEN:1337,nodelay,reuseaddr,fork \
     EXEC:"stdbuf -i0 -o0 -e0 /isthisjava"

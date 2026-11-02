@@ -20,6 +20,8 @@ WORKDIR /app
 COPY --from=builder /build/target/release/wwwwww .
 COPY  ./flag.txt .
 
+RUN useradd --create-home --uid 1000 user
+USER user
 EXPOSE 1337
 
 ENTRYPOINT [ "socat", "TCP-L:1337,fork,reuseaddr", "exec:stdbuf -i0 -o0 /app/wwwwww" ]

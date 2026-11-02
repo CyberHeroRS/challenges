@@ -1,0 +1,27 @@
+name: shootingrange
+fullName: Shooting Range
+description: I hope you practiced your aim.
+categories:
+- pwn
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: Y0u_5hoU1d_g0_7o_IPSC_n0t_ECSC
+instancing: true
+files:
+- public/pwn-shootingrange.zip
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: main
+    containerPort: 1337
+    type: netcat
+    expose: true
+  flags:
+  - name: main
+    file: /home/user/flag.txt

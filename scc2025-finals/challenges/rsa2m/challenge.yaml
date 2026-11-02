@@ -1,0 +1,13 @@
+name: rsa2m
+fullName: RSA 2M
+description: Bigger is better.
+categories:
+- crypto
+authors:
+- DragonSec SI
+flags:
+- name: main
+  body: Does_your_qunatum_supercomputer_have_enough_Q-bits?
+files:
+- public/rsa2m.py
+- public/output.txt

@@ -12,6 +12,8 @@ COPY chall/bee_punctual.py /
 RUN chmod 555 /bee_punctual.py && \
     chmod 444 /flag.txt
 
+RUN useradd --create-home --uid 1000 user
+USER user
 CMD socat -T 30 \
     TCP-LISTEN:1337,nodelay,reuseaddr,fork \
     EXEC:"stdbuf -i0 -o0 -e0 /bee_punctual.py"

@@ -1,9 +1,13 @@
-#FROM ubuntu:24.04
-FROM cybersecnatlab/challenge-jail:ubuntu-noble@sha256:2d1e046fa7bb27a6b7d1dba44379b722c0498b40bf9db1a84c47be1ecc09752a
+FROM ubuntu:24.04
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends socat coreutils && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd --create-home --uid 1001 user
 
+WORKDIR /home/user
+COPY --chmod=0555 app ./chall
 EXPOSE 1337
-
-COPY app /home/user/chall
-COPY libc.so.6 /home/user/libc.so.6
-
 ENV TIMEOUT=120
+USER user
+
+CMD ["sh", "-c", "exec socat TCP-LISTEN:1337,reuseaddr,fork \"EXEC:timeout ${TIMEOUT} stdbuf -i0 -o0 -e0 ./chall,stderr\""]
