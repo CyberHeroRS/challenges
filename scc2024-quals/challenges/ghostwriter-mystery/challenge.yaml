@@ -13,7 +13,7 @@ flags:
   body: 3cho35_0f_7h3_51l3nt_9h057wr173r
 instancing: false
 files:
-- public/forensics_ghostwriter.zip
+- public/ghostwriter.pcap
 test:
 - name: solve
   image:

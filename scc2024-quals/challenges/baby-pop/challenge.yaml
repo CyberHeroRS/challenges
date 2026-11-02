@@ -10,7 +10,19 @@ flags:
   body: W3lc0m3_t0_pHp_P0P_G4dg3ts
 instancing: true
 files:
-- public/web_babypop.zip
+- public/app.Dockerfile
+- public/build-docker.sh
+- source/config/nginx/default.conf
+- public/config/db_init/init.sql
+- source/db.Dockerfile
+- public/docker-compose.yml
+- source/src/classes/Logger.php
+- source/src/register.php
+- public/src/config.php
+- source/src/logout.php
+- source/src/login.php
+- public/src/hidden/flag.php
+- source/src/index.php
 services:
 - name: app
   image:

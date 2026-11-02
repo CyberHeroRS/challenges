@@ -10,4 +10,5 @@ flags:
   body: kronecker_or_legrenge_or_jacobi
 instancing: false
 files:
-- public/crypto_bitten.zip
+- public/source.py
+- public/output.txt

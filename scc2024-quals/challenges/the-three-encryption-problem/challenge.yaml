@@ -11,4 +11,5 @@ flags:
   body: thr33_is_th3_b3st_numb3r!?_D1D_U_br4t3_@l1_0f_th1$?!?_I_hpe_nO!t_:)
 instancing: false
 files:
-- public/crypto_the-three-encryption-problem.zip
+- public/source.py
+- public/out.txt

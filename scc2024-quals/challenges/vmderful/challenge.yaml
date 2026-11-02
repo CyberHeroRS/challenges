@@ -11,4 +11,9 @@ flags:
   body: w4571n6_y0ur_71m3_w17h_v1r7u4l_m4ch1n3
 instancing: false
 files:
-- public/vmderful.zip
+- public/program.vm
+- public/System.Buffers.dll
+- public/System.Memory.dll
+- public/System.Numerics.Vectors.dll
+- public/System.Runtime.CompilerServices.Unsafe.dll
+- public/vmderful.exe

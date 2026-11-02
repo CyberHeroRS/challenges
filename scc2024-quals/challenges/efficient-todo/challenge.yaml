@@ -11,7 +11,14 @@ flags:
   body: 0hhhhKn3WiT_1t_1s_n07_7h47_s4f3!
 instancing: true
 files:
-- public/pwn_efficient_todo.zip
+- source/todo
+- source/libc.so.6
+- source/libs/libc.so.6
+- source/libs/ld-linux-x86-64.so.2
+- source/build-docker.sh
+- public/flag.txt
+- source/ld-linux-x86-64.so.2
+- public/Dockerfile
 services:
 - name: app
   image:

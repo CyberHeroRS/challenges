@@ -11,4 +11,5 @@ flags:
   body: x0r_15_700_345y_70_d3c1ph3r
 instancing: false
 files:
-- public/rev-cxorruption.zip
+- public/challenge/cxorruption
+- public/challenge/enc.txt

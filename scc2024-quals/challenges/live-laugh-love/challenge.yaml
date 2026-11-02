@@ -11,7 +11,7 @@ flags:
   body: sh0rt_FL4g!
 instancing: false
 files:
-- public/crypto_live_laugh_love.zip
+- public/source.py
 services:
 - name: app
   image:

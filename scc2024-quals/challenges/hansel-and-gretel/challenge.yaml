@@ -11,7 +11,14 @@ flags:
   body: Y0U_ch4ng3d_th3_st0ry??4m4z1ng!
 instancing: true
 files:
-- public/hansel_and_gretel.zip
+- source/libc.so.6
+- source/libs/libc.so.6
+- source/libs/ld-linux-x86-64.so.2
+- source/build-docker.sh
+- source/hgp
+- public/flag.txt
+- source/ld-linux-x86-64.so.2
+- public/Dockerfile
 services:
 - name: app
   image:

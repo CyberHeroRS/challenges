@@ -11,7 +11,25 @@ flags:
   body: W3Lc0m3_70_7h3_LAnD_0F_h1570RY_and_CUl7uR3
 instancing: true
 files:
-- public/web_welcome2serbia.zip
+- source/src/cities/Belgrade.txt
+- public/src/cities/Jagodina.txt
+- public/src/cities/Nis.txt
+- public/src/cities/NoviSad.txt
+- public/src/flag.txt
+- public/src/server.py
+- source/src/static/belgrade.jpg
+- source/src/static/belgrade.png
+- source/src/static/bg.jpg
+- source/src/static/bg1.jpg
+- source/src/static/jagodina.jpg
+- source/src/static/jagodina.png
+- source/src/static/nis.jpg
+- source/src/static/nis.png
+- source/src/static/novisad.jpg
+- source/src/static/novisad.png
+- public/src/static/styles.css
+- public/src/templates/city.html
+- public/src/templates/index.html
 services:
 - name: app
   image:

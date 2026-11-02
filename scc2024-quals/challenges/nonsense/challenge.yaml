@@ -11,4 +11,5 @@ flags:
   body: th1s_r3qu1r3d_s0m3_kn0wl3dg3_1n_m4ths???
 instancing: false
 files:
-- public/nonsense.zip
+- public/attachments/service.py
+- public/attachments/output.txt

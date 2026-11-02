@@ -11,7 +11,19 @@ flags:
   body: n0w_yoU_cAn_see_1n_Th3_D4rk
 instancing: true
 files:
-- public/web_see_in_the_dark.zip
+- public/web_see_in_the_dark/src/app.py
+- public/web_see_in_the_dark/src/posts.json
+- public/web_see_in_the_dark/src/templates/post.html
+- public/web_see_in_the_dark/src/templates/base.html
+- public/web_see_in_the_dark/src/templates/report.html
+- public/web_see_in_the_dark/src/templates/search.html
+- public/web_see_in_the_dark/src/templates/index.html
+- public/web_see_in_the_dark/src/static/script.js
+- public/web_see_in_the_dark/src/static/dark.css
+- public/web_see_in_the_dark/src/static/light.css
+- public/web_see_in_the_dark/src/bot.py
+- public/web_see_in_the_dark/build_docker.sh
+- public/web_see_in_the_dark/Dockerfile
 services:
 - name: app
   image:

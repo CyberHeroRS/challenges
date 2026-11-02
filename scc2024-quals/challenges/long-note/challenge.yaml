@@ -11,7 +11,19 @@ flags:
   body: Th1s_W4s_T00_l000ng_S0rry_AAAAAAAAAA!
 instancing: true
 files:
-- public/web_looooongnooooote.zip
+- public/build-docker.sh
+- public/Dockerfile
+- source/src/package.json
+- source/src/static/css/styles.css
+- source/src/static/css/checkNote.css
+- source/src/static/js/debug.js
+- source/src/package-lock.json
+- public/src/bot.js
+- source/src/views/checkNote.ejs
+- source/src/views/index.ejs
+- source/src/views/visit.ejs
+- public/src/.env
+- source/src/app.js
 services:
 - name: app
   image:

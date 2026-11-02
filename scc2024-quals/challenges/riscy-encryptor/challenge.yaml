@@ -12,4 +12,5 @@ flags:
   body: 101_wh0_3v3n_n33d5_4_f215ky_d3c0mp1132_x0x0
 instancing: false
 files:
-- public/riscy-encryptor.zip
+- public/enc.bin
+- public/riscy-encryptor.out

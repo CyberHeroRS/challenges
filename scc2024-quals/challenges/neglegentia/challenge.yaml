@@ -14,7 +14,18 @@ flags:
   body: r3m3mb3r_t0_v3r1fy_uR_JWT
 instancing: false
 files:
-- public/web_neglegentia.zip
+- public/source/routes/index.js
+- public/source/public/chat.js
+- public/source/public/chat.css
+- public/source/public/styles.css
+- public/source/package.json
+- public/source/views/chat.ejs
+- public/source/views/index.ejs
+- public/source/index.js
+- public/source/.env
+- public/source/database.js
+- public/source/middleware/index.js
+- public/source/util.js
 services:
 - name: app
   image:

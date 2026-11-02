@@ -10,4 +10,5 @@ flags:
   body: 3cc_0r_syst3m_0f_p01yn0m14ls?
 instancing: false
 files:
-- public/solar_ellipse.zip
+- public/attachments/out.txt
+- public/attachments/server.py

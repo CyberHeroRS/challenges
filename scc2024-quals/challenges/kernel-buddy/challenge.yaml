@@ -11,7 +11,14 @@ flags:
   body: y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15
 instancing: false
 files:
-- public/pwn_kernel_buddy.zip
+- source/run.sh
+- source/decompress.sh
+- source/compress.sh
+- public/Dockerfile
+- source/bzImage
+- source/build-docker.sh
+- public/initramfs.cpio.gz
+- source/connect.sh
 services:
 - name: app
   image:

@@ -10,7 +10,12 @@ flags:
   body: p4ram3t3r_p0llu7i0n_i5_fuN
 instancing: true
 files:
-- public/web_ecology.zip
+- public/web_ecology/src/service.php
+- public/web_ecology/src/app.py
+- public/web_ecology/src/views/index.html
+- public/web_ecology/src/supervisord.conf
+- public/web_ecology/build_docker.sh
+- public/web_ecology/Dockerfile
 services:
 - name: app
   image:

@@ -11,7 +11,10 @@ flags:
   body: 35c4p1n6_m47r1x_w17h_b0f_15n'7_700_h4rd!
 instancing: true
 files:
-- public/pwn_outer_product.zip
+- source/build-docker.sh
+- public/flag.txt
+- public/Dockerfile
+- source/outer
 services:
 - name: app
   image:

@@ -11,7 +11,21 @@ flags:
   body: wh0_n33ds_c4st1ng_Wh3n_Y0u_Can_p0p_4rrays
 instancing: true
 files:
-- public/web_loooose.zip
+- public/build-docker.sh
+- source/config/default.conf
+- public/docker-compose.yml
+- source/src/static/css/main.css
+- source/src/static/images/the-hobbit.jpg
+- source/src/static/images/1984.jpg
+- source/src/static/images/mockingbird.jpg
+- source/src/static/images/harry-potter.jpg
+- source/src/static/images/flag.jpg
+- source/src/static/images/the-gambler.jpg
+- source/src/static/images/the-little-prince.jpg
+- source/src/static/images/the-great-gatsby.jpg
+- public/src/hidden/flag.php
+- source/src/views/index.html
+- source/src/index.php
 services:
 - name: app
   image:
