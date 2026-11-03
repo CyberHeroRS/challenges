@@ -16,3 +16,9 @@ flags:
 instancing: false
 files:
 - public/capture.pcapng
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
