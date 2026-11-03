@@ -1,6 +1,10 @@
 const sqlite = require('sqlite-async');
 const { generateUUID } = require('./util');
 
+// Injected via challenge.yaml's env-based flag mechanism (already wrapped
+// in the event's flag format, e.g. "SCC{...}").
+const FLAG = process.env.FLAG || 'SCC{placeholder_flag_not_set}';
+
 class Database {
     constructor(db_file) {
         this.db_file = db_file;
@@ -89,7 +93,7 @@ class Database {
             ('93762b93-2c57-43f9-9896-c96663ccf189', '0089b601-5886-4fcb-910f-a77a7f7e22ed', 'Hey Peter, crack these passwords. 🤩 Thanks!! admin:fdc8cd4cff2c19e0d1022e78481ddf36 alice:cad43cd103b9cc0c6cbec5a56015986e azurediamond:2ab96390c7dbe3439de74d0c9b0b1767'),
             ('0089b601-5886-4fcb-910f-a77a7f7e22ed', '93762b93-2c57-43f9-9896-c96663ccf189', 'If those are unsalted md5s it should be quick, at least for the weak ones. I will let you know when its done.'),
             ('0089b601-5886-4fcb-910f-a77a7f7e22ed', '93762b93-2c57-43f9-9896-c96663ccf189', 'crackstation.net was enough actually 💀, there you go: admin:nevergonnagiveyouup alice:cyberhero azurediamond:hunter2'),
-            ('93762b93-2c57-43f9-9896-c96663ccf189', '0089b601-5886-4fcb-910f-a77a7f7e22ed', 'Thanks bro that totally worked!! I stole their most secret asset: SCC{r3m3mb3r_t0_v3r1fy_uR_JWT}'),
+            ('93762b93-2c57-43f9-9896-c96663ccf189', '0089b601-5886-4fcb-910f-a77a7f7e22ed', 'Thanks bro that totally worked!! I stole their most secret asset: ${FLAG}'),
             ('0089b601-5886-4fcb-910f-a77a7f7e22ed', '93762b93-2c57-43f9-9896-c96663ccf189', 'ide gas'),
             ('505c6813-bf6a-40b9-a005-532f77c68309', '2f8e30a2-db63-4ab2-8e8e-220a73305efb', 'It seems like someone got into our private network 🚨🚨 I dont see any sus accounts but we should disable user registration and messaging for now... Let''s meet in person tonight at 8, same super secret place as usual.'),
             ('2f8e30a2-db63-4ab2-8e8e-220a73305efb', '505c6813-bf6a-40b9-a005-532f77c68309', 'Okay, I am working on it. 👨‍💻 Is the flag safe?'),

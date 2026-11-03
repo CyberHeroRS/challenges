@@ -8,7 +8,7 @@ authors:
 flags:
 - name: main
   body: SQLi_n3v3r_ou7_oF_fash10n
-instancing: false
+instancing: true
 services:
 - name: app
   image:
@@ -20,6 +20,9 @@ services:
     containerPort: 1337
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:

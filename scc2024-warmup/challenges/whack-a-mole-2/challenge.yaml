@@ -10,7 +10,7 @@ authors:
 flags:
 - name: main
   body: '202420242024202420242024'
-instancing: false
+instancing: true
 files:
 - ../whack-a-mole-1/public/server.py
 services:
@@ -24,6 +24,9 @@ services:
     containerPort: 1337
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: SEED_FLAG
 test:
 - name: solve
   image:

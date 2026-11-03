@@ -9,7 +9,7 @@ authors:
 flags:
 - name: main
   body: sh0rt_FL4g!
-instancing: false
+instancing: true
 files:
 - public/source.py
 services:
@@ -23,6 +23,9 @@ services:
     containerPort: 13300
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:

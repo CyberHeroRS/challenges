@@ -4,9 +4,6 @@ FROM python:3-alpine
 # Upgrade the pip package installer
 RUN python -m pip install --upgrade pip
 
-# Install sqlite3
-RUN apk update && apk add --no-cache sqlite
-
 # Create /app directory for our application
 RUN mkdir -p /app
 
@@ -19,9 +16,9 @@ COPY challenge .
 # Install dependencies from the requirements.txt file
 RUN pip install -r requirements.txt
 
-# Initialize database
-RUN sqlite3 application/flags.db < application/db/schema.sql \
-    && sqlite3 application/flags.db < application/db/data.sql
+# Database is now (re)initialized at container start by run.py, using the
+# real per-instance FLAG env value rather than a value baked in at image
+# build time (see run.py's init_db()).
 
 # Declare the port the app runs on
 EXPOSE 1337

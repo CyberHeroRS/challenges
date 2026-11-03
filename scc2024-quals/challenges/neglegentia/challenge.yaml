@@ -12,7 +12,7 @@ authors:
 flags:
 - name: main
   body: r3m3mb3r_t0_v3r1fy_uR_JWT
-instancing: false
+instancing: true
 files:
 - public/source/routes/index.js
 - public/source/public/chat.js
@@ -37,6 +37,9 @@ services:
     containerPort: 1337
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:

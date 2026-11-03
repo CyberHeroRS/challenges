@@ -1,11 +1,25 @@
 #!/usr/local/bin/python
 
+import os
+import re
 from Crypto.Util.number import *
 import time
 import random
 
-# zastava 2
-seed = 202420242024202420242024
+# The LCG seed is this challenge's own "whack-a-mole-2" flag: recovering it
+# from the leaked states is that variant's win condition. It does NOT need
+# to match the real deployed flag for THIS ("whack-a-mole-1") deployment to
+# work correctly -- only whack-a-mole-2's deployment sets SEED_FLAG (via
+# challenge.yaml's env-based flag injection); this one falls back to a
+# fixed placeholder so the LCG still has a valid integer to seed from.
+_seed_flag = os.environ.get("SEED_FLAG", "")
+_seed_match = re.search(r"\d+", _seed_flag)
+seed = int(_seed_match.group()) if _seed_match else 202420242024202420242024
+
+# This challenge's own ("whack-a-mole-1") flag, printed verbatim after a
+# win; injected via challenge.yaml's env-based flag mechanism (already
+# wrapped in the event's flag format, e.g. "SCC{...}").
+FLAG = os.environ.get("FLAG", "SCC{placeholder_flag_not_set}")
 
 # nije deo zadatka, samo crtezi krtica
 krtica_banner = "\n\n["+" "*21+"/===\\"+" "*29+"]\n["+" "*20+"/o  o \\"+" "*28+"]\n["+" " * \
@@ -64,9 +78,5 @@ for i in range(5):
         print(fail_banner)
         quit()
 
-print("ZASTAVA1: SCC{d1d_y0u_b34t_th3m0le??!?!?}")
+print(f"ZASTAVA1: {FLAG}")
 
-
-# ZASTAVE
-# prva je SCC{d1d_y0u_b34t_th3m0le??!?!?}
-# prva zastava je SCC{202420242024202420242024}

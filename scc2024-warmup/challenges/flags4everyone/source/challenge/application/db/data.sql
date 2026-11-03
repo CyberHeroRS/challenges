@@ -1,5 +1,5 @@
 INSERT INTO flags (title, flag, is_hidden) VALUES
-('This Challenge', 'SCC{SQLi_n3v3r_ou7_oF_fash10n}', 1),
+('This Challenge', '__FLAG__', 1),
 ('Ascension Island', '🇦🇨', 0),
 ('Andorra', '🇦🇩', 0),
 ('United Arab Emirates', '🇦🇪', 0),

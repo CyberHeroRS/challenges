@@ -9,7 +9,7 @@ authors:
 flags:
 - name: main
   body: AnA7omY_oF_a_w3b_aPP_i5_fuN
-instancing: false
+instancing: true
 services:
 - name: app
   image:
@@ -21,6 +21,9 @@ services:
     containerPort: 1337
     type: http
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:

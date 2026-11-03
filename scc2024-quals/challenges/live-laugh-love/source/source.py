@@ -1,8 +1,14 @@
 from Crypto.Cipher import DES3
 
+import os
 from os import urandom
 
-FLAG = b"SCC{sh0rt_FL4g!}"
+# Injected via challenge.yaml's env-based flag mechanism (already wrapped in
+# the event's flag format, e.g. "SCC{...}"). The Poly2585 lattice attack
+# used by this challenge's solver hardcodes a 16-byte message length, so the
+# configured flag body/prefix/format must keep the wrapped flag at exactly
+# 16 bytes (as it already does: "SCC{sh0rt_FL4g!}" == 16 bytes).
+FLAG = os.environ.get("FLAG", "SCC{dev_test!!!}").encode()
 assert len(FLAG) == 16
 
 def derive(key):

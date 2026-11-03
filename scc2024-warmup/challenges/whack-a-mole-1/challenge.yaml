@@ -10,7 +10,7 @@ authors:
 flags:
 - name: main
   body: d1d_y0u_b34t_th3m0le??!?!?
-instancing: false
+instancing: true
 files:
 - public/server.py
 services:
@@ -24,6 +24,9 @@ services:
     containerPort: 1337
     type: netcat
     expose: true
+  flags:
+  - name: main
+    env: FLAG
 test:
 - name: solve
   image:
