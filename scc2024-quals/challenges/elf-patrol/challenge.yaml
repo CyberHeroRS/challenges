@@ -12,3 +12,12 @@ flags:
 instancing: false
 files:
 - public/elf-patrol
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/elf-patrol
+    target: /solution/elf-patrol
