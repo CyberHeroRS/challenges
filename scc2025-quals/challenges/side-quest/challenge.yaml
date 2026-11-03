@@ -10,3 +10,12 @@ flags:
   body: wh0_7h0u6h7_ch3351n6_w17h_51d3_ch4nn3l5_15_7h3_w4y_70_60
 files:
 - public/side-quest
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/src/main.rs
+    target: /solution/main.rs
