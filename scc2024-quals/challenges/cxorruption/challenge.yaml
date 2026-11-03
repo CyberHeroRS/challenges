@@ -13,3 +13,12 @@ instancing: false
 files:
 - public/challenge/cxorruption
 - public/challenge/enc.txt
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/challenge/enc.txt
+    target: /solution/enc.txt
