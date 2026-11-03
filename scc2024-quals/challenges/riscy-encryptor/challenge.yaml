@@ -14,3 +14,12 @@ instancing: false
 files:
 - public/enc.bin
 - public/riscy-encryptor.out
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/enc.bin
+    target: /solution/enc.bin
