@@ -18,3 +18,12 @@ build:
     type: dockerfile
     context: source
     path: Dockerfile
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: build://pyc/mamba.pyc
+    target: /solution/mamba.pyc
