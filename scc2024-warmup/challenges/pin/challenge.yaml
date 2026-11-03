@@ -12,3 +12,12 @@ flags:
 instancing: false
 files:
 - public/pin.exe
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/pin.exe
+    target: /solution/pin.exe
