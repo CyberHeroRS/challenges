@@ -11,3 +11,12 @@ flags:
 instancing: false
 files:
 - public/Alien Communication/alien_communication.wav
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/Alien Communication/alien_communication.wav
+    target: /solution/alien_communication.wav
