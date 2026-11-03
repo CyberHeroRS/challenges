@@ -13,3 +13,12 @@ flags:
 instancing: false
 files:
 - ../insecure-ftp-1/public/Insecure_FTP_1_2/chall.pcap
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: ../insecure-ftp-1/public/Insecure_FTP_1_2/chall.pcap
+    target: /solution/chall.pcap
