@@ -1453,6 +1453,199 @@ def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2,
 # unwired. Flag NOT recovered this pass.
 # =============================================================================
 
+# =============================================================================
+# Phase 9 (THIS PASS) -- the index-budget gap from phase 8 is CLOSED and
+# VERIFIED end-to-end, live, locally (disposable patched `todo`+`libc.so.6`
+# copy, driven via pwntools `process()`, every claim checked against ground
+# truth through `/proc/<pid>/mem` -- no gdb needed, since a parent can read/
+# write a direct child's memory with no ptrace_scope restriction at all).
+# RCE itself is NOT yet completed (see the honest blocker at the end).
+#
+#   (9.1) PHASE 8's OPEN QUESTION ANSWERED: "does approach C's bin-poisoning
+#         matter for approach A's specific access pattern?" -- NO, it does
+#         not, and this is now proven, not just argued. `_int_malloc()`'s
+#         unsorted-bin-processing loop is reached by ANY request that misses
+#         tcache/fastbin/exact-smallbin -- but `__libc_malloc()`'s OWN
+#         inlined tcache fast path (confirmed by disassembly in phase 8)
+#         returns BEFORE ever calling `_int_malloc()` whenever
+#         `tcache->counts[tc_idx] > 0`. So as long as every post-poison
+#         `post()` call is either (a) a genuine virgin index's malloc that
+#         hits a tcache bin with count>0 (the Approach-A retrieval itself),
+#         or (b) an in-place SHRINK/no-op realloc through an
+#         ALREADY-allocated, intact index (never calling `_int_malloc` at
+#         all), the poisoned unsorted bin is simply never touched. FREEING
+#         into tcache (`_int_free()`'s tcache path) is also untouched by
+#         the poison, since it never scans the unsorted bin either.
+#
+#   (9.2) CONCRETE WORKING RECIPE for Approach C with ZERO decoy, using
+#         ONLY 6 indices (not 9), verified exactly matching the real
+#         libc_base on 3/3 live local runs:
+#           idx0=TC, idx1=B (OOB-write vehicle), idx2=R-reclaim#1
+#           (throwaway), idx3=R-reclaim#2 (this is the EXACT heap-leak
+#           read window -- see 9.3), idx4=R-reclaim#3 (PERSISTENT owner,
+#           read again after the bitflip), idx5=mint driver (MS=0x68,
+#           MINT=9, fake_size=0x450). No separate bootstrap call is
+#           needed (idx0's own first post() is the very first malloc).
+#         After building+freeing the forged chunk (genuine unsorted-bin
+#         insertion, no decoy, no probe malloc, no sort): flip the LSB of
+#         the forged chunk's own data byte 0 via `bitflip(R_data_addr)`
+#         (this libc's unsorted-bin sentinel, bin_at(av,1), has a
+#         deterministically-zero low byte -- see phase 3/4's own writeup),
+#         then `read_my_note(idx4)`, XOR the first byte back:
+#         `libc_base = val - 0x1eeb00` (same `main_arena`-derived constant
+#         as phase 4, since bin_at(av,1) = &main_arena.bins[0]-0x10).
+#         This leaves indices 6,7,8,9 COMPLETELY VIRGIN -- a full 4-index
+#         budget for Approach A, where phase 8 needed exactly 2-3 and had
+#         only 1 spare.
+#
+#   (9.3) THE ONE REMAINING HARD PROBLEM with `bitflip()`: it needs the
+#         chunk's EXACT byte address (not just its page, i.e. not just
+#         `chunk_addr >> 12`, which is all a safe-linked tcache/fastbin
+#         leak can ever reveal -- PROTECT_PTR structurally discards the
+#         low 12 bits, this is not a technique limitation, it is what the
+#         mitigation IS). This pass's fix: the exact low-12-bit offset
+#         from the (page-aligned) heap base to ANY chunk built through a
+#         KNOWN, FIXED sequence of `post()` calls is a REPRODUCIBLE
+#         CONSTANT for this exact binary+libc (glibc's bump-allocator
+#         heap layout has no randomization beyond the page-aligned heap
+#         base itself) -- verified empirically (3 separate live runs,
+#         different ASLR slides each time): the very first `post()` call's
+#         resulting chunk DATA address is always EXACTLY `heap_base+0x2a0`
+#         (0x2a0 = `tcache_perthread_struct`'s own chunk, carved first by
+#         glibc's `tcache_init()`), and the forged chunk's data address is
+#         always EXACTLY `heap_base+0x2c0` for the idx0..idx4 recipe in
+#         (9.2). `heap_base` itself is recovered EXACTLY (not just its
+#         page) via the phase-1-style leak, because the heap base IS
+#         already page-aligned, so `shifted << 12` loses no real
+#         information for it specifically. This combination (a page-exact
+#         leak of a page-aligned base + a reproducible fixed byte offset)
+#         is what gives `bitflip()` the one genuinely exact address it
+#         needs -- confirmed matching ground truth on every run.
+#
+#   (9.4) Approach A's write primitive (tcache-poison, from phase 8's
+#         A.1-A.3) was implemented fresh for the TCACHE semantics
+#         specifically (not reusing phase 5-7's fastbin-shaped functions,
+#         which rely on a mechanism -- `_int_realloc()`'s grow path -- that
+#         phase 6 proved never consults tcache at all): build Y, build C
+#         (TWO distinct real chunks, same size class, via plain fresh
+#         `post()` calls -- safe pre-poison), free Y then free C (head=C,
+#         C.next encodes Y), corrupt C's own next field in place (via a
+#         same-size no-op `realloc`, i.e. C's OWN builder index, no
+#         virgin needed) to encode `target` directly (NOT `target-0x10`;
+#         phase 8 (A.2) already established tcache stores the user
+#         pointer directly, unlike fastbin's raw chunk pointer). Pop #1
+#         (virgin index) retrieves C and reveals `target` as the new
+#         head. Pop #2 (virgin index) retrieves `target` itself -- the
+#         ONLY check on it is 16-byte alignment, confirmed live: an
+#         arbitrary 16-aligned address with NO relationship to any real
+#         chunk header lands exactly, every time, 3/3 runs, AND the SAME
+#         call's `readline()` write lands the caller's chosen payload
+#         DIRECTLY at that address in the same round-trip (true
+#         write-what-where). `shifted` (the safe-link XOR key for C) does
+#         NOT need its own dedicated leak: since every chunk built by this
+#         exploit's full sequence (TC/B/R/Y/C/mint, ~0x9c0 bytes total)
+#         stays within the FIRST 4KB heap page, `C_addr >> 12` always
+#         equals the SAME already-known `heap_base >> 12` -- verified live
+#         (the derived `target` pointer landed exactly on the chosen
+#         address on every run using this shortcut, no separate leak call
+#         needed).
+#
+#   (9.5) VERIFIED LIVE (3/3 runs, ground-truth-checked against
+#         `/proc/<pid>/mem`'s actual `TodoNote[idx].ptr` values): using
+#         idx0=TC/idx1=B/idx2..4=R-dance/idx5=mint for the phase-C libc
+#         leak, THEN idx6=Y, idx7=C, idx8=pop#1, idx9=pop#2 for Approach
+#         A, re-targeting `y_addr` itself (an arbitrary already-known
+#         16-aligned heap address, chosen purely as a clean mechanism
+#         check) as a stand-in `target`: `pop1_ptr == C_addr` and
+#         `pop2_ptr == test_target` matched exactly every run, AND the
+#         payload sent in that same call was confirmed, byte for byte, to
+#         have landed at `test_target` via direct memory inspection. This
+#         is a REAL, working, comfortably-budgeted (4 of 10 indices used,
+#         not 9-of-10) arbitrary READ+WRITE primitive, reachable AFTER a
+#         FULLY GENERAL libc ASLR defeat, on a genuinely poisoned heap,
+#         with no abort, no crash, no retry logic needed beyond the usual
+#         ~1/256-per-byte truncation retry already used throughout this
+#         exploit for every print-based leak.
+#
+#   (9.6) WHAT IS STILL MISSING: turning this arbitrary R/W into an actual
+#         shell. Two honest blockers were hit and NOT fully resolved this
+#         pass:
+#           - `readint()`/`readline()` (used for ALL menu input, including
+#             the "note index"/"size"/"content" prompts) call the raw
+#             `read(2)` syscall DIRECTLY on fd 0 -- confirmed by
+#             disassembly -- NOT through any `FILE*`/stdio buffering layer.
+#             This rules out the classic "corrupt stdin's `_IO_FILE`
+#             buffer pointers to redirect the next read() into an
+#             arbitrary address" trick: there is no stdio-mediated input
+#             path in this binary to hijack at all.
+#           - Output (`printf`/`puts`, used for every menu prompt and for
+#             `read_my_note()`) DOES go through real libc stdio, BUT this
+#             binary's `stdout` is configured fully UNBUFFERED (confirmed:
+#             `_IO_2_1_stdout_->_flags` has the unbuffered bit set, and
+#             `_IO_buf_end - _IO_buf_base == 1`). This defeats the classic
+#             "corrupt `_IO_write_base`/`_IO_write_ptr`/`_IO_write_end` to
+#             leak arbitrary memory on the next flush" technique: with
+#             `_IO_flush_all_lockp()` only invoking `_IO_OVERFLOW` when
+#             `_IO_write_ptr > _IO_write_base`, and this build never
+#             leaving anything buffered, a correctly-shaped vtable-based
+#             FSOP (`_IO_str_jumps`'s `_s._allocate_buffer`/`_s._free_buffer`,
+#             confirmed present and unstripped in this exact libc, at
+#             struct offsets vtable=0xd8/allocate=0xe0/free=0xe8, with
+#             `_IO_2_1_stdout_->_flags2==0` already satisfying
+#             `_IO_str_finish`'s one precondition for free) is reachable
+#             IN PRINCIPLE, but was live-tested with a `_IO_str_finish` +
+#             one-gadget design this pass and did NOT trigger: tracing
+#             with live breakpoints (parent `/proc/pid/mem`-based, same
+#             methodology as the rest of this exploit, PLUS a disposable
+#             local gdb attach for this one diagnostic since it needed
+#             function-level breakpoints) showed `_IO_cleanup` and
+#             `_IO_flush_all_lockp` ARE reached during the normal
+#             `main()`-returns-so-`__libc_start_main` calls `exit()` path,
+#             but neither `_IO_vtable_check` nor `_IO_str_finish`/
+#             `_IO_str_overflow` nor any candidate one-gadget was ever
+#             hit -- root-caused to `_IO_flush_all_lockp()` skipping the
+#             `_IO_OVERFLOW` call entirely whenever
+#             `_IO_write_ptr <= _IO_write_base` (true here, since nothing
+#             is ever buffered). The STRUCTURALLY CORRECT fix (reasoned
+#             through, NOT yet implemented/verified) is to redirect
+#             Approach A's arbitrary write at `_IO_2_1_stdout_`'s own
+#             struct to ALSO set `_IO_write_base`/`_IO_write_ptr` (making
+#             `write_ptr > write_base` true) so `_IO_OVERFLOW` -> (with
+#             vtable = `_IO_str_jumps`) `_IO_str_overflow` actually runs
+#             and calls `_s._allocate_buffer(new_size)`, where
+#             `new_size = 2*(_IO_buf_end-_IO_buf_base)+100` is FULLY
+#             attacker-computable (pure pointer arithmetic, `buf_base`/
+#             `buf_end` are never dereferenced for this computation) --
+#             letting `_s._allocate_buffer = system` be called with
+#             `new_size` shaped to equal `libc_base + 0x1b0ff8` ("/bin/sh").
+#             This needs TWO disjoint struct regions written
+#             (`_IO_write_base/_IO_write_ptr/_IO_buf_base/_IO_buf_end`
+#             clustered near offset 0x20-0x40, and `vtable`/
+#             `_s._allocate_buffer` clustered near offset 0xd8-0xe0), each
+#             well under the binary's own 0x78-byte-per-`post()` cap, but
+#             together needing TWO independent Approach-A write-primitive
+#             instances. A concrete plan for affording this within the
+#             remaining 4-index budget was designed (reusing the 9 stray
+#             tcache-overflow entries that minting ALREADY deposits into a
+#             tcache class disjoint from the one Approach A's own
+#             write-primitive uses, so a second `target` pointer can be
+#             planted with only ONE more virgin index instead of a whole
+#             second Y/C pair) but was NOT implemented or verified live
+#             this pass -- time ran out mid-implementation. Flag NOT
+#             recovered. `challenge.yaml`'s `test:` section is
+#             intentionally LEFT UNWIRED, since this does not yet pass
+#             end-to-end.
+#
+# NEXT STEP for a future pass: implement and verify (9.6)'s plan live
+# (stdout struct's write_base/write_ptr/buf_base/buf_end region, PLUS
+# vtable/allocate_buffer region, PLUS the "reuse stray tcache residents
+# for a second target pointer" trick to avoid a second full Y/C
+# construction), then trigger it by sending ANY non-{0,1,2,3} menu choice
+# (making `main()` take its `leave;ret` exit path, which is what calls
+# `exit()` and reaches `_IO_cleanup`), and finally read `/home/user/flag`
+# via the resulting shell.
+# =============================================================================
+
 
 def main():
     io = remote(HOST, PORT)
