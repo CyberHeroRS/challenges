@@ -1858,6 +1858,184 @@ def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2,
 # =============================================================================
 
 
+# =============================================================================
+# Phase 11 (THIS PASS) -- reproduced phase 10 live (local disposable
+# chall+libc, patchelf'd exactly per public/Dockerfile, run under a plain
+# socat listener and also directly via pwntools `process()`), confirmed it
+# is still byte-for-byte correct (heap_base, libc_base, and the arbitrary
+# write all matched ground truth, 1/1 run after fixing nothing). Then
+# root-caused -- with live gdb ground truth, not guesswork -- both (a) the
+# exact mechanism of phase 10's "double free or corruption (fasttop)"
+# crash, and (b) a DEEPER, previously-unnoticed mathematical blocker in
+# phase 10's own round-2 DESIGN that makes the whole "resurrection" plan
+# unworkable regardless of which class is chosen for it. Net result: the
+# environ-leak-based ret2libc plan is NOT achievable with this exact bug,
+# and RCE was NOT obtained this pass. Full honesty on what's confirmed:
+#
+#   (11.1) (a), CONFIRMED via a live ground-truth gdb dump (attach to a
+#          live chall right after phase10_combined_libc_leak_and_single_
+#          write() completes, read main_arena.fastbinsY[] and the real
+#          tcache_perthread_struct -- `counts[64]`/`entries[64]`, per
+#          libc.so.6's OWN debug info -- directly out of /proc/<pid>/mem):
+#          tc_idx 0 (chunksize 0x20) has `counts[0] == 7` (the hard
+#          per-bin cap) AND `fastbinsY[0]` is ALSO populated; tc_idx 3
+#          (chunksize 0x50) is identically saturated (`counts[3] == 7`,
+#          `fastbinsY[3]` populated too). This is an EXACT, direct
+#          confirmation of phase 10's own suspicion: `MINT_i`'s 10-cycle
+#          shrink/regrow loop's internal `_int_realloc()` "move" remnants
+#          silently overflow tcache into fastbin for AT LEAST two size
+#          classes once the 7-entry cap is hit. Any resurrection plan
+#          that reuses `TC`/`B`/`MINT_i`'s own leftover chunks (as phase
+#          10's design literally proposed) is landmined by this -- BUT
+#          picking a resurrection class that avoids 0x20/0x50 (e.g. the
+#          `Y_idx`/`C_idx` pair's own class, chunksize 0x40/tc_idx 2) is
+#          empirically confirmed completely clean (`counts[2] == 0`,
+#          `fastbinsY[2] == 0`, untouched by anything else in the whole
+#          exploit) -- so THIS specific crash is fully diagnosed and has
+#          a known-good avoidance (use tc_idx 2, never tc_idx 0/3).
+#
+#   (11.2) (b), THE REAL, DEEPER BLOCKER (not previously identified):
+#          even with the fastbin crash avoided, a second full
+#          read-or-write "round" needs its own pair of freshly-freed
+#          real chunks (so the bin's `tcache->counts[tc_idx]` is >= 2
+#          *before* the round's two pops, exactly matching (10.1)'s
+#          already-established rule that EVERY pop in this exploit must
+#          come from a genuinely never-before-used todo index). This
+#          pass empirically re-confirmed the NEED for two real chunks
+#          (not one): repeating phase 10's write with `Y_idx` dropped
+#          entirely (freeing only `C_idx`, so `counts[tc_idx] == 1`
+#          going into the two pops) reproducibly hits `malloc(): unsorted
+#          double linked list corrupted` on the SECOND pop, because
+#          glibc's tcache fast path gate is `counts[tc_idx] > 0` --
+#          after the first pop drops the count to 0, the second
+#          (genuinely fresh) index's `malloc()` call no longer takes the
+#          tcache path at all (silently falls through to the ordinary
+#          `_int_malloc()` scan of an already-disturbed unsorted bin,
+#          which is what aborts) -- EXACTLY reproducing, under
+#          controlled conditions, the general failure mode (10.1)
+#          already named as root cause. This independently confirms:
+#          `Y_idx` is NOT dead weight (phase 10/11's first hypothesis
+#          this pass), it is required for count parity, and resurrection
+#          can only ever save the *build* cost of a round (2 todo-index
+#          activations), never the *pop* cost (always 2 MORE genuinely
+#          fresh indices, unavoidably, per round, confirmed by (10.1)
+#          and re-confirmed here).
+#
+#          The todo-index budget is UNFORGIVING: all 10 indices are a
+#          strictly non-renewable resource (confirmed: `post(idx, 0)`
+#          frees but -- per the vulnerability summary at the top of this
+#          file -- never resets `TodoNote[idx].ptr` back to NULL, so an
+#          index, once given its first non-empty `post()`, can NEVER
+#          again take `malloc()`'s tcache-popping fast path; it is spent
+#          forever as a "build/alias" index only). Phase 10's leak
+#          machinery (`TC,B,R,R2,MINT_i`) spends 5 of the 10 on its own
+#          activation; its one write round spends 4 more
+#          (`Y_idx,C_idx` build + `pop1_idx,w_idx` pop) = 9 total, 1
+#          spare. Even granting resurrection's real benefit (reusing
+#          `Y_idx`/`C_idx`'s OWN already-activated chunks as the build
+#          pair for every later round, at zero additional activation
+#          cost), EVERY round still needs 2 BRAND NEW fresh pop indices,
+#          and only 1 remains. A second round is therefore impossible
+#          with phase 10's exact leak-machinery cost -- this is a hard
+#          arithmetic wall, not a bug to patch around.
+#
+#   (11.3) Given (11.2), this pass asked whether the needed SECOND round
+#          could be skipped altogether, by making do with a single
+#          non-destructive 1-byte read of `environ`'s value (verified
+#          empirically: `post(idx, 1)` on a freshly-tcache-popped index
+#          whose forged target is `environ`'s own libc.so.6 symbol
+#          address genuinely touches NO memory at all -- confirmed via
+#          `readline()`'s own disassembly: `size<=0` returns immediately
+#          without calling `read()`; `size==1` calls `read(fd,buf,0)`,
+#          which returns 0 with ZERO bytes transferred and, critically,
+#          ZERO bytes written back, confirmed by a live run:
+#          `read_my_note(idx)` printed exactly the correct single
+#          pristine low byte of the real, ASLR'd `environ` pointer
+#          value, live, with nothing else touched). The obvious follow
+#          -up idea -- inflate that SAME index's `TodoNote.size`
+#          afterwards via a plain GROW call (`post(idx, 9)`, no new
+#          index needed, matching (10.1)'s observation that a non-fresh
+#          index's realloc always takes _int_malloc's regular path, NOT
+#          tcache) -- was tried live and does NOT crash (confirmed: the
+#          16 bytes of libc .bss immediately preceding `environ`
+#          (symbols `scopes`/`precedence` in this exact libc build) are
+#          zero at this point in execution, so `realloc()` reads a fake
+#          chunksize of 0 there and silently takes an in-place
+#          "extend" path without aborting) -- BUT this does NOT yield
+#          additional pristine bytes either way, for a reason that is
+#          structural, not a bug: `post_my_note()`'s `readline()` call
+#          is MANDATORY whenever the requested size is >= 2, and it
+#          ALWAYS writes a NUL terminator at exactly the offset where
+#          the attacker's own sent bytes end (0 sent bytes -> NUL at
+#          offset 0; K sent bytes -> NUL at offset K); `read_my_note()`
+#          prints via `printf("%.*s", TodoNote[idx].size, ptr)`, which
+#          -- like any C `%s`-family conversion -- unconditionally stops
+#          at the FIRST embedded NUL regardless of the requested
+#          precision. Since the NUL is *always* present somewhere within
+#          [0, size), and *always* at or before the boundary of
+#          whatever the attacker supplied, the untouched, "pristine"
+#          bytes beyond it (which is the whole point of wanting a bigger
+#          `size` in the first place) can NEVER be observed through this
+#          specific print path -- proven exhaustively (every `size<=0`,
+#          `size==1`, and `size>=2` case was enumerated and checked
+#          against the actual disassembly, then the `size>=2` case
+#          double-checked live). CONCLUSION, confirmed both by static
+#          analysis of the binary and by a live experiment: this specific
+#          bug can leak AT MOST ONE pristine byte (the very first byte)
+#          of any given address, ever, with NO way to extend that to
+#          more bytes at the SAME address through any combination of
+#          grow/shrink calls on the same or a different index. A prior
+#          pass's round-2 design assumed bytes 1-7 of `environ`'s value
+#          "survive" an empty-content pop because "byte 0 doesn't
+#          matter" -- that assumption is INCORRECT: the induced NUL,
+#          wherever it lands, truncates the printed string THERE,
+#          before any of the bytes after it are ever visible, regardless
+#          of which byte position it occupies.
+#
+#   (11.4) Putting (11.2) and (11.3) together: reconstructing `environ`'s
+#          runtime value (which needs several bytes of real ASLR entropy,
+#          not just 1) would require one dedicated 2-pop "landing" PER
+#          BYTE, i.e. several entire rounds -- but (11.2) shows the todo-
+#          index budget affords at most 2 more full landings total after
+#          phase 10's leak machinery (4 of the 5 remaining fresh indices,
+#          1 left over and unusable alone, since a landing is always a
+#          pair). Spending both of those 2 landings on 2 single
+#          `environ` bytes would leave ZERO budget for the actual ROP-
+#          chain write afterwards; spending one on the write leaves only
+#          one single byte of `environ` ever observable -- nowhere near
+#          enough to defeat the stack's real ASLR entropy. This is a
+#          genuine, confirmed dead end for the environ-leak-based
+#          ret2libc plan specifically, independent of which chunk class
+#          is used for resurrection and independent of the fastbin
+#          saturation bug in (11.1) (fixing (11.1) alone does not fix
+#          (11.2)/(11.3)).
+#
+#   (11.5) NOT attempted this pass, flagged as the most promising next
+#          direction given time ran out mid-investigation: this exact
+#          libc (2.35, GCC 13.2.1, shipped WITH debug_info, confirmed via
+#          `.comment`/`strings`) is a reasonable target for an FSOP /
+#          "house of apple"-style `_IO_2_1_stdout_` vtable-adjacent
+#          corruption instead of a stack-based ret2libc. That family of
+#          techniques needs only `libc_base` (already leaked, reliably,
+#          by phase 10's unmodified machinery) and ONE arbitrary write of
+#          a `_IO_FILE`-sized payload -- NOT a stack/`environ` leak at
+#          all -- which would fit the exact 1-landing budget phase 10
+#          already proves out end-to-end. This was not implemented or
+#          verified this pass (precise field offsets/one_gadget choice
+#          for this specific libc build were not checked against a live
+#          run), so it is explicitly NOT claimed to work -- it is a
+#          concrete, scoped idea for whoever picks this up next, not a
+#          finished result.
+#
+# STATE OF THE EXPLOIT AT THE END OF THIS PASS: identical to phase 10 --
+# a fully verified, reproducible libc_base + heap_base leak and ONE
+# arbitrary-address write, in a single connection, using 9 of 10 todo
+# indices. No RCE. Flag NOT recovered. `challenge.yaml`'s `test:` section
+# is intentionally LEFT UNWIRED, since no end-to-end working exploit
+# exists to back it.
+# =============================================================================
+
+
 def phase10_combined_libc_leak_and_single_write(t, write_target, payload, S_t=0x30):
     """
     VERIFIED END-TO-END, live, locally, 3/3 runs (see Phase 10's comment
