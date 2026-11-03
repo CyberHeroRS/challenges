@@ -13,3 +13,12 @@ flags:
 instancing: false
 files:
 - public/clicker_game.apk
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/clicker_game.apk
+    target: /solution/clicker_game.apk
