@@ -12,3 +12,12 @@ flags:
 instancing: false
 files:
 - public/serial.exe
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/serial.exe
+    target: /solution/serial.exe
