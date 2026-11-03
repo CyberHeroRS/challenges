@@ -14,3 +14,12 @@ instancing: false
 files:
 - public/source.js
 - public/index.html
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/source.js
+    target: /solution/source.js
