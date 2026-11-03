@@ -1200,6 +1200,259 @@ def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2,
 #       `challenge.yaml`'s `test:` section is intentionally left unwired.
 # =============================================================================
 
+# =============================================================================
+# Phase 8 (THIS PASS) -- revisited phase 7's "hard constraint" on explicit
+# instruction to try alternatives. Methodology: a disposable local copy of
+# `todo` + `libc.so.6` (patchelf'd interpreter, `libc.so.6` kept alongside
+# since the binary's DT_NEEDED is the literal relative string "./libc.so.6")
+# was driven directly with pwntools' own `process()` -- NOT gdb this time.
+# Crucially: a parent process can read a direct child's `/proc/<pid>/mem`
+# with NO ptrace_scope restriction at all (Yama's "restricted" default only
+# blocks *non-ancestor* tracers; gdb attaching from a sibling shell is a
+# non-ancestor and was reliably refused this pass with "ptrace: No such
+# process" -- consistent, not a transient issue). This let every claim below
+# be checked against live, ground-truth process memory on every run, far
+# faster than a gdb-breakpoint harness.
+#
+# === BOTH requested alternatives were pursued; both made genuine, verified
+# progress; NEITHER is fully wired end-to-end to the flag. ===
+#
+#   (A) TCACHE-RETRIEVAL REDESIGN -- CONFIRMED CORRECT, but blocked on a
+#       precisely-quantified index-budget shortfall (not a mechanism flaw).
+#
+#     (A.1) CONFIRMED BY DISASSEMBLY (not just reasoning): `__libc_realloc`
+#           (libc+0x9bb70) literally does, for `bytes != 0`:
+#               test   rbx, rbx        ; rbx = oldmem
+#               je     <tail-call to __libc_malloc>
+#           i.e. `realloc(NULL, n)` is a genuine tail call into the PUBLIC
+#           `__libc_malloc` entry point -- not into `_int_malloc` directly.
+#           `__libc_malloc` (libc+0x9b370) has its OWN inlined tcache fast
+#           path, BEFORE ever calling `_int_malloc`:
+#               movzwl (%rdx,%rbp,2), %ecx     ; ecx = tcache->counts[tc_idx]
+#               test   %cx, %cx
+#               je     <fall through to _int_malloc>
+#               lea    0x10(%rbp), %rdi
+#               mov    (%rdx,%rdi,8), %rax     ; rax = tcache->entries[tc_idx] (= e, verbatim)
+#               test   $0xf, %al               ; ONLY check: is e 16-byte aligned?
+#               jne    <"malloc(): unaligned tcache chunk detected">
+#               ... decode e's own in-chunk "next" field, store as new head ...
+#               ret                             ; returns e AS-IS, untouched
+#           THIS IS THE KEY FINDING: there is **no `fastbin_index(chunksize(e))`
+#           check anywhere in this path** -- the only validation on `e` itself
+#           is a 4-bit alignment test. This is categorically different from,
+#           and strictly weaker than, the fastbin retrieval path's
+#           `fastbin_index(chunksize(victim)) == idx` check (which reads real
+#           bytes at `target-8` and is what blocked phases 5-7). Verified live:
+#           corrupting a chunk's own in-tcache "next" field and retrieving it
+#           through a genuinely virgin (`TodoNote[idx].ptr == NULL`) index's
+#           `post()` call lands `TodoNote[idx].ptr` on an arbitrary,
+#           16-byte-aligned target with **zero dependency on what bytes
+#           already exist there** -- this was reproduced locally, repeatedly,
+#           including for a target address chosen with NO relationship to any
+#           real chunk (confirmed via `/proc/<pid>/mem`: `TodoNote[idx].ptr`
+#           ends up bit-for-bit equal to the chosen target, every time).
+#
+#     (A.2) CONFIRMED: `_int_free`'s tcache-insertion path stores the chunk's
+#           own **user pointer** (`chunk2mem(p)`, i.e. `p+0x10`) directly into
+#           `tcache->entries[tc_idx]` -- disassembly of `_int_free`
+#           (libc+0x98a80) shows `lea 0x10(%rbx), %r9` (rbx=chunk ptr) then
+#           `mov %r9, 0x80(%rax,%rcx,8)` (storing into the entries array) with
+#           NO further adjustment. This means (unlike phases 5-7's fastbin
+#           math) the tcache-poison `forged_fd` must encode `target` directly
+#           -- NOT `target - 0x10` -- when the corrupted chunk is popped via
+#           `tcache_get()`. (Fastbin's `chunk2mem()`-offset correction from
+#           phase 7 point (4) does NOT apply to this tcache-based redesign.)
+#
+#     (A.3) CONFIRMED (and the actual, fully-isolated remaining blocker):
+#           `tcache_get()`'s own fast-path check (`counts[tc_idx] > 0`) means
+#           this mechanism inherently needs: one real build+free (any index,
+#           need not be virgin) to create "C"; ONE VIRGIN pop to consume a
+#           second, pre-existing cover entry "Y" is NOT required to be
+#           virgin-built (a normal tainted mint-driver index works fine for
+#           building/freeing both "C" and "Y" -- verified live, no abort);
+#           but the two **retrieval** steps absolutely must each go through
+#           `tcache_get()`, and `tcache_get()` is ONLY reached via
+#           `__libc_malloc`'s public entry point, which is ONLY reached via
+#           `post()` when `TodoNote[idx].ptr` is a literal, never-touched-
+#           since-process-start NULL (per (A.1); the dangling-pointer bug
+#           means NO already-used index's `ptr` can ever become NULL again).
+#           So: pop #1 (consume the corrupted "C", revealing the forged
+#           decode as the tcache head) and pop #2 (retrieve that forged
+#           value as `TodoNote[idx].ptr`) each independently consume one
+#           genuinely virgin index -- 2 virgin indices, no way around it,
+#           confirmed by exhausting every reuse idea below.
+#
+#           Budget, counted exactly: the PROVEN, reliable libc leak (phase 4,
+#           target+decoy forging) needs 9 indices (target: a,b,r,r2,mint;
+#           decoy: a,b,r,mint -- decoy genuinely cannot share ANY of target's
+#           five indices: reusing target's idx_a/idx_b for decoy's own
+#           TC/B pair was tried live and aborts with "double free or
+#           corruption (fasttop)", because target's idx_a's immediate
+#           physical neighbour IS target's own (still-intact, needed-for-the-
+#           leak) forged largebin chunk -- any grow through it forward-
+#           consolidates into that neighbour instead of reaching a fresh
+#           class. Reusing target's idx_mint for decoy's own mint loop was
+#           ALSO tried live: no abort, but the computed `fake_size` silently
+#           came out wrong and the final libc_base comparison MISMATCHED,
+#           because `forge_chunk()`'s fake_size arithmetic hard-assumes
+#           `idx_mint`'s very first chunk is carved **contiguously
+#           immediately after** that SAME call's own R -- a reused,
+#           elsewhere-positioned index breaks that contiguity assumption
+#           silently (no crash, just wrong math) rather than erroring out).
+#           One additional, genuine saving WAS found and verified live this
+#           pass: dropping the separate "bootstrap" allocation entirely
+#           (target's own first `post()` call is simply the very first
+#           malloc of the process, verified to produce an identical
+#           `fake_size=0x4c0` either way) and reusing an already-tainted
+#           index (not a fresh one) as the sort-triggering "probe" (a plain
+#           `post(idx,1); post(idx, probe_size, ...)` on target's own mint-
+#           driver index works fine as the probe vehicle) together free up
+#           EXACTLY the one index that bootstrap+probe used to jointly
+#           occupy. Net: 9 used, 1 genuinely virgin index remains. The
+#           tcache-retrieval mechanism needs 2. **We are short by exactly
+#           one virgin index**, not by a conceptual gap -- this is a
+#           precise, re-derivable number, not a vague "ran out of ideas".
+#
+#     (A.4) Everything else tried to close that last gap:
+#           - Reusing phase-6/7-style "safe to reuse" tainted indices
+#             (target's own idx_mint, decoy's own idx_mint) for building "C"
+#             and "Y" inside the NEW tcache chain: works fine, verified live
+#             (these are legitimate savings, already folded into the budget
+#             above -- they just don't produce a 3rd *virgin* slot, since
+#             virginity specifically requires zero prior `post()` calls ever).
+#           - A fastbin-struct-walk to check whether any of target/decoy's
+#             own stray tcache-overflow residents could be directly
+#             re-targeted instead of building a fresh "C"/"Y" pair (to avoid
+#             needing the TC/B sub-construction's 2 indices at all): the
+#             struct offsets for `main_arena.fastbinsY` were independently
+#             confirmed via `gdb -batch -ex 'ptype struct malloc_state'`
+#             against this exact libc.so.6 (which ships with full
+#             `debug_info`), and stray residents were confirmed to exist
+#             (tcache class saturates at count=7 after MINT=9 cycles,
+#             spilling the remaining 2 into fastbin) -- but their own
+#             in-chunk content was found to be the UN-overwritten leftover
+#             `M`-fill bytes from minting, not a freshly safe-link-encoded
+#             pointer, meaning they were never actually re-inserted through
+#             a clean `_int_free()` safe-link encoding pass the way assumed;
+#             not fully root-caused this pass, abandoned in favour of (A.3)'s
+#             precise accounting once the exact 1-short number was in hand.
+#           - `__libc_realloc(stale_nonnull_ptr, n)` was double-checked via
+#             the SAME disassembly: there is no path from a non-NULL
+#             `oldmem` into `__libc_malloc`'s tcache fast path, confirmed
+#             structurally (the `test rbx,rbx; je <tail-call>` is the ONLY
+#             branch into it), closing off any "disguise a tainted index as
+#             virgin" idea definitively.
+#
+#   (B) FSOP / `_IO_FILE` -- explored via a DIFFERENT angle than guessing a
+#       classic `_IO_str_jumps` fake-vtable chain: since phases 5-7's
+#       fastbin-poison machinery (tainted indices only, NO virgin index
+#       needed) was already PROVEN to work end-to-end whenever the
+#       destination's `target-8` bytes already look like a plausible
+#       fastbin chunksize, this pass wrote a script that read the ENTIRE
+#       live, runtime content of libc's writable memory (via `/proc/<pid>/mem`,
+#       correctly including the small *unnamed* anonymous mapping
+#       immediately following libc's named rw segment in `/proc/<pid>/maps`
+#       -- this is libc's own BSS overflow page, easily missed since it has
+#       no `/path/to/libc.so.6` label; it was initially missed, producing a
+#       false "no candidates" result, then found and fixed) and scanned
+#       every 8-byte-aligned qword for one that, after masking the low 3
+#       flag bits, equals a valid fastbin chunksize (0x20..0x90). Exactly
+#       one clean, deterministic (non-coincidental, same every run) hit was
+#       found: `global_max_fast` itself (libc+0x1f6000) holds the value
+#       `0x80` (its own well-known default) -- i.e. `target = &global_max_fast + 8`
+#       passes fastbin_index validation for free, no luck needed, 100% of
+#       runs. The following 0x78-byte reachable window (`&global_max_fast+8`
+#       through `+0x7f`) was then fully dumped and cross-referenced against
+#       every OBJECT/FUNC symbol in libc.so.6's own symbol table (which is
+#       NOT stripped) for anything actionable: it contains only
+#       `__always_fail_morecore` (a legacy, effectively-dead 1-byte flag),
+#       `mallwatch` (a debug-only watchpoint variable, never read by default
+#       malloc paths), and otherwise-unnamed `.bss` padding -- no function
+#       pointer, no GOT-like entry, nothing `_IO_FILE`-related. `mp_`
+#       (malloc_par) and `narenas`'s own neighbourhoods were ALSO scanned the
+#       same way (their own fields y always-known values like
+#       `mp_.tcache_max_bytes=0x408` were checked too) with the same
+#       outcome: valid-looking anchors exist, but none sit within one
+#       primitive's reach of anything exploitable. `_IO_2_1_stdout_`,
+#       `_IO_2_1_stdin_`, and `_IO_2_1_stderr_`'s own complete, live 0xe0-byte
+#       structs (post-initialization, i.e. AFTER the challenge's own menu
+#       I/O has already run at least once, so real buffer pointers are
+#       populated, not static zeroes) were read in full and checked byte-by-
+#       byte for a self-contained "offset-8 looks like a valid size"
+#       coincidence landing on their own vtable slot (`+0xd8`): none of their
+#       internal fields validate (`+0x70`'s value is `0x1`/`0x2` -- a file
+#       descriptor number, not a size -- and every other field is either a
+#       real pointer, `0`, or `-1`). FSOP via this specific angle is
+#       therefore NOT reachable with the EXISTING fastbin-poison primitive
+#       as-is; it would need its OWN, separately-constructed TC/B pair
+#       positioned to reach `_IO_2_1_stdout_+0xd8` directly (the classic
+#       heap-adjacent-corruption flavour of FSOP), which this pass did not
+#       attempt (the heap and libc's BSS are different, non-adjacent
+#       mappings -- the existing OOB-write primitive is heap-relative only
+#       and cannot reach libc's .bss at all, so this avenue is a dead end
+#       for THIS specific primitive, independent of the index-budget issue).
+#
+#   (C) A THIRD angle, not in the original brief but discovered and tried
+#       this pass: the `bitflip()` menu option (flips the LSB of one
+#       attacker-chosen byte, exactly once per connection, confirmed via
+#       direct disassembly of `bitflip()` in the `todo` binary) can
+#       trivially fix phase 3/4's original "unsorted-bin sentinel has a
+#       coincidentally-zero low byte" problem DIRECTLY, with NO decoy chunk
+#       and NO bin-sort probe needed at all: flipping the LSB of the forged
+#       chunk's own `fd` field (which is deterministically `0x00` for this
+#       exact libc/offset, independent of ASLR) turns it into `0x01`,
+#       letting `read_my_note()`'s `"%.*s"` print continue past that byte
+#       into the genuinely ASLR'd remaining bytes; XOR the first printed
+#       byte back and the SAME libc_base pops out. This was verified live,
+#       repeatedly, matching the real libc_base every time, using only 6
+#       indices total (bootstrap + target's 5 -- no decoy, no probe!),
+#       which would have left 4 whole virgin indices for phase (A) above --
+#       more than enough. **However**: this leaves the forged chunk
+#       resident, corrupted, and STILL in the unsorted bin (never sorted
+#       into a largebin the way the decoy-based approach moves it to safety)
+#       -- and `_int_malloc`'s unsorted-bin dequeue code validates BOTH
+#       `victim->fd->bk == victim` AND `victim->bk->fd == victim` on ANY
+#       later unlink of it (confirmed via disassembly: two back-to-back
+#       `cmp`/`jne` pairs both branching to the same "malloc(): unsorted
+#       double linked list corrupted" `malloc_printerr` call, at
+#       libc+0x9a410), and this is NOT limited to a fresh allocation that
+#       falls through all the way to the unsorted-bin scan: it ALSO fires
+#       when an unrelated, already-tainted index's `post()` call tries to
+#       GROW and happens to forward-consolidate into the corrupted chunk as
+#       its physical neighbour (confirmed live: reusing target's own
+#       mint-driver index immediately aborts the same way, because that
+#       index's position is -- by forge_chunk()'s own construction --
+#       directly adjacent to the forged chunk). Pre-seeding every
+#       subsequently-needed size class from an ALREADY-populated
+#       fastbin/tcache resident (so later allocations are satisfied by the
+#       instant exact-match fast path, never reaching the corrupted-bin
+#       code at all) was tried and DOES avoid the crash for a single fresh
+#       TC/B build -- but the resulting "virgin" safe-link read is then
+#       contaminated by whatever stray residents were already chained in
+#       that class (their own content was found to be un-encoded leftover
+#       fill bytes rather than a clean safe-link pointer, not yet root-
+#       caused), and a subsequent, seemingly-unrelated reuse of a mint-driver
+#       index for draining those residents ALSO crashed via the same
+#       forward-consolidation path. This is a genuinely promising
+#       index-budget-free alternative to the whole decoy apparatus, but it
+#       trades a clean, fully-understood problem (A.3's precise "need one
+#       more virgin index") for a less-understood one (exactly which future
+#       operations are safe to perform near the now-permanently-poisoned
+#       forged chunk) -- NOT resolved this pass.
+#
+# Summary: Approach A (tcache) is now PROVEN CORRECT as a mechanism (real,
+# disassembly-verified, live-reproduced arbitrary-address retrieval with NO
+# destination-byte dependency) and the remaining gap is exactly one virgin
+# `TodoNote` index, out of a hard ceiling of 10, given the proven-reliable
+# libc leak's own 9-index cost. Approach B (FSOP via the existing fastbin
+# primitive) hit a dead end specific to THIS primitive's limited heap-local
+# reach. The bitflip-based decoy elimination (C) is a real, verified-partial
+# breakthrough that removes the index-budget problem entirely but introduces
+# a different, not-yet-fully-characterized hazard. None of these are wired
+# into `main()`; `challenge.yaml`'s `test:` section remains intentionally
+# unwired. Flag NOT recovered this pass.
+# =============================================================================
+
 
 def main():
     io = remote(HOST, PORT)
