@@ -10,3 +10,9 @@ flags:
   body: vms_arent_so_hard!
 files:
 - public/tiny-vm.py
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
