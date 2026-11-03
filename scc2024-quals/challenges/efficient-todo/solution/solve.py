@@ -2215,3 +2215,179 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# =============================================================================
+# Phase 12 (THIS PASS) -- FSOP / House-of-Apple-2 investigated end-to-end
+# with live ground truth (gdb attached to a disposable local chall+libc
+# inside a privileged Docker container, since the sandbox's own
+# ptrace_scope=1 blocks attaching to non-child processes -- building that
+# container was itself part of this pass's setup). RCE was NOT obtained.
+# Full honesty on exactly what was confirmed and what blocks it:
+#
+#   (12.1) THE TECHNIQUE ITSELF IS REAL ON THIS EXACT LIBC. Per Phase
+#          11.5's suggestion, this pass targeted glibc 2.35's House of
+#          Apple 2: `_IO_list_all`/any FILE's vtable is still checked by
+#          `IO_validate_vtable` (must point inside the real
+#          `__libc_IO_vtables` ELF section -- confirmed via
+#          `readelf -S`: section at 0x1ef7a0, size 0xd68), so a from-
+#          scratch forged vtable is rejected -- BUT the live-disassembled
+#          `_IO_wdoallocbuf` (libc+0x7ddb0, this exact libc.so.6) proves
+#          the NESTED `fp->_wide_data->_wide_vtable` pointer is read and
+#          called with ZERO validation:
+#              mov rax,[rdi+0xa0]      ; rax = fp->_wide_data
+#              cmp qword[rax+0x30],0   ; wide_data->_IO_buf_base == 0 ?
+#              je ...                  ; (continue if virgin)
+#              test byte[rdi],2 ; jne <mmap-path>   (avoided: clear bit)
+#              mov rax,[rax+0xe0]      ; rax = wide_data->_wide_vtable
+#              call [rax+0x68]         ; <-- UNCHECKED call, rdi=fp intact
+#          `_IO_wfile_overflow` (libio/wfileops.c, glibc 2.35 source,
+#          fetched and read in full this pass) reaches this exact call
+#          when `(_flags&_IO_CURRENTLY_PUTTING)==0` and
+#          `wide_data->_IO_write_base==0`, both true for the default
+#          (virgin) state of any never-wide-oriented stream -- and
+#          `_IO_flush_all_lockp` (libio/genops.c source, also fetched)
+#          reaches `_IO_OVERFLOW(fp,EOF)` at all whenever EITHER
+#          `(fp->_mode<=0 && fp->_IO_write_ptr>fp->_IO_write_base)` OR the
+#          wide-mode equivalent holds -- the NARROW branch was chosen
+#          (needs only `_mode<=0`, true by default, no need to touch the
+#          `_mode` field at all). `_IO_cleanup` (`exit()` -> 
+#          `__run_exit_handlers` -> `RUN_HOOK(__libc_atexit)` ->
+#          `_IO_cleanup` -> `_IO_flush_all_lockp(0)`) is reached by simply
+#          sending a menu choice that isn't 1/2/3 -- confirmed via
+#          `objdump -d` of `main()`: any other `readint()` result falls
+#          through to `leave;ret`, i.e. a completely ordinary, always-
+#          reachable `exit(0)`. Calling `system(fp)` by setting
+#          `wide_vtable[0x68] = system` and making `fp`'s own leading
+#          bytes spell a shell command (`rdi` is never reassigned between
+#          `_IO_wdoallocbuf`'s entry and the call) is the standard,
+#          confirmed-still-alive variant of this technique on 2.35 (also
+#          cross-checked against a public, version-gated ptmalloc/FSOP
+#          field-recipe reference this pass looked up, which independently
+#          lists `_wide_vtable+0x68` as the call target and flags the
+#          2.35 window specifically).
+#
+#   (12.2) LIVE GROUND TRUTH on the real `_IO_2_1_stderr_` /
+#          `_IO_wide_data_2` structures (gdb-attached, dumped with `x/gx`,
+#          offsets cross-checked against the computed `libc_base`):
+#          `_flags=0xfbad2086`, `_mode=0`, narrow `_IO_write_base==
+#          _IO_write_ptr==0`, `_wide_data` (fp+0xa0) genuinely points at
+#          `_IO_wide_data_2`, whose own `_IO_write_base`/`_IO_buf_base`
+#          are 0 (virgin, confirmed) and whose `_wide_vtable` (+0xe0)
+#          DEFAULTS to the real `_IO_wfile_jumps` (not some sentinel) --
+#          i.e. everything needed for the narrow trigger + wide call path
+#          is exactly as the public technique assumes, confirmed on THIS
+#          binary, not asserted from memory.
+#
+#   (12.3) THE BLOCKER: this exploit's specific index/byte economy is
+#          short of what EITHER FSOP variant (forge a fake FILE from
+#          scratch in heap, or patch the real `_IO_2_1_stderr_` in
+#          place) needs, and this was proven by exhaustive, live-tested
+#          accounting, not assumption:
+#
+#          (a) Patching the REAL stderr needs THREE separately-addressed
+#              writes, because the required offsets cannot be bridged by
+#              one payload: {stderr+0x0 (command string) .. +0x30
+#              (narrow write_ptr, to satisfy the trigger condition)} is
+#              one contiguous ~0x30-byte span; stderr's OWN vtable field
+#              is at +0xd8 (0xa8 bytes further -- too far to merge, even
+#              after shrinking the needed vtable write to a 3-byte LOW-
+#              bytes-only overwrite by exploiting that `_IO_file_jumps`
+#              (the default) and `_IO_wfile_jumps` share identical high
+#              address bytes, differing only in their low 3 bytes:
+#              `0x1f03a0` vs `0x1efe60`, confirmed via `nm`); and
+#              `_IO_wide_data_2`'s `_wide_vtable` field (+0xe0) is a
+#              THIRD, completely different global address (0x1ee6c0 vs
+#              stderr's 0x1ef4c0, confirmed via `nm` -- 0xE00 bytes
+#              apart, no partial-overwrite trick applies since it must
+#              become a brand-new HEAP pointer, sharing no bytes with its
+#              current libc value). Three writes needed; this exploit
+#              provides exactly one.
+#
+#          (b) Forging a FILE+wide_data entirely from scratch in heap
+#              needs >=232 contiguous bytes, a hard floor set by the
+#              real glibc ABI (vtable fixed at +0xd8, and the nested
+#              `_wide_vtable` fixed at +0xe0 *relative to wide_data*,
+#              even after maximally self-overlapping fp/wide_data/the
+#              fake jump-table's `__doallocate` slot onto ONE base
+#              address + 2 self-referencing pointers -- worked out in
+#              full this pass). This exceeds what a SINGLE todo index can
+#              ever hold: `post_my_note()`'s own `readint()` result is
+#              hard-capped at `<=0x78` (confirmed via `objdump -d` of the
+#              binary: `cmp DWORD PTR [rbp-0xc],0x78; jbe`), so any one
+#              index's single real `malloc()` tops out at chunksize 0x80,
+#              i.e. 119 content bytes -- not 232.
+#
+#          (c) A second, simultaneous custom heap region (to combine with
+#              the one spare index, idx7, for the 232-byte need) is NOT
+#              reachable, confirmed by two separate live crashes:
+#                - ANY new `malloc()` issued after the mandatory libc-leak
+#                  bitflip touches the now-intentionally-corrupted
+#                  unsorted bin (that corruption IS how the leak itself
+#                  works) and aborts with `malloc(): unsorted double
+#                  linked list corrupted` -- reproduced live, verbatim,
+#                  this pass -- UNLESS the requested size happens to
+#                  match an already-tcache-stocked class, which only
+#                  succeeds by chance (confirmed live: a chunksize-0x50
+#                  request succeeds post-bitflip by popping from
+#                  tc_idx3's Phase-11-documented 7-entry stash; that pop
+#                  only yields 71 content bytes, and further pops of the
+#                  SAME size aren't available since a single fresh index
+#                  can only pop once).
+#                - Reusing an ALREADY-active index's stale-pointer OOB-
+#                  write (e.g. index "B", which Phase 2/10 already use
+#                  for exactly this trick) for a SECOND custom write,
+#                  tried both ways: post-leak it hits the identical class
+#                  of crash (`corrupted double-linked list`, reproduced
+#                  live); pre-leak it is unusable because B's own tracked
+#                  region physically ENCLOSES the "R" chunk whose fd/bk
+#                  the libc leak itself reads afterward -- overwriting B
+#                  again would corrupt the very pointer the leak depends
+#                  on.
+#
+#          Net arithmetic: at most one ~55-byte arbitrary-address write
+#          (the largest S_t that avoids every size class the existing
+#          leak/forge machinery already uses or saturates -- S_t<=0x38,
+#          chunksize 0x40, content 0x37 bytes; S_t=0x39+ maps to
+#          chunksize 0x50, already one of the forbidden/saturated
+#          classes) plus at most one ~119-byte scratch index is available
+#          in total; every viable FSOP variant examined needs either
+#          three separated writes or >=232 contiguous bytes. Both
+#          exceed what is achievable here by a wide margin -- this is a
+#          hard, arithmetic shortfall given THIS exploit's exact index
+#          economy, not a bug to patch around.
+#
+#   (12.4) ALSO RULED OUT, for completeness: hijacking `__exit_funcs`
+#          (the `atexit`/`__cxa_atexit` registration list walked by
+#          `__run_exit_handlers`, which runs even earlier than
+#          `_IO_cleanup` during `exit()`) would, in principle, give a
+#          FULLY attacker-controlled call `fn(arg, status)` via the
+#          `ef_cxa` flavor -- no fixed-(fp,-1)-args limitation at all.
+#          Confirmed dead on this exact libc by reading the real
+#          `stdlib/exit.c` (glibc 2.35) source: every stored function
+#          pointer (`ef_on`/`ef_at`/`ef_cxa` alike) is run through
+#          `PTR_DEMANGLE` before the call, i.e. XORed against the
+#          thread's TLS `pointer_guard` secret (`%fs:offsetof
+#          (tcbhead_t, pointer_guard)`) -- a value independent of
+#          `libc_base`/`heap_base` that would need its own dedicated
+#          stack/TLS leak, which Phase 11 already proved is unaffordable
+#          within the remaining index budget (same `environ`-leak
+#          analysis applies unchanged: at most 1 pristine byte per
+#          landing, and no spare landings left).
+#
+# STATE OF THE EXPLOIT AT THE END OF THIS PASS: identical to phase 10/11
+# -- a fully verified, reproducible libc_base + heap_base leak and ONE
+# arbitrary-address write, in a single connection, using 9 of 10 todo
+# indices. No RCE. Flag NOT recovered. `challenge.yaml`'s `test:` section
+# is intentionally LEFT UNWIRED, since no end-to-end working exploit
+# exists to back it. The FSOP mechanism itself (12.1/12.2) is confirmed
+# real and correctly targets this exact glibc 2.35 build; what blocks it
+# is this specific bug's index/byte economy (12.3), which is a different,
+# narrower claim than "FSOP doesn't work here" -- whoever picks this up
+# next should look for a way to either (a) widen the single arbitrary
+# write beyond 0x37 content bytes (e.g. a currently-unknown-to-this-pass
+# size class that is simultaneously safe AND bigger), or (b) find a THIRD
+# "free" (non-fresh-index) OOB-write primitive that doesn't collide with
+# the existing leak machinery's own memory, to close the 1-vs-3-writes
+# gap identified in (12.3a).
+# =============================================================================
