@@ -12,3 +12,12 @@ flags:
 instancing: false
 files:
 - public/art.png
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/art.png
+    target: /solution/art.png
