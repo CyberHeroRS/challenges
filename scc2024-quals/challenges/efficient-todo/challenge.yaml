@@ -33,3 +33,12 @@ services:
   flags:
   - name: main
     file: /home/user/flag
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/libc.so.6
+    target: /solution/libc.so.6
