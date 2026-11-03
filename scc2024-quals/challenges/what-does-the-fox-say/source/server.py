@@ -38,26 +38,37 @@ questions = [
 
 
 def handle_client(client_socket):
-    correct = 0
-    for q in questions:
-        client_socket.sendall(f'{q["question"]}\nAnswer: '.encode())
-        client_socket.settimeout(10.0)
-        try:
-            response = client_socket.recv(1024).decode().strip()
-        except socket.timeout:
-            client_socket.sendall(b"Timeout: No response received. Disconnecting.\n")
-            break
+    # Orchestrators (e.g. a Kubernetes TCP readiness probe) connect and
+    # disconnect without sending any quiz answers; recv/send then raise
+    # OSError (BrokenPipeError/ConnectionResetError) on the closed socket.
+    # Catch those here so one such probe can't crash the whole server.
+    try:
+        correct = 0
+        for q in questions:
+            client_socket.sendall(f'{q["question"]}\nAnswer: '.encode())
+            client_socket.settimeout(10.0)
+            try:
+                response = client_socket.recv(1024).decode().strip()
+            except socket.timeout:
+                client_socket.sendall(b"Timeout: No response received. Disconnecting.\n")
+                break
 
-        if response.lower() == q["answer"].lower():
-            client_socket.sendall(b"Correct!\n")
-            correct += 1
-        else:
-            client_socket.sendall(b"Wrong answer.\n")
-            break
-    if correct == len(questions):
-        client_socket.sendall(f"Congratulations, here is your flag: {os.environ['FLAG']}\n".encode())
-    client_socket.sendall(b"Thanks for playing!\n")
-    client_socket.close()
+            if not response:
+                break
+
+            if response.lower() == q["answer"].lower():
+                client_socket.sendall(b"Correct!\n")
+                correct += 1
+            else:
+                client_socket.sendall(b"Wrong answer.\n")
+                break
+        if correct == len(questions):
+            client_socket.sendall(f"Congratulations, here is your flag: {os.environ['FLAG']}\n".encode())
+        client_socket.sendall(b"Thanks for playing!\n")
+    except OSError:
+        pass
+    finally:
+        client_socket.close()
 
 
 def main():

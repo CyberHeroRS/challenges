@@ -32,3 +32,12 @@ services:
   flags:
   - name: main
     env: FLAG
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: public/forensics_what_does_the_fox_say.zip
+    target: /solution/forensics_what_does_the_fox_say.zip
