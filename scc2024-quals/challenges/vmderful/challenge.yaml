@@ -17,3 +17,9 @@ files:
 - public/System.Numerics.Vectors.dll
 - public/System.Runtime.CompilerServices.Unsafe.dll
 - public/vmderful.exe
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
