@@ -9,7 +9,7 @@ authors:
 - Legasi
 flags:
 - name: flag
-  body: SCC{P011U73D_W47ER&}
+  body: P011U73D_W47ER&
 instancing: true
 files:
 - source/Dockerfile

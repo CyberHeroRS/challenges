@@ -9,7 +9,7 @@ authors:
 - punishedpin
 flags:
 - name: flag
-  body: SCC{MAGN1F1C3NT_M1D1_FUN}
+  body: MAGN1F1C3NT_M1D1_FUN
 instancing: false
 files:
 - public/challenge.wav

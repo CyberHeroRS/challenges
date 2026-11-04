@@ -9,7 +9,7 @@ authors:
 - Legasi
 flags:
 - name: flag
-  body: SCC{JU5T_4_P4CK_0F_C4RD5}
+  body: JU5T_4_P4CK_0F_C4RD5
 instancing: false
 files:
 - source/.dockerignore

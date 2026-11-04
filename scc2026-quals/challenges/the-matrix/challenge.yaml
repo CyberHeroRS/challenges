@@ -9,10 +9,10 @@ authors:
 - Legasi
 flags:
 - name: flag1
-  body: SCC{TH3_M4TRIX_3NTERED}
+  body: TH3_M4TRIX_3NTERED
   difficulty: easy
 - name: flag2
-  body: SCC{fr4m3_m4tr1x_br34ch}
+  body: fr4m3_m4tr1x_br34ch
   difficulty: hard
 instancing: true
 files:
