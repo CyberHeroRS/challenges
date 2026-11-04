@@ -44,8 +44,19 @@ services:
   flags:
   - name: flag
     env: FLAG
+  env:
+  - name: SESSION_SECRET
+    value: forum-secret
+  - name: ADMIN_PASSWORD
+    value: notRealPw
   ports:
   - name: web
     containerPort: 3000
     expose: true
     type: http
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
