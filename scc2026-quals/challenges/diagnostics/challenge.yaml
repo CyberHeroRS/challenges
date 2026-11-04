@@ -35,3 +35,9 @@ services:
     containerPort: 4545
     expose: true
     type: http
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
