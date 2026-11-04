@@ -28,3 +28,12 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/code.bin
+    target: /solution/code.bin

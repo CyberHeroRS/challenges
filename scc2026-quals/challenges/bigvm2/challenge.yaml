@@ -38,3 +38,8 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+# test: deliberately left unwired -- the checker's exploit.bin's gadget/
+# system() offsets are stale against this exact shipped libc.so.6 (its
+# .text starts at 0x28400 but the gadget offset used is 0x20334, outside
+# any executable section) and crashes with SIGILL. See solution/ for the
+# WIP re-derivation notes.
