@@ -12,18 +12,18 @@ flags:
   body: SCC{d14gn05t1c_5c4v3n63r_hun7_1n_n00k5_BR0W53R5_3V3RY_5URF4C3}
 instancing: false
 files:
-- public/.dockerignore
-- public/Dockerfile
-- public/README.md
-- public/docker-compose.yml
-- public/package.json
-- public/public/assets/app.js
-- public/public/assets/runtime.min.js
-- public/public/assets/source_part.js.map
-- public/public/assets/style.css
-- public/public/index.html
-- public/public/robots.txt
-- public/server.js
+- source/.dockerignore
+- source/Dockerfile
+- source/README.md
+- source/docker-compose.yml
+- source/package.json
+- source/public/assets/app.js
+- source/public/assets/runtime.min.js
+- source/public/assets/source_part.js.map
+- source/public/assets/style.css
+- source/public/index.html
+- source/public/robots.txt
+- source/server.js
 services:
 - name: diagnostics
   image:

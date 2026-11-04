@@ -12,10 +12,10 @@ flags:
   body: s1x_by73s_f0r_7h3_g0ld3n_3gg
 instancing: true
 files:
-- public/Dockerfile
-- public/docker-compose.yml
-- public/flag.txt
-- public/shellsix
+- source/Dockerfile
+- source/docker-compose.yml
+- source/flag.txt
+- source/shellsix
 services:
 - name: shellsix
   image:

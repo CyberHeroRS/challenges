@@ -16,30 +16,30 @@ flags:
   difficulty: hard
 instancing: true
 files:
-- public/Dockerfile
-- public/README.md
-- public/assets/app.js
-- public/assets/style.css
-- public/bot.js
-- public/docker-compose.yml
-- public/package-lock.json
-- public/package.json
-- public/src/bot.ts
-- public/src/middleware/auth.ts
-- public/src/routes.ts
-- public/src/server.ts
-- public/src/static/404.html
-- public/src/static/assets/app.js
-- public/src/static/assets/duty-status.js
-- public/src/static/assets/style.css
-- public/src/static/dashboard-monitor.html
-- public/src/static/dashboard.html
-- public/src/static/generate-token.html
-- public/src/static/index.html
-- public/src/static/new-post.html
-- public/src/static/verify.html
-- public/src/utils.ts
-- public/tsconfig.json
+- source/Dockerfile
+- source/README.md
+- source/assets/app.js
+- source/assets/style.css
+- source/bot.js
+- source/docker-compose.yml
+- source/package-lock.json
+- source/package.json
+- source/src/bot.ts
+- source/src/middleware/auth.ts
+- source/src/routes.ts
+- source/src/server.ts
+- source/src/static/404.html
+- source/src/static/assets/app.js
+- source/src/static/assets/duty-status.js
+- source/src/static/assets/style.css
+- source/src/static/dashboard-monitor.html
+- source/src/static/dashboard.html
+- source/src/static/generate-token.html
+- source/src/static/index.html
+- source/src/static/new-post.html
+- source/src/static/verify.html
+- source/src/utils.ts
+- source/tsconfig.json
 services:
 - name: the-matrix
   image:

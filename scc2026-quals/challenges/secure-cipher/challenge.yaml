@@ -12,12 +12,12 @@ flags:
   body: aarch64IsTheBestArch
 instancing: true
 files:
-- public/Dockerfile
-- public/Makefile
-- public/docker-compose.yml
-- public/flag.txt
-- public/run.sh
-- public/secure-cipher
+- source/Dockerfile
+- source/Makefile
+- source/docker-compose.yml
+- source/flag.txt
+- source/run.sh
+- source/secure-cipher
 services:
 - name: secure-cipher
   image:

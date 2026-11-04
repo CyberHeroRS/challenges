@@ -1,8 +1,0 @@
-services:
-  alice-in-wonderland:
-    build:
-      context: .
-    ports:
-      - "1337:1337"
-    environment:
-      PORT: 1337

@@ -12,11 +12,11 @@ flags:
   body: r0p_is_s7r0ng3r_7h4n_4ny_s3cc0mp_rul3s
 instancing: true
 files:
-- public/Dockerfile
-- public/beus3
-- public/docker-compose.yml
-- public/ld-linux-x86-64.so.2
-- public/libc.so.6
+- source/Dockerfile
+- source/beus3
+- source/docker-compose.yml
+- source/ld-linux-x86-64.so.2
+- source/libc.so.6
 services:
 - name: beus3
   image:
@@ -31,3 +31,14 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/beus3
+    target: /solution/beus3
+  - source: source/libc.so.6
+    target: /solution/libc.so.6

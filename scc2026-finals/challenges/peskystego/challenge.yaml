@@ -1,7 +1,8 @@
 name: peskystego
 fullName: Pesky Stego
-description: |
-  Ah yes, just an average stego challenge. Right? ...right?
+description: 'Ah yes, just an average stego challenge. Right? ...right?
+
+  '
 categories:
 - rev
 authors:
@@ -11,5 +12,5 @@ flags:
   body: mmm_myes_th1s_1s_st3g0_f0r_5ure
 instancing: false
 files:
-- public/output.png
 - public/stego
+- source/output.png

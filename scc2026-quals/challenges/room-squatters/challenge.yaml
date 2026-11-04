@@ -12,21 +12,21 @@ flags:
   body: you_gott4_clos3_th0s3_s0ck37s
 instancing: true
 files:
-- public/Dockerfile
-- public/docker-compose.yaml
-- public/package.json
-- public/public/app.js
-- public/public/index.html
-- public/public/style.css
-- public/server.js
-- public/src/config.js
-- public/src/db.js
-- public/src/http.js
-- public/src/repositories/rooms.js
-- public/src/services/adminBot.js
-- public/src/services/roomService.js
-- public/src/socket.js
-- public/src/utils/passwords.js
+- source/Dockerfile
+- source/docker-compose.yaml
+- source/package.json
+- source/public/app.js
+- source/public/index.html
+- source/public/style.css
+- source/server.js
+- source/src/config.js
+- source/src/db.js
+- source/src/http.js
+- source/src/repositories/rooms.js
+- source/src/services/adminBot.js
+- source/src/services/roomService.js
+- source/src/socket.js
+- source/src/utils/passwords.js
 services:
 - name: app
   image:

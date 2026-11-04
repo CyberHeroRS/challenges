@@ -12,29 +12,29 @@ flags:
   body: SCC{P011U73D_W47ER&}
 instancing: true
 files:
-- public/Dockerfile
-- public/README.md
-- public/apps/api/Dockerfile
-- public/apps/api/package-lock.json
-- public/apps/api/package.json
-- public/apps/api/src/server.ts
-- public/apps/api/src/store.ts
-- public/apps/api/src/types.ts
-- public/apps/api/tsconfig.json
-- public/apps/package-lock.json
-- public/apps/web/index.html
-- public/apps/web/package-lock.json
-- public/apps/web/package.json
-- public/apps/web/public/profile-preview.js
-- public/apps/web/src/App.tsx
-- public/apps/web/src/global.d.ts
-- public/apps/web/src/main.tsx
-- public/apps/web/src/styles.css
-- public/apps/web/tsconfig.json
-- public/apps/web/tsconfig.node.json
-- public/apps/web/vite.config.ts
-- public/docker-compose.yml
-- public/package-lock.json
+- source/Dockerfile
+- source/README.md
+- source/apps/api/Dockerfile
+- source/apps/api/package-lock.json
+- source/apps/api/package.json
+- source/apps/api/src/server.ts
+- source/apps/api/src/store.ts
+- source/apps/api/src/types.ts
+- source/apps/api/tsconfig.json
+- source/apps/package-lock.json
+- source/apps/web/index.html
+- source/apps/web/package-lock.json
+- source/apps/web/package.json
+- source/apps/web/public/profile-preview.js
+- source/apps/web/src/App.tsx
+- source/apps/web/src/global.d.ts
+- source/apps/web/src/main.tsx
+- source/apps/web/src/styles.css
+- source/apps/web/tsconfig.json
+- source/apps/web/tsconfig.node.json
+- source/apps/web/vite.config.ts
+- source/docker-compose.yml
+- source/package-lock.json
 services:
 - name: dirty-waters
   image:

@@ -12,23 +12,23 @@ flags:
   body: SCC{JU5T_4_P4CK_0F_C4RD5}
 instancing: false
 files:
-- public/.dockerignore
-- public/Dockerfile
-- public/docker-compose.yml
-- public/package-lock.json
-- public/package.json
-- public/server.js
-- public/static/.d01
-- public/static/VERDICT.wav
-- public/static/alicedoors.jpg
-- public/static/alicenrabbit1.jpeg
-- public/static/dinner.jpg
-- public/static/falling.jpg
-- public/static/index.html
-- public/static/queencourt.jpg
-- public/static/receipt.png
-- public/static/sec.zip
-- public/static/secretfile.zip
+- source/.dockerignore
+- source/Dockerfile
+- source/docker-compose.yml
+- source/package-lock.json
+- source/package.json
+- source/server.js
+- source/static/.d01
+- source/static/VERDICT.wav
+- source/static/alicedoors.jpg
+- source/static/alicenrabbit1.jpeg
+- source/static/dinner.jpg
+- source/static/falling.jpg
+- source/static/index.html
+- source/static/queencourt.jpg
+- source/static/receipt.png
+- source/static/sec.zip
+- source/static/secretfile.zip
 services:
 - name: alice-in-wonderland
   image:

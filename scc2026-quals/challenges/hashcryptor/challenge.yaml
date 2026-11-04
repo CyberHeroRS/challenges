@@ -18,6 +18,6 @@ flags:
   body: fr3qu3nci3s_4r3_high_wi7h_7his_0n3
 instancing: false
 files:
-- public/enkriptovana_prica.enc
-- public/source.py
+- source/enkriptovana_prica.enc
+- source/source.py
 services: []

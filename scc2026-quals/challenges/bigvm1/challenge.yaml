@@ -12,8 +12,8 @@ flags:
   body: r1v3s7_5h4mir_4dl3m4n_by73c0d3
 instancing: true
 files:
-- public/bigvm1
-- public/code.bin
+- source/bigvm1
+- source/code.bin
 services:
 - name: bigvm1
   image:

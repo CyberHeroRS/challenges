@@ -15,15 +15,15 @@ flags:
   body: b1g_in73g3rs_4r3_34sy_70_0v3rfl0w
 instancing: true
 files:
-- public/Dockerfile
-- public/bigvm2
-- public/docker-compose.yml
-- public/glibc/ld-linux-x86-64.so.2
-- public/glibc/libc.so.6
-- public/glibc/libgcc_s.so.1
-- public/glibc/libm.so.6
-- public/glibc/libstdc++.so.6
-- public/runner.py
+- source/Dockerfile
+- source/bigvm2
+- source/docker-compose.yml
+- source/glibc/ld-linux-x86-64.so.2
+- source/glibc/libc.so.6
+- source/glibc/libgcc_s.so.1
+- source/glibc/libm.so.6
+- source/glibc/libstdc++.so.6
+- source/runner.py
 services:
 - name: bigvm2
   image:

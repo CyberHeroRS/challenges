@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: /internal/
-# yes this line is a flag shard
-# FLAG_PART_E=pt5{n00k5_}

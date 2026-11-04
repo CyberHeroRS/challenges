@@ -12,10 +12,10 @@ flags:
   body: bin4ry_s34rch_f0r_7h3_m0n3y
 instancing: true
 files:
-- public/Dockerfile
-- public/docker-compose.yml
-- public/flag.txt
-- public/minmax
+- source/Dockerfile
+- source/docker-compose.yml
+- source/flag.txt
+- source/minmax
 services:
 - name: minmax
   image:
