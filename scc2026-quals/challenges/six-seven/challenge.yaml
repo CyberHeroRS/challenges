@@ -25,3 +25,14 @@ services:
     containerPort: 80
     expose: true
     type: http
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/gesture_LEFT.gif
+    target: /mounts/gesture_LEFT.gif
+  - source: source/gesture_RIGHT.gif
+    target: /mounts/gesture_RIGHT.gif
