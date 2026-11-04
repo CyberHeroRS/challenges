@@ -1,0 +1,8 @@
+{% extends "partials/dialogs/base.html" %}
+{% set action_url = "/delete?path=" + item.path | urlencode %}
+{% block title %}Delete{% endblock %}
+{% block body %}
+Are you sure you want to delete <strong>{{ item.name }}</strong>?
+{% endblock %}
+{% block btn_class %}danger{% endblock %}
+{% block submit_text %}Delete{% endblock %}

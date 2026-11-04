@@ -1,0 +1,23 @@
+name: hashcryptor
+fullName: HashCryptor
+description: 'Someone wrote a short story in Serbian, but they didn''t trust anyone to read it… so they "encrypted" it with their own custom cipher using hashes and XORs.
+
+
+  Apparently, hashing each character makes it safe... right?
+
+
+  Your mission: break the cipher, recover the story, and find the hidden flag.
+
+  '
+categories:
+- crypto
+authors:
+- manjaro
+flags:
+- name: flag
+  body: fr3qu3nci3s_4r3_high_wi7h_7his_0n3
+instancing: false
+files:
+- public/enkriptovana_prica.enc
+- public/source.py
+services: []

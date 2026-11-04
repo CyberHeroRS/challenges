@@ -1,3 +1,11 @@
 dist/
 __pycache__/
 *.pyc
+
+# Large challenge data files kept out of git (exceed GitHub's 100MB limit);
+# hosted externally (e.g. Google Drive) instead, same as other forensics
+# attachments.
+scc2026-quals/challenges/beepers-revenge/dump.7z
+scc2026-quals/challenges/vault-126/Vault126.7z
+scc2026-quals/challenges/chungus-macromus/gen/macromus.rs
+

@@ -1,0 +1,29 @@
+name: collatz
+fullName: Collatz
+description: 'The impossible is just another way of saying "currenly awaiting the chosen one". In this case, that''s you!
+
+  '
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: flag
+  body: wow_why_didnt_erdos_think_of_that
+instancing: true
+files:
+- source/collatz.py
+services:
+- name: collatz
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

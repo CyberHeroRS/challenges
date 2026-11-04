@@ -1,0 +1,20 @@
+name: peskystego
+fullName: "Pesky Stego"
+authors:
+  - Riggle
+categories:
+  - rev
+tags:
+  - rev
+  - stego
+  - scc2026-quals
+
+description: |
+  Ah yes, just an average stego challenge. Right? ...right?
+
+files:
+  - "pesk_ystego.tar.gz"
+
+flags:
+  - name: flag
+    body: mmm_myes_th1s_1s_st3g0_f0r_5ure

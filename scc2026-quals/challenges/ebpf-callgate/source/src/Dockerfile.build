@@ -1,0 +1,16 @@
+FROM debian:trixie-slim@sha256:b29a157cc8540addda9836c23750e389693bf3b6d9a932a55504899e5601a66b AS builder
+
+RUN apt-get update && \
+    apt-get install -y clang llvm gcc make libbpf-dev linux-libc-dev bpftool && \
+    rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+COPY ./callgate.bpf.c .
+COPY ./callgate.c .
+COPY ./Makefile .
+
+RUN make
+
+FROM scratch AS export
+COPY --from=builder /build/callgate /
+COPY --from=builder /build/callgate.bpf.o /

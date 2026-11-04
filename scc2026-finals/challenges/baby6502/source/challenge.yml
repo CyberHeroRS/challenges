@@ -1,0 +1,21 @@
+name: baby6502
+fullName: "Baby 6502"
+authors:
+  - Riggle
+categories:
+  - rev
+tags:
+  - rev
+  - scc2026-quals
+
+description: |
+  6502? What's that? Some kind of new drug?
+
+  The flag is not in format. Please add the flag format to the flag.
+
+files:
+  - "baby6502.tar.gz"
+
+flags:
+  - name: flag
+    body: tiny_6502_rev_1s_k1nda_cute

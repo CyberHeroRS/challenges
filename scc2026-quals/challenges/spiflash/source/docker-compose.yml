@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  spiflash:
+    build: .
+    ports:
+      - "1337:1337"
+    environment:
+      - FLAG1=SCC{test_flag1_jedec_id_reader}
+      - FLAG2=SCC{test_flag2_memory_writer}
+      - FLAG3=SCC{test_flag3_protection_bypass}
+      - PORT=1337
+    restart: unless-stopped

@@ -1,0 +1,36 @@
+# Build results
+bin/
+obj/
+out/
+source/bin/
+source/obj/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Rider
+*.sln.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Publish output
+publish/
+
+# NuGet
+*.nupkg
+packages/
+
+# Debug files
+*.pdb
+
+# Injector tool output
+tools/obj/
+tools/bin/
+
+rev-clickers-return.zip

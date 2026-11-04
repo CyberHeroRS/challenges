@@ -1,0 +1,27 @@
+name: six-seven
+fullName: 67
+description: 'Brainrot cats are trying to tell you something. Can you understand them?
+
+  '
+categories:
+- misc
+authors:
+- theproxy
+flags:
+- name: flag
+  body: D45HD45HD07MYL4577W0BR41NC3LL5
+instancing: true
+services:
+- name: six-seven
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: http
+    containerPort: 80
+    expose: true
+    type: http

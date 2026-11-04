@@ -1,0 +1,7 @@
+{% extends "partials/dialogs/base.html" %}
+{% set action_url = "/mkdir?path=" + current_path | urlencode %}
+{% block title %}New Folder{% endblock %}
+{% block body %}
+<input class="form-control" type="text" name="name" placeholder="Folder name" required>
+{% endblock %}
+{% block submit_text %}Create{% endblock %}

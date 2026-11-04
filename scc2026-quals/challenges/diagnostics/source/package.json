@@ -1,0 +1,9 @@
+{
+  "name": "diagnostics-web-ctf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Intro web challenge: Diagnostics",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

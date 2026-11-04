@@ -1,0 +1,23 @@
+{
+  "name": "matrix-underground-forum-challenge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Matrix-themed underground forum web challenge with invite-only access and hidden content.",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "puppeteer": "^24.40.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.17.8",
+    "@types/node": "^22.7.4",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission - {{ submission_id }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .field {
+            margin-bottom: 20px;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .field-value {
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            word-break: break-word;
+        }
+        .submission-id {
+            font-size: 0.85em;
+            color: #999;
+            margin-top: 10px;
+        }
+
+        .flag{
+            display: none;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Form Submission</h1>
+        
+        <div class="field">
+            <div class="field-label">Email:</div>
+            <div class="field-value">{{ data.email }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Title:</div>
+            <div class="field-value">{{ data.title }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">Content:</div>
+            <div class="field-value">{{ data.message }}</div>
+        </div>
+        
+        <div class="field">
+            <div class="field-label">User IP:</div>
+            <div class="field-value">{{ data.user_ip|safe }}</div>
+        </div>
+        
+        <div class="submission-id">
+            Submission ID: <code>{{ submission_id }}</code>
+        </div>
+    </div>
+</body>
+</html>

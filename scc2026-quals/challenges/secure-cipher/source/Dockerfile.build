@@ -1,0 +1,8 @@
+FROM debian:bookworm-slim AS builder
+RUN apt-get update && apt-get install -y build-essential zig
+WORKDIR /build
+COPY ./source.c .
+RUN make
+
+FROM scratch AS export
+COPY --from=builder /build/secure-cipher /

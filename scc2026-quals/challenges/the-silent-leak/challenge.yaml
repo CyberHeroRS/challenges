@@ -1,0 +1,16 @@
+name: the-silent-leak
+fullName: The Silent Leak
+description: 'A suspicious PCAP file has been recovered from a compromised system. Something is quietly slipping through the network traffic. Find it and retrieve the flag
+
+  '
+categories:
+- foren
+authors:
+- ekrup
+flags:
+- name: flag
+  body: pr0mpt_3ngin33r1ng_15_n0t_for3n51c5
+instancing: false
+files:
+- dump.pcap
+services: []

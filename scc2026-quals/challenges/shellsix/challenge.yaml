@@ -1,0 +1,32 @@
+name: shellsix
+fullName: ShellSix
+description: 'They say size matters, but sometimes less is more. With only Six bytes of shellcode, anything is possible, from hacking all the way to hunting.
+
+  '
+categories:
+- pwn
+authors:
+- manjaro
+flags:
+- name: flag
+  body: s1x_by73s_f0r_7h3_g0ld3n_3gg
+instancing: true
+files:
+- public/Dockerfile
+- public/docker-compose.yml
+- public/flag.txt
+- public/shellsix
+services:
+- name: shellsix
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

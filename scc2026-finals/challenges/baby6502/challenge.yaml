@@ -1,0 +1,16 @@
+name: baby6502
+fullName: Baby 6502
+description: |
+  6502? What's that? Some kind of new drug?
+
+  The flag is not in format. Please add the flag format to the flag.
+categories:
+- rev
+authors:
+- Riggle
+flags:
+- name: flag
+  body: tiny_6502_rev_1s_k1nda_cute
+instancing: false
+files:
+- public/rev-baby6502.prg

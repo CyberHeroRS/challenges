@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./app
+    container_name: web-app
+    ports:
+      - "5000:5000"
+    working_dir: /app
+    environment:
+      FLASK_APP: app.py
+      POSTGRES_DB: webapp
+      POSTGRES_USER: webapp
+      POSTGRES_PASSWORD: webapp
+      POSTGRES_HOST: postgres_db
+      POSTGRES_PORT: 5432
+      FLAG: "SCC{i_really_like_blackbox_web_challenges}"
+    command: "./entrypoint.sh"
+    depends_on:
+      - postgres_db
+  postgres_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: webapp
+      POSTGRES_USER: webapp
+      POSTGRES_PASSWORD: webapp
+    ports:
+        - "5432"
+  bot:
+    build:
+      context: ./bot
+    container_name: admin-bot
+    ports:
+      - "3000"
+    depends_on:
+      - app
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+

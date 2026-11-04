@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>matrix://underground-dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="matrix-bg"></div>
+    <div class="scanline"></div>
+
+    <div class="page-frame">
+      <header class="header">
+        <div class="logo-area">
+          <div class="logo-image placeholder-image">
+            <span>DASH</span>
+          </div>
+          <div class="logo-text">
+            <div class="logo-title">matrix://underground</div>
+            <div class="logo-subtitle">test dashboard window</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="content" style="grid-column: 1 / span 3">
+          <section class="panel">
+            <div class="panel-title">/dashboard</div>
+            <div class="panel-subtitle">
+              realtime health monitor and event log for matrix://underground
+            </div>
+            <div class="panel-body small">
+              &gt; subsystem: <span class="muted">health-monitor</span>
+              <br />
+              &gt; status: <span class="muted" id="dash-status">awaiting monitor...</span>
+              <br />
+              <br />
+              <div style="display: flex; gap: 10px; align-items: flex-start;">
+                <div
+                  id="dash-stats"
+                  style="
+                    flex: 1;
+                    border-radius: 6px;
+                    border: 1px solid rgba(120, 255, 159, 0.5);
+                    padding: 6px 8px;
+                    min-height: 70px;
+                  "
+                >
+                  node uptime: <span id="stat-uptime">0s</span>
+                  <br />
+                  active ghosts: <span id="stat-ghosts">0</span>
+                  <br />
+                  report queue: <span id="stat-reports">0</span>
+                </div>
+                <div
+                  id="dash-log"
+                  style="
+                    flex: 1;
+                    border-radius: 6px;
+                    border: 1px solid rgba(120, 255, 159, 0.4);
+                    padding: 6px 8px;
+                    max-height: 110px;
+                    overflow-y: auto;
+                    font-size: 11px;
+                  "
+                >
+                  &gt; event log
+                  <br />
+                  messages from the monitor frame will appear here.
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 8px; font-size: 10px;" id="dash-output"></div>
+            <iframe
+              id="monitor-frame"
+              src="/static/dashboard-monitor.html"
+              title="health monitor"
+              style="
+                width: 100%;
+                height: 90px;
+                border-radius: 6px;
+                border: 1px solid rgba(120, 255, 159, 0.45);
+                margin-top: 6px;
+                background: #000;
+              "
+            ></iframe>
+          </section>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>STAY WOKEN. THE MATRIX HAS YOU.</span>
+        <span class="footer-right">
+          health monitor wired via postMessage.
+          <button class="btn btn-ghost" id="close-dashboard-btn">
+            close dashboard
+          </button>
+        </span>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        var out = document.getElementById("dash-output");
+        var statusEl = document.getElementById("dash-status");
+        var uptimeEl = document.getElementById("stat-uptime");
+        var ghostsEl = document.getElementById("stat-ghosts");
+        var reportsEl = document.getElementById("stat-reports");
+        var logEl = document.getElementById("dash-log");
+        var frame = document.getElementById("monitor-frame");
+
+        // If this window was not opened via window.open, treat it as an
+        // unauthorized direct navigation: show a denial message and never
+        // wire the monitor iframe or postMessage listener.
+        var hasOpener =
+          window.opener !== null && typeof window.opener !== "undefined";
+        if (!hasOpener) {
+          if (out) {
+            out.textContent =
+              "access denied: dashboard must be opened from the main console.";
+          }
+          if (statusEl) {
+            statusEl.textContent = "access denied.";
+          }
+          if (frame) {
+            frame.parentNode && frame.parentNode.removeChild(frame);
+          }
+          return;
+        }
+
+        var closeBtn = document.getElementById("close-dashboard-btn");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", function () {
+            window.close();
+          });
+        }
+
+        if (!frame || !logEl) return;
+
+        window.addEventListener("message", function (e) {
+          // Trust relation: only accept messages from our embedded monitor iframe.
+          if (!frame.contentWindow || e.source !== frame.contentWindow) return;
+          var data = e.data || {};
+          if (data.type !== "MONITOR_UPDATE") return;
+
+          // INTENTIONALLY UNSAFE: status and message are written via innerHTML
+          // so that crafted payloads from the monitor chain can trigger XSS.
+          if (statusEl && typeof data.status === "string") {
+            statusEl.innerHTML = data.status;
+          }
+          if (uptimeEl && typeof data.uptimeSeconds === "number") {
+            uptimeEl.textContent = data.uptimeSeconds + "s";
+          }
+          if (ghostsEl && typeof data.activeGhosts === "number") {
+            ghostsEl.textContent = String(data.activeGhosts);
+          }
+          if (reportsEl && typeof data.reportQueue === "number") {
+            reportsEl.textContent = String(data.reportQueue);
+          }
+
+          var line = document.createElement("div");
+          var payload =
+            typeof data.message === "string"
+              ? data.message
+              : "monitor heartbeat received.";
+          line.innerHTML = "&gt; " + payload;
+          logEl.appendChild(line);
+          while (logEl.children.length > 8) {
+            logEl.removeChild(logEl.firstChild);
+          }
+          logEl.scrollTop = logEl.scrollHeight;
+        });
+      })();
+    </script>
+  </body>
+  </html>
+

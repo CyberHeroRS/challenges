@@ -1,0 +1,8 @@
+{% extends "partials/dialogs/base.html" %}
+{% set action_url = "/extract?path=" + item.path | urlencode %}
+{% block title %}Extract Archive{% endblock %}
+{% block body %}
+<label class="form-label">Destination folder (relative to managed root)</label>
+<input class="form-control" type="text" name="dest" value="{{ current_path }}" required>
+{% endblock %}
+{% block submit_text %}Extract{% endblock %}

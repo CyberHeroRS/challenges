@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>matrix://underground-new-thread</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="matrix-bg"></div>
+    <div class="scanline"></div>
+
+    <div class="page-frame">
+      <header class="header">
+        <div class="logo-area">
+          <div class="logo-image placeholder-image">
+            <span>LOGO</span>
+          </div>
+          <div class="logo-text">
+            <div class="logo-title">matrix://underground</div>
+            <div class="logo-subtitle">post new thread</div>
+          </div>
+        </div>
+        <div class="header-right">
+          <a href="./" class="btn btn-ghost">← back to feed</a>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="content" style="grid-column: 1 / span 3">
+          <section class="panel panel-post">
+            <div class="panel-title">/new-thread</div>
+            <div class="panel-subtitle">
+              only authenticated ghosts can post. content may be inspected by bots.
+            </div>
+
+            <form class="terminal-form" id="new-post-form">
+              <div class="terminal-field">
+                <label for="post-title">title</label>
+                <input
+                  type="text"
+                  id="post-title"
+                  name="title"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="your thread title"
+                  required
+                />
+              </div>
+              <div class="terminal-field">
+                <label for="post-content">content</label>
+                <textarea
+                  id="post-content"
+                  name="content"
+                  rows="6"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="payload goes here. bots may read it later."
+                  required
+                  style="resize: vertical; background: rgba(0,0,0,0.7); border-radius: 4px; border: 1px solid rgba(120,255,159,0.6); padding: 6px; font-family: inherit; font-size: 12px; color: #d0f5d4;"
+                ></textarea>
+              </div>
+              <div class="terminal-actions">
+                <button type="submit" class="btn">publish thread</button>
+              </div>
+              <div class="panel-body small" id="new-post-status"></div>
+            </form>
+          </section>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>STAY WOKEN. THE MATRIX HAS YOU.</span>
+        <span class="footer-right">threads may be watched by agents.</span>
+      </footer>
+    </div>
+
+    <script>
+      const AUTH_USERNAME_KEY = "identity_username";
+      const AUTH_HEADER_TOKEN_KEY = "identity_header_token";
+
+      function getSessionIdentity() {
+        try {
+          return {
+            username: window.localStorage.getItem(AUTH_USERNAME_KEY),
+            headerToken: window.localStorage.getItem(AUTH_HEADER_TOKEN_KEY),
+          };
+        } catch {
+          return { username: null, headerToken: null };
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("new-post-form");
+        const statusEl = document.getElementById("new-post-status");
+
+        const { username, headerToken } = getSessionIdentity();
+        if (!username || !headerToken) {
+          if (statusEl) {
+            statusEl.textContent =
+              "you are not logged in. return to the feed and obtain a valid identity first.";
+          }
+          if (form) {
+            form.querySelectorAll("input,textarea,button").forEach((el) => {
+              el.disabled = true;
+            });
+          }
+          return;
+        }
+
+        if (!form) return;
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const titleInput = document.getElementById("post-title");
+          const contentInput = document.getElementById("post-content");
+          if (!titleInput || !contentInput) return;
+
+          const title = titleInput.value.trim();
+          const content = contentInput.value.trim();
+          if (!title || !content) {
+            if (statusEl) statusEl.textContent = "title and content are required.";
+            return;
+          }
+
+          try {
+            const res = await fetch("/api/posts", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-username": username,
+                "x-token": headerToken,
+              },
+              body: JSON.stringify({ title, content }),
+            });
+
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({}));
+              if (statusEl) {
+                statusEl.textContent = `error: ${data.error || "failed to create post"}`;
+              }
+              return;
+            }
+
+            if (statusEl) {
+              statusEl.textContent =
+                "thread created. returning to feed in a moment...";
+            }
+            setTimeout(() => {
+              window.location.href = "./";
+            }, 1200);
+          } catch (err) {
+            if (statusEl) {
+              statusEl.textContent = "network error while creating post.";
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+  </html>
+

@@ -1,0 +1,47 @@
+name: based-errors
+fullName: based-errors
+description: 'Why does Sentry need 8 GB of RAM? basedErrors can run on a shared webhost from 2001.
+
+  '
+categories:
+- web
+authors:
+- franga2000
+flags:
+- name: flag
+  body: error_based_
+instancing: true
+services:
+- name: pit
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: http
+    containerPort: 3000
+    expose: true
+    type: http
+files:
+- source/docker-compose.yml
+- source/Dockerfile
+- source/entrypoint.sh
+- source/.htpasswd
+- source/www/custom_fields.php
+- source/www/db.php
+- source/www/error.php
+- source/www/errors.php
+- source/www/footer.php
+- source/www/header.php
+- source/www/.htaccess
+- source/www/index.php
+- source/www/login.php
+- source/www/project.php
+- source/www/snippet.php
+- source/www/style.css
+- source/www/submit.php
+- source/www/test.php
+- source/www/user.php

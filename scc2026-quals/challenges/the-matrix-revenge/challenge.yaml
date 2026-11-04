@@ -1,0 +1,49 @@
+name: the-matrix-revenge
+fullName: The Matrix
+description: 'They have ddetected us quick1y last t1me, this time they fixed the existing vulnerabilities. Good luck solider. Note: Th
+
+  '
+categories:
+- web
+authors:
+- Legasi
+flags:
+- name: flag
+  body: SCC{w1nd0w_h1jaaacking_5ucce55fu1_m4tr1x_d0wn!}
+  difficulty: hard
+instancing: true
+files:
+- public/Dockerfile
+- public/README.md
+- public/assets/app.js
+- public/assets/style.css
+- public/docker-compose.yml
+- public/package-lock.json
+- public/package.json
+- public/src/bot.ts
+- public/src/middleware/auth.ts
+- public/src/routes.ts
+- public/src/server.ts
+- public/src/static/404.html
+- public/src/static/assets/app.js
+- public/src/static/assets/style.css
+- public/src/static/dashboard-monitor.html
+- public/src/static/dashboard.html
+- public/src/static/index.html
+- public/src/static/new-post.html
+- public/src/utils.ts
+- public/tsconfig.json
+services:
+- name: the-matrix
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: web
+    containerPort: 3000
+    expose: true
+    type: http

@@ -1,0 +1,32 @@
+name: minmax
+fullName: MinMax
+description: 'Comparing arrays of numbers can be very useful. Finding the MINimal and MAXimal value is often the most important step.
+
+  '
+categories:
+- pwn
+authors:
+- manjaro
+flags:
+- name: flag
+  body: bin4ry_s34rch_f0r_7h3_m0n3y
+instancing: true
+files:
+- public/Dockerfile
+- public/docker-compose.yml
+- public/flag.txt
+- public/minmax
+services:
+- name: minmax
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

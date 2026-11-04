@@ -1,0 +1,31 @@
+name: brian
+fullName: brian
+description: 'Can''t use another brain, so let''s switch this up a bit.
+
+  '
+categories:
+- pwn
+authors:
+- aJuvan
+flags:
+- name: flag
+  body: 2d_3s0teRIc_g07_E5c4p3
+instancing: true
+services:
+- name: brian
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    file: /app/flag.txt
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat
+files:
+- source/main
+- source/libc.so.6
+- source/Dockerfile

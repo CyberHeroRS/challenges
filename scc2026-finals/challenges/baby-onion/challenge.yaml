@@ -1,0 +1,18 @@
+name: baby-onion
+fullName: Baby Onion
+description: 'I was too lazy to implement the big onion, so i peeled some layers here and there.
+
+  Flag format: `flag{...}`
+
+  '
+categories:
+- foren
+authors:
+- zeski
+flags:
+- name: flag
+  body: flag{S0_th4t5_th3_r34s0n_f0r_c0nst4nt_s1ze_msg5}
+instancing: false
+files:
+- source/baby-onion.pcap
+services: []

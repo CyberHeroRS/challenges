@@ -1,0 +1,31 @@
+name: brainrot-69
+fullName: Brainrot 69
+description: 'Who said all encoded messages have to be text?
+
+  Brainrot 69 encoding is clearly superior solution.
+
+  '
+categories:
+- crypto
+authors:
+- theproxy
+flags:
+- name: flag
+  body: 7r4ll4l3r0_fl4gl4l4
+instancing: true
+files:
+- brainrot.png
+services:
+- name: brainrot-69
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: web
+    containerPort: 80
+    expose: true
+    type: http

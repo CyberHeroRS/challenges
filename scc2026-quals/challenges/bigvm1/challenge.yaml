@@ -1,0 +1,30 @@
+name: bigvm1
+fullName: BigVM I
+description: 'Do you have the correct licence? This sophisticated virtual machine-based licence checker will verify it for you. Just provide the key and let it decide if it''s valid.
+
+  '
+categories:
+- rev
+authors:
+- manjaro
+flags:
+- name: flag
+  body: r1v3s7_5h4mir_4dl3m4n_by73c0d3
+instancing: true
+files:
+- public/bigvm1
+- public/code.bin
+services:
+- name: bigvm1
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

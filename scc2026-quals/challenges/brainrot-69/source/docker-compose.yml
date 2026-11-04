@@ -1,0 +1,7 @@
+services:
+  brainrot69:
+    build: .
+    ports:
+      - "8069:80"
+    environment:
+      - FLAG=SCC{7r4ll4l3r0_fl4gl4l4}

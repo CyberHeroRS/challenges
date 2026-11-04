@@ -1,0 +1,11 @@
+{% extends "partials/dialogs/base.html" %}
+{% set action_url = "/archive?path=" + item.path | urlencode %}
+{% block title %}Create Archive{% endblock %}
+{% block body %}
+<label class="form-label">Format</label>
+<select class="form-select" name="fmt" required>
+  <option value="zip">ZIP</option>
+  <option value="tar.gz">TAR.GZ</option>
+</select>
+{% endblock %}
+{% block submit_text %}Archive{% endblock %}

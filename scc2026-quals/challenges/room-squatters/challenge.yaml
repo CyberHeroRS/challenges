@@ -1,0 +1,43 @@
+name: room-squatters
+fullName: Room Squatters
+description: 'We just launched a new chat app! Unlimited rooms, unlimited messages, and unlimited fun! We are 100% privacy-focused, but be careful what you send... there might be some lurkers!
+
+  '
+categories:
+- web
+authors:
+- jvvan
+flags:
+- name: flag
+  body: you_gott4_clos3_th0s3_s0ck37s
+instancing: true
+files:
+- public/Dockerfile
+- public/docker-compose.yaml
+- public/package.json
+- public/public/app.js
+- public/public/index.html
+- public/public/style.css
+- public/server.js
+- public/src/config.js
+- public/src/db.js
+- public/src/http.js
+- public/src/repositories/rooms.js
+- public/src/services/adminBot.js
+- public/src/services/roomService.js
+- public/src/socket.js
+- public/src/utils/passwords.js
+services:
+- name: app
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: http
+    containerPort: 3000
+    expose: true
+    type: http

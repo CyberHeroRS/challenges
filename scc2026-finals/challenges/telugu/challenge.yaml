@@ -1,0 +1,32 @@
+name: telugu
+fullName: telugu
+description: 'I''m tired of these pwn challs, just have a shell.
+
+  '
+categories:
+- pwn
+authors:
+- aJuvan
+flags:
+- name: flag
+  body: Fr0m_5h3ll_7o_h34p_AND_b4CK_t0_sh311
+instancing: true
+services:
+- name: telugu
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    file: /app/flag.txt
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat
+files:
+- source/main
+- source/ld-linux-x86-64.so.2
+- source/libc.so.6
+- source/Dockerfile

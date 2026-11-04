@@ -1,0 +1,19 @@
+name: modern
+fullName: Modern
+authors:
+  - Riggle
+categories:
+  - rev
+tags:
+  - rev
+  - scc2026-quals
+
+description: |
+  Are you modern enough?
+
+files:
+  - "modern.tar.gz"
+
+flags:
+  - name: flag
+    body: ju5s_P3rmut4te_th3_1Nput_Byt3s!!

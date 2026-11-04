@@ -1,0 +1,43 @@
+name: pit
+fullName: filepit
+description: 'You threw your files into the pit and they came out...sticky
+
+  '
+categories:
+- web
+authors:
+- franga2000
+flags:
+- name: flag
+  body: into_the_tar_pit_you_will_fall
+instancing: true
+services:
+- name: pit
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: http
+    containerPort: 3000
+    expose: true
+    type: http
+files:
+- source/docker-compose.yaml
+- source/Dockerfile
+- source/.dockerignore
+- source/filepit/main.py
+- source/filepit/templates/index.html
+- source/filepit/templates/partials/browse.html
+- source/filepit/templates/partials/dialogs/archive.html
+- source/filepit/templates/partials/dialogs/base.html
+- source/filepit/templates/partials/dialogs/delete.html
+- source/filepit/templates/partials/dialogs/extract.html
+- source/filepit/templates/partials/dialogs/mkdir.html
+- source/filepit/templates/partials/dialogs/rename.html
+- source/filepit/templates/partials/dialogs/upload.html
+- source/pyproject.toml
+- source/uv.lock

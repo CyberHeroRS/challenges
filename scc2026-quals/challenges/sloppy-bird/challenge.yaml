@@ -1,0 +1,18 @@
+name: sloppy-bird
+fullName: Sloppy Bird
+description: 'This is my first vibe-coded game. I hope you all like it and that it earns me a lot of money.
+
+  Players who reach a score of 274432 will receive a special reward, but please don''t try to cheat or you will be banned.
+
+  '
+categories:
+- rev
+authors:
+- manjaro
+flags:
+- name: flag
+  body: 1'm_s0m3_kind_0f_4_ch347ing_sl0pp3r_mys3lf!
+instancing: false
+files:
+- public/sloppy-bird.exe
+services: []

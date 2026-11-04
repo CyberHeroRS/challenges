@@ -1,0 +1,64 @@
+name: open-sesame
+fullName: Open Sesame
+description: 'When they came to the rock, the captain went up to it and said: ''Open Sesame!''
+
+  Immediately the door opened, and the thieves entered the cave. When they had all gone in, the door closed again of itself.
+
+
+  Note: Use ''http://localhost:3000'' as the target URL in your exploit.
+
+  '
+categories:
+- web
+authors:
+- kodz
+flags:
+- name: flag
+  body: C0OP_m0r3_l1kE_p00p!
+instancing: true
+files:
+- public/Dockerfile
+- public/bot/index.js
+- public/config.js
+- public/db/catalogue.js
+- public/db/index.js
+- public/db/users.js
+- public/db/wishlist.js
+- public/docker-compose.yaml
+- public/middleware/auth.js
+- public/package.json
+- public/routes/api.js
+- public/routes/pages.js
+- public/server.js
+- public/static/img/bronze-idol.svg
+- public/static/img/diamond-dagger.svg
+- public/static/img/emerald-necklace.svg
+- public/static/img/gold-coins.svg
+- public/static/img/golden-lamp.svg
+- public/static/img/pearl-strand.svg
+- public/static/img/ruby-ring.svg
+- public/static/img/sapphire-tiara.svg
+- public/static/img/silver-chalice.svg
+- public/static/style.css
+- public/utils/markdown.js
+- public/views/account.js
+- public/views/auth.js
+- public/views/edit-profile.js
+- public/views/home.js
+- public/views/layout.js
+- public/views/profile.js
+- public/views/report.js
+services:
+- name: open-sesame
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: web
+    containerPort: 3000
+    expose: true
+    type: http

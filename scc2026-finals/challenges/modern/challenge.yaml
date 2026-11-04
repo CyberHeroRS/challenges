@@ -1,0 +1,14 @@
+name: modern
+fullName: Modern
+description: |
+  Are you modern enough?
+categories:
+- rev
+authors:
+- Riggle
+flags:
+- name: flag
+  body: ju5s_P3rmut4te_th3_1Nput_Byt3s!!
+instancing: false
+files:
+- public/chall

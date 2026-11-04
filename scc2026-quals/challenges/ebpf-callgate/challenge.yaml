@@ -1,0 +1,43 @@
+name: ebpf-callgate
+fullName: eBPF CallGate
+description: 'The gates are open
+
+
+  Gate 1: Darkness - the world of demons
+
+  Gate 2: My guards are watching you
+
+  Gate 3: Only evil lives here
+
+  Gate 4: There''s no way out
+
+  Gate 5: Feel the fire
+
+  Gate 6: Pick up your weapons and fight
+
+  '
+categories:
+- rev
+authors:
+- Vucko
+flags:
+- name: flag
+  body: 7_g473s_0f_h3ll
+instancing: true
+files:
+- public/source/binary/callgate
+- public/source/binary/callgate.bpf.o
+services:
+- name: ebpf-callgate
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

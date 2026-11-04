@@ -1,0 +1,14 @@
+services:
+  ebpf-callgate:
+    build: .
+    restart: unless-stopped
+    init: true
+    ports:
+      - "1337:1337"
+    environment:
+      - "FLAG=SCC{fake_flag_for_testing}"
+    cap_add:
+      - SYS_ADMIN
+      - BPF
+    security_opt:
+      - seccomp:unconfined

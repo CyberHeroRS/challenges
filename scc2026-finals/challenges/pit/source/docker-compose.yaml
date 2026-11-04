@@ -1,0 +1,7 @@
+services:
+  pit:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      FLAG: "FAKE{this_is_a_fake_flag}"

@@ -1,0 +1,72 @@
+name: blackbox
+fullName: blackbox
+description: 'Another blackbox pentest on a production server...REALLY?!
+
+  '
+categories:
+- web
+authors:
+- MartinCo
+flags:
+- name: flag
+  body: i_really_like_blackbox_web_challenges
+instancing: true
+services:
+- name: web-app
+  image:
+    type: dockerfile
+    context: source/app
+    path: Dockerfile
+  env:
+  - name: FLASK_APP
+    value: app.py
+  - name: POSTGRES_DB
+    value: webapp
+  - name: POSTGRES_USER
+    value: webapp
+  - name: POSTGRES_PASSWORD
+    value: webapp
+  - name: POSTGRES_HOST
+    value: postgres-db
+  - name: POSTGRES_PORT
+    value: '5432'
+  flags:
+  - name: flag
+    env: FLAG
+    file: /app/flag.txt
+  ports:
+  - name: http
+    containerPort: 5000
+    expose: true
+    type: http
+- name: postgres-db
+  image:
+    type: image
+    image: postgres:16-alpine
+  env:
+  - name: POSTGRES_DB
+    value: webapp
+  - name: POSTGRES_USER
+    value: webapp
+  - name: POSTGRES_PASSWORD
+    value: webapp
+  ports:
+  - name: db
+    containerPort: 5432
+    expose: false
+    type: netcat
+- name: admin-bot
+  image:
+    type: dockerfile
+    context: source/bot
+    path: Dockerfile
+  env:
+  - name: NODE_ENV
+    value: production
+  - name: PORT
+    value: '3000'
+  ports:
+  - name: admin-http
+    containerPort: 3000
+    expose: false
+    type: http

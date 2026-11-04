@@ -1,0 +1,25 @@
+name: labyrinth
+fullName: Labyrinth
+description: "You wake up in a twisting maze of stone, with only one way forward. \nNavigate 100 levels to escape… but from level 50 onwards, something hunts you. \nSurvive, reach the exit, and claim what lies beyond.\n"
+categories:
+- misc
+authors:
+- Manjaro
+flags:
+- name: flag
+  body: y0u_4r3_h4ck3r_7h3s3us_righ7?
+instancing: true
+services:
+- name: labyrinth
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

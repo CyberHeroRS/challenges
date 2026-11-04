@@ -1,0 +1,1 @@
+flag = b"SCC{check_out_https://archiveofourown.org/works/3243470}"

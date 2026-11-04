@@ -1,0 +1,27 @@
+name: mechanic-on-the-run
+fullName: Mechanic On The Run
+description: 'The mechanic is running. Word is he is trying to slip across the border tonight.
+
+
+  Before he left, he marked his trail the way amateurs do: he stuck a sticker on a tree, one he peeled off the dashboard of the stolen car without knowing it carried the competition logo. A small mistake. The kind that gets you caught.
+
+
+  We pulled one photo from his phone before it went offline. It shows where the car is hidden.
+
+  Trace the image back to its origin. Find the exact location of the vehicle before he reaches the other side.
+
+
+  Flag format: `SCC{XX.XXX, XX.XXX}`
+
+  '
+categories:
+- osint
+authors:
+- CyberHero
+flags:
+- name: flag
+  body: 44.833, 20.337
+instancing: false
+files:
+- image.jpeg
+services: []

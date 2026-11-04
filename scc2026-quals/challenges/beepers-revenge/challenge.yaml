@@ -1,0 +1,13 @@
+name: beepers-revenge
+fullName: Beeper's Revenge
+description: "System administrators are reporting mysterious audible beep signals coming from the Admin workstation, while File Explorer is showing signs of instability. Although all standard security tools claim the system is clean, a sophisticated \"fileless\" malware is suspected of manipulating system objects and hiding deep within the system memory.\n\nYour task is to analyze the provided memory dump and disk image, locate the phantom module, and reconstruct the flag, which is split into three fragments (Registry, Environment, and Memory).\n\n  [Attachment (dump.7z, ~683MB) hosted externally -- TODO: add download link.]\n"
+categories:
+- foren
+authors:
+- ekrup
+flags:
+- name: flag
+  body: d34d_DLLs_t3ll_n0_t4l35
+instancing: false
+files: []
+services: []

@@ -1,0 +1,42 @@
+name: alice-in-wonderland
+fullName: Alice In Wonderland
+description: 'Follow the rabbit through Wonderland and uncover the hidden path.
+
+  '
+categories:
+- misc
+authors:
+- Legasi
+flags:
+- name: flag
+  body: SCC{JU5T_4_P4CK_0F_C4RD5}
+instancing: false
+files:
+- public/.dockerignore
+- public/Dockerfile
+- public/docker-compose.yml
+- public/package-lock.json
+- public/package.json
+- public/server.js
+- public/static/.d01
+- public/static/VERDICT.wav
+- public/static/alicedoors.jpg
+- public/static/alicenrabbit1.jpeg
+- public/static/dinner.jpg
+- public/static/falling.jpg
+- public/static/index.html
+- public/static/queencourt.jpg
+- public/static/receipt.png
+- public/static/sec.zip
+- public/static/secretfile.zip
+services:
+- name: alice-in-wonderland
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  ports:
+  - name: web
+    containerPort: 1337
+    expose: true
+    type: http

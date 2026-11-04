@@ -1,0 +1,27 @@
+name: digitron
+fullName: Digitron
+description: 'Digitron is a simple terminal calculator that can evaluate any mathematical expression you enter. There shouldn''t be anything to worry about... right?
+
+  '
+categories:
+- misc
+authors:
+- Manjaro
+flags:
+- name: flag
+  body: d1gi7r0n_3v4lu473s_7o0_much
+instancing: true
+services:
+- name: digitron
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: stty

@@ -1,0 +1,33 @@
+name: beus3
+fullName: BEUS Level 3
+description: 'The Binary Exploitation Unit of Serbia has prepared another level of their test for you. Is this the same as Level 2?
+
+  '
+categories:
+- pwn
+authors:
+- manjaro
+flags:
+- name: flag
+  body: r0p_is_s7r0ng3r_7h4n_4ny_s3cc0mp_rul3s
+instancing: true
+files:
+- public/Dockerfile
+- public/beus3
+- public/docker-compose.yml
+- public/ld-linux-x86-64.so.2
+- public/libc.so.6
+services:
+- name: beus3
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

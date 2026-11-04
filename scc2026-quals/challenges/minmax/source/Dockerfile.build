@@ -1,0 +1,8 @@
+FROM debian:bookworm-slim AS builder
+RUN apt-get update && apt-get install -y build-essential
+WORKDIR /build
+COPY ./source.c .
+RUN gcc -o minmax source.c
+
+FROM scratch AS export
+COPY --from=builder /build/minmax /

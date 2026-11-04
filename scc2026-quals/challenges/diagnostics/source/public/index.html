@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diag://orbital-maintenance</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <!-- FLAG_PART_A=pt1{SCC{d14gn05t1c_} -->
+    <div class="bg-grid"></div>
+    <div class="panel-wrap">
+      <header class="topbar">
+        <div class="brand">diag://orbital-maintenance</div>
+        <div class="light"></div>
+      </header>
+
+      <main class="layout">
+        <section class="card">
+          <h1>Diagnostics Console</h1>
+          <p>
+            Uplink telemetry is mirrored from edge nodes. Engineers usually inspect
+            source and runtime state before filing incidents.
+          </p>
+          <p>
+            Training mode: collect <strong>FLAG_PART_A</strong> through
+            <strong>FLAG_PART_H</strong> from source, css, console, network,
+            localStorage, robots, minified js, and sourcemap.
+          </p>
+          <button id="sync-btn">Run Integrity Sweep</button>
+          <pre id="out">awaiting command...</pre>
+        </section>
+
+        <section class="card">
+          <h2>Status Channels</h2>
+          <ul>
+            <li>kernel-watch: nominal</li>
+            <li>relay lane: active</li>
+            <li>event queue: 7 pending</li>
+            <li>debug maps: disabled in production build</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="/assets/app.js"></script>
+    <script src="/assets/runtime.min.js"></script>
+  </body>
+</html>

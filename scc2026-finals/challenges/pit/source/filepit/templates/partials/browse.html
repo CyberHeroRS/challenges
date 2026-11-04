@@ -1,0 +1,83 @@
+<div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+  <h1 class="h3 mb-0">
+    {% if parent != None %}
+      <a href="/?path={{ parent | urlencode }}"
+         class="text-decoration-none"
+         hx-get="/browse?path={{ parent | urlencode }}"
+         hx-target="#file-list"
+         hx-push-url="true">&#8592;</a>
+    {% endif %}
+    {{ base_name }}
+  </h1>
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary"
+            hx-get="/dialog/upload?path={{ current_path | urlencode }}"
+            hx-target="#modal-container">Upload</button>
+    <button class="btn btn-outline-secondary"
+            hx-get="/dialog/mkdir?path={{ current_path | urlencode }}"
+            hx-target="#modal-container">New Folder</button>
+  </div>
+</div>
+
+<div class="card-body p-0">
+  <table class="table table-hover mb-0">
+    <thead class="table-light">
+      <tr>
+        <th>Name</th>
+        <th class="text-end" style="width: 120px;">Size</th>
+        <th class="text-end" style="width: 260px;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr class="file-row align-middle">
+        <td>
+          {% if item.is_dir %}
+            <a href="/?path={{ item.path | urlencode }}"
+               class="text-decoration-none fw-medium"
+               hx-get="/browse?path={{ item.path | urlencode }}"
+               hx-target="#file-list"
+               hx-push-url="true">
+              &#128193; {{ item.name }}
+            </a>
+          {% else %}
+            <span>&#128196; {{ item.name }}</span>
+          {% endif %}
+        </td>
+        <td class="text-end text-muted">
+          {% if item.size is not none %}
+            {{ item.size | filesizeformat }}
+          {% else %}
+            —
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <div class="d-inline-flex gap-1">
+            {% if not item.is_dir %}
+              <a class="btn btn-sm btn-outline-primary" href="/download?path={{ item.path | urlencode }}">Download</a>
+            {% endif %}
+            <button class="btn btn-sm btn-outline-secondary"
+                    hx-get="/dialog/rename?path={{ item.path | urlencode }}"
+                    hx-target="#modal-container">Rename</button>
+            {% if not item.is_dir and (item.name.endswith('.zip') or item.name.endswith('.tar.gz')) %}
+              <button class="btn btn-sm btn-outline-info"
+                      hx-get="/dialog/extract?path={{ item.path | urlencode }}"
+                      hx-target="#modal-container">Extract</button>
+            {% endif %}
+            <button class="btn btn-sm btn-outline-dark"
+                    hx-get="/dialog/archive?path={{ item.path | urlencode }}"
+                    hx-target="#modal-container">Archive</button>
+            <button class="btn btn-sm btn-outline-danger"
+                    hx-get="/dialog/delete?path={{ item.path | urlencode }}"
+                    hx-target="#modal-container">Delete</button>
+          </div>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="3" class="text-center text-muted py-4">This folder is empty.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

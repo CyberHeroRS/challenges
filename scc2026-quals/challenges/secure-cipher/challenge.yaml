@@ -1,0 +1,34 @@
+name: secure-cipher
+fullName: Secure Cipher
+description: 'Your phone will be fully secure!
+
+  '
+categories:
+- pwn
+authors:
+- k4lizen
+flags:
+- name: flag
+  body: aarch64IsTheBestArch
+instancing: true
+files:
+- public/Dockerfile
+- public/Makefile
+- public/docker-compose.yml
+- public/flag.txt
+- public/run.sh
+- public/secure-cipher
+services:
+- name: secure-cipher
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

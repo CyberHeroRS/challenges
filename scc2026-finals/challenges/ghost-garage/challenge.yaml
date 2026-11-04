@@ -1,0 +1,28 @@
+name: ghost-garage
+fullName: Ghost Garage
+description: 'The Organizing Team never made it to the finish line.
+
+
+  They pulled off the route to get the bodywork on the CyberHero car fixed at a roadside garage, and that was the last anyone heard from them. The mechanic promised it would take an hour. That was three days ago. The car is gone, the garage is locked, and nobody remembers the address.
+
+
+  All we have is a single selfie one of them sent before going dark.
+
+
+  The mechanic played them. Find the coordinates in the photo and recover the location before the CyberHero car disappears for good.
+
+
+  Flag format: `SCC{XX.XXXX, XX.XXXX}`
+
+  '
+categories:
+- osint
+authors:
+- CyberHero
+flags:
+- name: flag
+  body: 44.8256, 20.3107
+instancing: false
+files:
+- image.jpeg
+services: []

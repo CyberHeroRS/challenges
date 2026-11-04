@@ -1,0 +1,33 @@
+name: watermelon-shop
+fullName: Watermelon Shop
+description: 'Welcome to Watermelon Shop, where you can buy lots of watermelons and maybe something else. Someone said that your card PIN is very important for buying watermelons.
+
+  '
+categories:
+- pwn
+authors:
+- manjaro
+flags:
+- name: flag
+  body: l0ok5_lik3_y0u_r34lly_lik3_w473rm3l0ns
+instancing: true
+files:
+- public/Dockerfile
+- public/docker-compose.yml
+- public/flag.txt
+- public/source.c
+- public/watermelon-shop
+services:
+- name: watermelon-shop
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

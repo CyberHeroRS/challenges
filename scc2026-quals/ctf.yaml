@@ -1,0 +1,42 @@
+name: scc2026-quals
+fullName: SCC 2026 Quals
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/alice-in-wonderland/challenge.yaml
+- challenges/beepers-revenge/challenge.yaml
+- challenges/beus3/challenge.yaml
+- challenges/bigvm1/challenge.yaml
+- challenges/bigvm2/challenge.yaml
+- challenges/brainrot-69/challenge.yaml
+- challenges/chungus-macromus/challenge.yaml
+- challenges/clickers-return/challenge.yaml
+- challenges/collatz/challenge.yaml
+- challenges/diagnostics/challenge.yaml
+- challenges/digitron/challenge.yaml
+- challenges/dirty-waters/challenge.yaml
+- challenges/ebpf-callgate/challenge.yaml
+- challenges/hades-iii/challenge.yaml
+- challenges/hashcryptor/challenge.yaml
+- challenges/labyrinth/challenge.yaml
+- challenges/minecraft-2/challenge.yaml
+- challenges/minmax/challenge.yaml
+- challenges/open-sesame/challenge.yaml
+- challenges/patrick/challenge.yaml
+- challenges/poly/challenge.yaml
+- challenges/room-squatters/challenge.yaml
+- challenges/secure-cipher/challenge.yaml
+- challenges/shellsix/challenge.yaml
+- challenges/six-seven/challenge.yaml
+- challenges/sloppy-bird/challenge.yaml
+- challenges/spiflash/challenge.yaml
+- challenges/the-matrix/challenge.yaml
+- challenges/the-matrix-revenge/challenge.yaml
+- challenges/the-silent-leak/challenge.yaml
+- challenges/vault-126/challenge.yaml
+- challenges/watermelon-shop/challenge.yaml
+- challenges/wav-in-the-middle/challenge.yaml

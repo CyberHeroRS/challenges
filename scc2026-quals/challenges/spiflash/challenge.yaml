@@ -1,0 +1,66 @@
+name: spiflash
+fullName: SPI Flash Memory
+description: 'Our field agent managed to tap into the SPI bus of a secure device and capture some traffic.
+
+  The device uses a standard flash memory chip to store sensitive data.
+
+
+  Your mission: Extract three classified documents from the chip''s memory.
+
+
+  Intel suggests the first document is hidden in the chip''s identification data.
+
+  Make sure you know exactly what chip you''re dealing with.
+
+
+  The second document is stored at sector 0x2000, but it''s encrypted. Our cryptanalyst
+
+  found notes mentioning that writing the correct passphrase to sector 0x1000 will
+
+  decrypt it. The passphrase? "UNLOCK" - they''re not very creative.
+
+
+  The third document is at sector 0x3000. Warning: the chip''s hardware write protection
+
+  is active. You''ll need to manipulate the status register to gain access. Check what
+
+  protection bits are set and figure out how to clear them.
+
+
+  Use the provided client.py to communicate with the intercepted flash chip.
+
+  Good luck, agent.
+
+  '
+categories:
+- hardware
+authors:
+- aleksa
+flags:
+- name: flag1
+  body: j3d3c_1d_r34d3r_m4st3r
+- name: flag2
+  body: unl0ck3d_th3_m3m0ry_s3cr3ts
+- name: flag3
+  body: wr1t3_pr0t3ct10n_byp4ss3d
+instancing: true
+files:
+- public/source/client.py
+services:
+- name: spiflash
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag1
+    env: FLAG1
+  - name: flag2
+    env: FLAG2
+  - name: flag3
+    env: FLAG3
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

@@ -1,0 +1,30 @@
+name: risk
+fullName: risk
+description: 'Hight risk, high reward.
+
+  '
+categories:
+- pwn
+authors:
+- aJuvan
+flags:
+- name: flag
+  body: r1sC_i5_A_r15kY_bUSin3ss
+instancing: true
+services:
+- name: risk
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    file: /app/flag.txt
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat
+files:
+- source/main
+- source/Dockerfile

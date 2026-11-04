@@ -1,0 +1,12 @@
+services:
+  matrix-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      THREAD_FLAG: SCC{fake_fl4g}
+      BOT_FLAG_COOKIE_VALUE: SCC{fake_fl4g}

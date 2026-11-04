@@ -1,0 +1,7 @@
+{% extends "partials/dialogs/base.html" %}
+{% set action_url = "/rename?path=" + item.path | urlencode %}
+{% block title %}Rename{% endblock %}
+{% block body %}
+<input class="form-control" type="text" name="new_name" value="{{ item.name }}" required>
+{% endblock %}
+{% block submit_text %}Rename{% endblock %}

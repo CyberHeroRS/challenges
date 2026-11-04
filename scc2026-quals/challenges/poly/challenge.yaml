@@ -1,0 +1,17 @@
+name: poly
+fullName: Polyalphabetic
+description: 'All cryptography is substitution if you think about it
+
+  '
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: flag
+  body: check_out_https://archiveofourown.org/works/3243470
+instancing: false
+files:
+- source/output.txt
+- source/poly.py
+services: []

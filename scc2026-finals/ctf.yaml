@@ -1,0 +1,26 @@
+name: scc2026-finals
+fullName: SCC 2026 Finals
+flag:
+  prefix: SCC
+network:
+  ports:
+    start: 31000
+    end: 31199
+challenges:
+- challenges/baby6502/challenge.yaml
+- challenges/baby-onion/challenge.yaml
+- challenges/based-errors/challenge.yaml
+- challenges/blackbox/challenge.yaml
+- challenges/brian/challenge.yaml
+- challenges/ghost-garage/challenge.yaml
+- challenges/mechanic-on-the-run/challenge.yaml
+- challenges/modern/challenge.yaml
+- challenges/peskystego/challenge.yaml
+- challenges/pit/challenge.yaml
+- challenges/risk/challenge.yaml
+- challenges/rtfm-cdef0123/challenge.yaml
+- challenges/smart-card-9000/challenge.yaml
+- challenges/telugu/challenge.yaml
+- challenges/timed-key-exchange/challenge.yaml
+
+# - challenges/sliver-in-the-shadows/challenge.yaml  # deferred: series depends on an externally cloud-hosted memory.raw (same risk class as ghost-activity/rocket-science)

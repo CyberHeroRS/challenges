@@ -1,0 +1,29 @@
+name: patrick
+fullName: Patrick
+description: 'Uh oh, the tides are colliding! I don''t think we''re in Bikini Bottom anymore!
+
+  '
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: flag
+  body: let_me_know_if_you_solved_this_with_ai
+instancing: true
+files:
+- source/patrick.py
+services:
+- name: patrick
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

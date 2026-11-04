@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "runtime.min.js",
+  "sources": ["relay.note.js"],
+  "sourcesContent": [
+    "// relay tail segment\n// FLAG_PART_H is intentionally in map content\nconst FLAG_PART_H = \"pt8{5URF4C3}}\";\n"
+  ],
+  "names": [],
+  "mappings": "AAAA"
+}

@@ -1,0 +1,28 @@
+body {
+    margin: 0; font-family: Arial, sans-serif; 
+}
+nav {
+    background: #333; color: #fff; padding: 0.5rem 1rem; display: flex; align-items: center; 
+}
+nav a {
+    color: #fff; margin-right: 1rem; text-decoration: none; 
+}
+.container {
+    padding: 1rem; 
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table th {
+    background: #EEE;
+}
+table td, table th {
+    border: 1px #666 solid;
+    padding: 2px 3px;
+}
+@media (min-width: 600px) {
+    .container {
+        max-width: 800px; margin: auto; 
+    }
+}

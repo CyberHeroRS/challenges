@@ -1,0 +1,29 @@
+name: hades-iii
+fullName: Hades III
+description: 'The unofficial sequel to the work-in-progress. Careful out there!
+
+  '
+categories:
+- crypto
+authors:
+- Lofer
+flags:
+- name: flag
+  body: the_boon_of_hades!
+instancing: true
+files:
+- source/hades_iii.py
+services:
+- name: hades-iii
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

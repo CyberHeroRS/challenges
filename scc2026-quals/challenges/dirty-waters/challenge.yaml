@@ -1,0 +1,51 @@
+name: dirty-waters
+fullName: Dirty Waters
+description: 'Dirty waters are deep.
+
+  '
+categories:
+- web
+authors:
+- Legasi
+flags:
+- name: flag
+  body: SCC{P011U73D_W47ER&}
+instancing: true
+files:
+- public/Dockerfile
+- public/README.md
+- public/apps/api/Dockerfile
+- public/apps/api/package-lock.json
+- public/apps/api/package.json
+- public/apps/api/src/server.ts
+- public/apps/api/src/store.ts
+- public/apps/api/src/types.ts
+- public/apps/api/tsconfig.json
+- public/apps/package-lock.json
+- public/apps/web/index.html
+- public/apps/web/package-lock.json
+- public/apps/web/package.json
+- public/apps/web/public/profile-preview.js
+- public/apps/web/src/App.tsx
+- public/apps/web/src/global.d.ts
+- public/apps/web/src/main.tsx
+- public/apps/web/src/styles.css
+- public/apps/web/tsconfig.json
+- public/apps/web/tsconfig.node.json
+- public/apps/web/vite.config.ts
+- public/docker-compose.yml
+- public/package-lock.json
+services:
+- name: dirty-waters
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: web
+    containerPort: 3000
+    expose: true
+    type: http

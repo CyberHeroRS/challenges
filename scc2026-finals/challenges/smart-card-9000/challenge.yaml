@@ -1,0 +1,17 @@
+name: smart-card-9000
+fullName: Smart Card 9000
+description: 'Our smart cards have patent pending PIN protection mechanism and use state of the art ECC.
+
+  '
+categories:
+- crypto
+authors:
+- klmn
+flags:
+- name: flag
+  body: too_much_blinding
+instancing: false
+files:
+- source/output.txt
+- source/sc9000.py
+services: []

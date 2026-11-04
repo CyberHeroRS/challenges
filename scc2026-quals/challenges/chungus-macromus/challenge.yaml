@@ -1,0 +1,19 @@
+name: chungus-macromus
+fullName: Chungus Macromus
+description: 'Runtime reversing is so outdated, let''s do some compile time reversing instead!
+
+
+  [Additional attachment (gen/macromus.rs, ~194MB, the full generated type-level table) hosted externally -- TODO: add download link.]
+
+  '
+categories:
+- rev
+authors:
+- theproxy
+flags:
+- name: flag
+  body: W34LLL0V3M4CR0F1L355
+instancing: false
+files:
+- macromus/src/main.rs
+services: []

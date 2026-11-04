@@ -1,0 +1,20 @@
+{
+    "Group": "jvvan",
+    "Name": "FlagPlugin",
+    "Version": "0.0.0",
+    "Description": "Draw your flags in Hytale",
+    "Authors": [
+        {
+            "Name": "jvvan",
+            "Email": "me@jvvan.rs",
+            "Url": "https://jvvan.rs"
+        }
+    ],
+    "Website": "https://jvvan.rs",
+    "DisabledByDefault": false,
+    "IncludesAssetPack": false,
+    "Dependencies": {},
+    "OptionalDependencies": {},
+    "ServerVersion": "*",
+    "Main": "rs.jvvan.FlagPlugin"
+}

@@ -1,0 +1,16 @@
+name: wav-in-the-middle
+fullName: Wav In THe MidIle
+description: 'I have received a strange song from a crazy piano player with a hidden secret, can you help me uncover it?
+
+  '
+categories:
+- foren
+authors:
+- punishedpin
+flags:
+- name: flag
+  body: SCC{MAGN1F1C3NT_M1D1_FUN}
+instancing: false
+files:
+- public/challenge.wav
+services: []

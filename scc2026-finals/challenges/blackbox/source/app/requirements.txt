@@ -1,0 +1,5 @@
+flask
+markupsafe
+psycopg2-binary
+lxml
+requests

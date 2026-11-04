@@ -1,0 +1,8 @@
+AuthType Basic
+AuthName "Restricted Area"
+AuthUserFile /var/www/.htpasswd
+Require valid-user
+
+<FilesMatch "^(snippet|test|submit)\.php$">
+  Require all granted
+</FilesMatch>

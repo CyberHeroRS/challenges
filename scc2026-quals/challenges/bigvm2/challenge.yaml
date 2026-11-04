@@ -1,0 +1,40 @@
+name: bigvm2
+fullName: BigVM II
+description: 'This is a continuation of the BigVM I challenge.
+
+
+  Someone said that this virtual machine is flawed when executing arbitrary code. Can you write that malicious code and prove it?
+
+  '
+categories:
+- pwn
+authors:
+- manjaro
+flags:
+- name: flag
+  body: b1g_in73g3rs_4r3_34sy_70_0v3rfl0w
+instancing: true
+files:
+- public/Dockerfile
+- public/bigvm2
+- public/docker-compose.yml
+- public/glibc/ld-linux-x86-64.so.2
+- public/glibc/libc.so.6
+- public/glibc/libgcc_s.so.1
+- public/glibc/libm.so.6
+- public/glibc/libstdc++.so.6
+- public/runner.py
+services:
+- name: bigvm2
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

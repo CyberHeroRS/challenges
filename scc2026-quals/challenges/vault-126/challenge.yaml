@@ -1,0 +1,14 @@
+name: vault-126
+fullName: Vault 126
+description: "Following an internal audit of the workstation Admin-PC, a selective triage of forensic artifacts was performed to investigate a suspected unauthorized session. \n\nInitial analysis suggests that a persistent session state may be preserved within the local environment. However, due to recent security hardening on the host, standard recovery procedures have proven unsuccessful. You are tasked with analyzing the provided filesystem structure to verify the identity of the active session.\n\nKnown Data:\n- Target User: Admin-PC\n- Known Password: Admin123\n- Environment: Windows 10\n\nZip Password: forensics\n\n[Attachment (Vault126.7z, ~567MB) hosted externally -- TODO: add download link.]\n"
+categories:
+- foren
+authors:
+- ekrup
+flags:
+- name: flag
+  body: n0_m0r3_m1lk_f0r_th3s3_3xp053d_c00k135
+  difficulty: mid
+instancing: false
+files: []
+services: []

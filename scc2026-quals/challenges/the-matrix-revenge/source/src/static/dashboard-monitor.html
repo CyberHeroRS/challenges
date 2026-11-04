@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>matrix://dashboard-monitor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #9cf8ba;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Mono',
+        Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      font-size: 11px;
+    "
+  >
+    <div
+      id="monitor-visual"
+      style="
+        padding: 4px 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      "
+    >
+      loading monitor...
+    </div>
+    <script>
+      (function () {
+        var start = Date.now();
+        var visual = document.getElementById("monitor-visual");
+
+        function randomInt(min, max) {
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function tick() {
+          var uptimeSeconds = Math.floor((Date.now() - start) / 1000);
+          var ghosts = randomInt(1, 12);
+          var reports = randomInt(0, 9);
+          var summary =
+            "uptime " + uptimeSeconds + "s, ghosts " + ghosts + ", reports " + reports;
+          var messages = [
+            summary,
+            "monitor pulse: ghosts=" + ghosts + " reports=" + reports,
+            "background sweep complete, queue length " + reports,
+          ];
+          var msg = messages[randomInt(0, messages.length - 1)];
+
+          if (visual) {
+            visual.textContent = "monitor :: " + summary;
+          }
+
+          // Send stats to the embedding dashboard window.
+          if (window.parent) {
+            window.parent.postMessage(
+              {
+                type: "MONITOR_UPDATE",
+                uptimeSeconds: uptimeSeconds,
+                activeGhosts: ghosts,
+                reportQueue: reports,
+                status: "watching node metrics...",
+                message: msg,
+              },
+              "*",
+            );
+          }
+        }
+
+        // Initial pulse and then periodic updates.
+        tick();
+        setInterval(tick, 5000);
+      })();
+    </script>
+  </body>
+  </html>
+

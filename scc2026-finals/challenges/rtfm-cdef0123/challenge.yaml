@@ -1,0 +1,30 @@
+name: rtfm-cdef0123
+fullName: RTFM CDEF0123
+description: 'What happens when you do not read the full manual?
+
+  '
+categories:
+- crypto
+authors:
+- klmn
+flags:
+- name: flag
+  body: breaking_out_of_jail_is_easy_if_you_have_the_keys
+instancing: true
+files:
+- source/rtfm-cdef0123.py
+- source/signed_firmware.bin
+services:
+- name: rtfm-cdef0123
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

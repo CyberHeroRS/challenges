@@ -1,0 +1,29 @@
+name: timed-key-exchange
+fullName: Timed Key Exchange
+description: 'Is it prime time already?
+
+  '
+categories:
+- crypto
+authors:
+- klmn
+flags:
+- name: flag
+  body: distinguishing_orders_can_be_a_pain
+instancing: true
+files:
+- source/tke.py
+services:
+- name: timed-key-exchange
+  image:
+    type: dockerfile
+    context: source
+    path: Dockerfile
+  flags:
+  - name: flag
+    env: FLAG
+  ports:
+  - name: shell
+    containerPort: 1337
+    expose: true
+    type: netcat

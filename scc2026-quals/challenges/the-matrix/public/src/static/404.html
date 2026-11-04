@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>matrix://underground-404</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/style.css" />
+    <style>
+      .page-frame {
+        justify-content: center;
+        align-items: center;
+      }
+      .not-found-panel {
+        max-width: 520px;
+      }
+      .not-found-code {
+        font-size: 32px;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+      }
+      .not-found-sub {
+        font-size: 12px;
+        color: #6fa687;
+        margin-bottom: 14px;
+      }
+      .not-found-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .not-found-crumb {
+        font-size: 10px;
+        color: #6fa687;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="matrix-bg"></div>
+    <div class="scanline"></div>
+
+    <div class="page-frame">
+      <section class="panel not-found-panel">
+        <div class="panel-title">/404</div>
+        <div class="not-found-code">GHOST ROUTE</div>
+        <div class="not-found-sub">
+          no handler in this part of the matrix. the signal you followed
+          terminates in static.
+        </div>
+
+        <div class="panel-body small">
+          &gt; requested path:
+          <span id="nf-path" class="muted"></span>
+          <br />
+          &gt; status:
+          <span class="muted">404 :: not mapped</span>
+          <br />
+          &gt; hint:
+          <span class="muted">
+            this page is the only frameable surface. if you see it in a box,
+            someone is probably watching you.
+          </span>
+        </div>
+
+        <div class="not-found-actions">
+          <div class="not-found-crumb">
+            matrix://underground &rsaquo; /404 &rsaquo; ghost-route
+          </div>
+          <div>
+            <a href="./" class="btn btn-ghost">← back to feed</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      (function () {
+        var span = document.getElementById("nf-path");
+        if (span) {
+          span.textContent = window.location.pathname || "/";
+        }
+      })();
+    </script>
+  </body>
+  </html>
+
