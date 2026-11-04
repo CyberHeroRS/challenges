@@ -5,7 +5,7 @@ description: Outer product of two coordinate vectors is The Matrix, but in this 
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: 35c4p1n6_m47r1x_w17h_b0f_15n'7_700_h4rd!

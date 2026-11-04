@@ -5,7 +5,7 @@ description: Embark on a journey through the perilous Stack Forest, battling mem
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: h3r0_0v3rfl0w3d_7h47_60ld

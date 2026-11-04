@@ -4,7 +4,7 @@ description: A few bits here, a few there- what could go wrong?
 categories:
 - crypto
 authors:
-- Lofer
+- pseudoleon
 flags:
 - name: main
   body: kronecker_or_legrenge_or_jacobi

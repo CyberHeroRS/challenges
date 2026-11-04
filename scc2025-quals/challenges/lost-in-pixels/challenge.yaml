@@ -7,7 +7,7 @@ description: A mysterious device has been discovered at the heart of a classifie
 categories:
 - hw
 authors:
-- Vucko
+- vucko
 flags:
 - name: main
   body: i2c_ssd1306

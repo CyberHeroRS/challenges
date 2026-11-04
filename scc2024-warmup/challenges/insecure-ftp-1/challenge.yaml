@@ -6,7 +6,7 @@ description: An accident happened in CyberHero HQ and FTP encryption failed. Acc
 categories:
 - forensics
 authors:
-- Gordic
+- gordic
 flags:
 - name: main
   body: f7p_7r4ff1c_mu57_b3_3ncryp73d

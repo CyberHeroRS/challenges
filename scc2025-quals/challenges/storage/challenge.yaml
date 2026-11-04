@@ -4,7 +4,7 @@ description: Simple storage app, you can store, delete or read text.
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: n07h1n6_15_r34lly_h1dd3n_fr0m_f0rm47t3d_pr1n7!

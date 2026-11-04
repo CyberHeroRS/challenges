@@ -5,7 +5,7 @@ description: You've come across a suspiciously fancy restaurant. Can you go insi
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: l051n6_w316h7_15n'7_50_h4rd_4f73r_4ll

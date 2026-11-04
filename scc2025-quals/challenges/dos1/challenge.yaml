@@ -8,7 +8,7 @@ description: 'A forgotten program, still lingering in the depths of a DOS system
 categories:
 - pwn
 authors:
-- Vucko
+- vucko
 flags:
 - name: main
   body: buff3r_0v3rfl0w_n1ghtmare

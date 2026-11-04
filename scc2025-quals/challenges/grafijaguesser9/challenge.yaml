@@ -9,7 +9,7 @@ description: CyberHero decided to travel across Serbia and explore every corner 
 categories:
 - osint
 authors:
-- Gordic
+- gordic
 flags:
 - name: main
   body: 45.240,19.822

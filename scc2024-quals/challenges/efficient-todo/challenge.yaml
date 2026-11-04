@@ -5,7 +5,7 @@ description: I found a faster way to implement a personal todo list, can you tel
 categories:
 - pwn
 authors:
-- mirko
+- mirkhoff
 flags:
 - name: main
   body: 0hhhhKn3WiT_1t_1s_n07_7h47_s4f3!

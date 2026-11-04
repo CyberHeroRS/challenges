@@ -4,7 +4,7 @@ description: Congratulations, you passed Level 1, but are you ready for Level 2?
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: r34d1n6_w17h_r34d_15n'7_5m4r7_4f73r_4ll

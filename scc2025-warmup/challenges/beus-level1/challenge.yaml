@@ -5,7 +5,7 @@ description: Have you heard about the Binary Exploitation Unit of Serbia? This i
 categories:
 - pwn
 authors:
-- Lazar Mancic
+- m4njaro
 flags:
 - name: main
   body: 0v3rfl0w1n6_buff3r_15_4lw4y5_4_w1n

@@ -5,7 +5,7 @@ description: Demo of the famous zork I game has been created. I made sure to mak
 categories:
 - pwn
 authors:
-- mirko
+- mirkhoff
 flags:
 - name: main
   body: h4v3_y0u_h34rd_0f_z0rk!??!?!?

@@ -4,7 +4,7 @@ description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 categories:
 - welcome
 authors:
-- Marko Gordic
+- gordic
 flags:
 - name: main
   body: sanity_check

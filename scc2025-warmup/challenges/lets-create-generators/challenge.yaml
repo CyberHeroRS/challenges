@@ -5,7 +5,7 @@ description: Let's create a safe generator! I'll generate, and you see if my fla
 categories:
 - crypto
 authors:
-- Lofer
+- pseudoleon
 flags:
 - name: main
   body: too_much_info?

@@ -10,7 +10,7 @@ description: 'CyberHero needs your help! He found some old images and he wants t
 categories:
 - osint
 authors:
-- Gordic
+- gordic
 flags:
 - name: main
   body: 43.977,21.257

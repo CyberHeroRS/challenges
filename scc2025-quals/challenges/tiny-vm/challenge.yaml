@@ -4,7 +4,7 @@ description: They say solving VM challenges is really hard — but is it?
 categories:
 - rev
 authors:
-- Jovan Pavlovic
+- theproxy
 flags:
 - name: main
   body: vms_arent_so_hard!

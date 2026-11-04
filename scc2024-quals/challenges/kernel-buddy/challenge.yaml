@@ -5,7 +5,7 @@ description: You bored your buddy too much, so he created a Linux kernel driver 
 categories:
 - pwn
 authors:
-- Vucko
+- vucko
 flags:
 - name: main
   body: y0_f1nd_4_61rl_0r_5m7h_d0n7_w4573_71m3_0n_7h15
