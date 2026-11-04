@@ -41,3 +41,19 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+  # Needs CAP_SYS_ADMIN to mount bpffs and attach the raw_tracepoint used by
+  # the custom syscall gate. The author's own kata-containers/ + kernel/
+  # dir ships a purpose-built Kata guest kernel (bzImage-ebpf, with
+  # CONFIG_BPF_EVENTS/CONFIG_FTRACE_SYSCALLS enabled) via the
+  # io.katacontainers.config.hypervisor.kernel annotation -- TODO: wire
+  # kata.kernel once production's node-local delivery path for that
+  # custom kernel is decided; omitted for now since it's not yet needed
+  # for local kind testing (runc handler uses the host kernel directly).
+  kata:
+    privileged: true
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
