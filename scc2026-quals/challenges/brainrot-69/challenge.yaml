@@ -29,3 +29,12 @@ services:
     containerPort: 80
     expose: true
     type: http
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
+  mounts:
+  - source: source/images
+    target: /mounts/images
