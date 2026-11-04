@@ -25,6 +25,12 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
 files:
 - source/main
 - source/ld-linux-x86-64.so.2
