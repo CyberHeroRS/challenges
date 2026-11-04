@@ -20,6 +20,11 @@ services:
     type: dockerfile
     context: source
     path: Dockerfile
+  env:
+  - name: KEY
+    value: 0123456789ABCDEF23456789ABCDEF01456789ABCDEF0123
+  - name: TAG
+    value: 95E9FF709C0F3C9D
   flags:
   - name: flag
     env: FLAG
@@ -28,3 +33,9 @@ services:
     containerPort: 1337
     expose: true
     type: netcat
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
