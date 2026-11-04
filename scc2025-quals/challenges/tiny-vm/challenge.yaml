@@ -16,3 +16,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/tiny-vm.py
+    target: /solution/tiny-vm.py

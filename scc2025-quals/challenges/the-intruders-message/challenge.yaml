@@ -22,3 +22,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/email.eml
+    target: /solution/email.eml

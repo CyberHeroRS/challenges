@@ -19,3 +19,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/encoded.txt
+    target: /solution/encoded.txt

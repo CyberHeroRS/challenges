@@ -5,8 +5,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     gunzip -f /usr/share/wordlists/rockyou.txt.gz && \
     rm -rf /var/lib/apt/lists/*
 WORKDIR /solution
-COPY johnny.zip solve.sh ./
+COPY solve.sh ./
 RUN chmod +x solve.sh
+# johnny.zip is bind-mounted in at test time (see challenge.yaml's
+# test[0].mounts).
 # The flag is only inside flag.txt once the real ZIP password is cracked from
 # rockyou.txt, so the runner passes when the solver exits cleanly and the
 # recovered flag.txt contents match the flag injected by the test runner via

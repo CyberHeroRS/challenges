@@ -3,7 +3,9 @@ FROM sagemath/sagemath:latest
 RUN sage -pip install --no-cache-dir pycryptodome==3.21.0
 
 WORKDIR /home/sage/solution
-COPY --chown=sage:sage out.txt sol.sage ./
+COPY --chown=sage:sage sol.sage ./
+# out.txt is bind-mounted in at test time (see challenge.yaml's
+# test[0].mounts).
 
 # The sagemath/sagemath image's entrypoint is `sage-entrypoint`, which always
 # re-wraps the container command as `sage -sh -c "$*"`. Passing a *single*

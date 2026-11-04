@@ -19,3 +19,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/out.txt
+    target: /home/sage/solution/out.txt

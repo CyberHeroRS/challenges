@@ -22,3 +22,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/capture.pcapng
+    target: /solution/capture.pcapng

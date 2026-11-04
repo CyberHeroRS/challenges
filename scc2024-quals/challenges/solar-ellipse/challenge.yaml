@@ -18,3 +18,8 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/attachments/out.txt
+    target: /home/sage/solution/out.txt
+  - source: public/attachments/server.py
+    target: /home/sage/solution/server.py

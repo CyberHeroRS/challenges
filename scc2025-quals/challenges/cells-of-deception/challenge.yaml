@@ -22,3 +22,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: public/important.xlsm
+    target: /solution/important.xlsm
