@@ -24,3 +24,6 @@ test:
     type: dockerfile
     context: solution
     path: Dockerfile
+  mounts:
+  - source: assets
+    target: /solution/challenge_assets
