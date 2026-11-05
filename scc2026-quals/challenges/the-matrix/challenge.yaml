@@ -51,6 +51,9 @@ services:
     env: THREAD_FLAG
   - name: flag2
     env: BOT_FLAG_COOKIE_VALUE
+  env:
+  - name: BOT_ORIGIN
+    value: http://localhost
   ports:
   - name: web
     containerPort: 3000
