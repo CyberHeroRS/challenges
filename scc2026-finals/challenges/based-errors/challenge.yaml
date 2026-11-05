@@ -12,19 +12,52 @@ flags:
   body: error_based_
 instancing: true
 services:
-- name: pit
+- name: based-errors
   image:
     type: dockerfile
     context: source
     path: Dockerfile
+  env:
+  - name: MYSQL_HOST
+    value: db
+  - name: MYSQL_DATABASE
+    value: mydb
+  - name: MYSQL_USER
+    value: user
+  - name: MYSQL_PASSWORD
+    value: userpassword
   flags:
   - name: flag
     env: FLAG
   ports:
   - name: http
-    containerPort: 3000
+    containerPort: 80
     expose: true
     type: http
+- name: db
+  image:
+    type: image
+    image: docker.io/mariadb:12
+  env:
+  - name: MARIADB_DATABASE
+    value: mydb
+  - name: MARIADB_USER
+    value: user
+  - name: MARIADB_PASSWORD
+    value: userpassword
+  - name: MARIADB_ROOT_PASSWORD
+    value: rootpassword
+  ports:
+  - name: mysql
+    containerPort: 3306
+    expose: false
+    type: netcat
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
 files:
 - source/docker-compose.yml
 - source/Dockerfile
