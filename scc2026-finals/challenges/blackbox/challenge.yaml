@@ -70,3 +70,9 @@ services:
     containerPort: 3000
     expose: false
     type: http
+test:
+- name: solve
+  image:
+    type: dockerfile
+    context: solution
+    path: Dockerfile
