@@ -71,7 +71,13 @@ def main():
         client_socket, addr = server_socket.accept()
         print(f"Connection from {addr[0]}:{addr[1]}")
 
-        handle_client(client_socket)
+        try:
+            handle_client(client_socket)
+        except OSError:
+            # A client that disconnects early (e.g. a bare TCP readiness
+            # probe) can make a later sendall() fail with a broken pipe;
+            # that must not take down the whole server for everyone else.
+            pass
 
 
 if __name__ == "__main__":
